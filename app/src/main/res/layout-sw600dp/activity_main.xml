@@ -71,7 +71,7 @@
         android:layout_marginBottom="56dp"
         android:backgroundTint="#99272727"
         app:cardCornerRadius="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/upDrawerCard"
+        app:layout_constraintBottom_toTopOf="@+id/seatsCard"
         app:layout_constraintEnd_toStartOf="@+id/rgbOffCard"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent">
@@ -164,7 +164,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/curtainCard"
+        android:id="@+id/leftCurtainsCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:backgroundTint="#99272727"
@@ -274,8 +274,8 @@
         app:cardCornerRadius="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/upDrawerCard"
-        app:layout_constraintTop_toTopOf="@+id/upDrawerCard">
+        app:layout_constraintStart_toEndOf="@+id/seatsCard"
+        app:layout_constraintTop_toTopOf="@+id/seatsCard">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -326,13 +326,13 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/upDrawerCard"
+        android:id="@+id/seatsCard"
         android:layout_width="212dp"
         android:layout_height="212dp"
         android:layout_marginBottom="56dp"
         android:backgroundTint="#99272727"
         app:cardCornerRadius="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/curtainCard"
+        app:layout_constraintBottom_toTopOf="@+id/leftCurtainsCard"
         app:layout_constraintEnd_toStartOf="@+id/downDrawerCard"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent">

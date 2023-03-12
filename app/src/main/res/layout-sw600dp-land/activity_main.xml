@@ -9,15 +9,14 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/tvCard"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
+        android:layout_width="212dp"
+        android:layout_height="212dp"
         android:backgroundTint="#99272727"
         app:cardCornerRadius="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/leftCurtainsCard"
         app:layout_constraintEnd_toStartOf="@+id/downDrawerCard"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lightCard">
+        app:layout_constraintStart_toEndOf="@+id/rgbOffCard"
+        app:layout_constraintTop_toTopOf="@+id/lightCard">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -25,25 +24,25 @@
 
             <TextView
                 android:id="@+id/tvTextView"
-                android:layout_width="136dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="8dp"
+                android:layout_width="180dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/button_bg"
                 android:fontFamily="@font/main_font"
                 android:gravity="center"
                 android:text="TV"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/tvDownButton"
-                android:layout_width="64dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_width="80dp"
+                android:layout_height="64dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/button_bg"
                 android:padding="16dp"
                 android:src="@drawable/down_icon"
@@ -54,8 +53,8 @@
 
             <ImageView
                 android:id="@+id/tvUpButton"
-                android:layout_width="64dp"
-                android:layout_height="48dp"
+                android:layout_width="80dp"
+                android:layout_height="64dp"
                 android:background="@drawable/button_bg"
                 android:padding="16dp"
                 android:src="@drawable/up_icon"
@@ -67,16 +66,15 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/lightCard"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="212dp"
+        android:layout_height="212dp"
+        android:layout_marginBottom="40dp"
         android:backgroundTint="#99272727"
         app:cardCornerRadius="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/tvCard"
+        app:layout_constraintBottom_toTopOf="@+id/leftCurtainsCard"
         app:layout_constraintEnd_toStartOf="@+id/rgbOffCard"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView">
+        app:layout_constraintStart_toStartOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -84,26 +82,26 @@
 
             <TextView
                 android:id="@+id/lightTextView"
-                android:layout_width="136dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="8dp"
+                android:layout_width="180dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/button_bg"
                 android:fontFamily="@font/main_font"
                 android:gravity="center"
                 android:text="Свет"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/lightOffButton"
-                android:layout_width="136dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_width="180dp"
+                android:layout_height="64dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/button_bg"
                 android:padding="16dp"
                 android:src="@drawable/on_off_icon"
@@ -118,11 +116,11 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/rgbOffCard"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
+        android:layout_width="212dp"
+        android:layout_height="212dp"
         android:backgroundTint="#99272727"
         app:cardCornerRadius="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvCard"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/lightCard"
         app:layout_constraintTop_toTopOf="@+id/lightCard">
@@ -133,26 +131,26 @@
 
             <TextView
                 android:id="@+id/rgbTextView"
-                android:layout_width="136dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="8dp"
+                android:layout_width="180dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/button_bg"
                 android:fontFamily="@font/main_font"
                 android:gravity="center"
                 android:text="Подсветка"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="14sp"
+                android:textSize="22sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/rgbOffButton"
-                android:layout_width="136dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_width="180dp"
+                android:layout_height="64dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/button_bg"
                 android:padding="16dp"
                 android:src="@drawable/on_off_icon"
@@ -169,123 +167,67 @@
         android:id="@+id/leftCurtainsCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="32dp"
         android:backgroundTint="#99272727"
         app:cardCornerRadius="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/seatsCard"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCard">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/lightCard">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/leftCurtain2Button"
-                android:layout_width="172dp"
-                android:layout_height="80dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:id="@+id/leftCurtain1Button"
+                android:layout_width="280dp"
+                android:layout_height="90dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
                 android:background="@drawable/button_bg"
                 android:drawablePadding="36dp"
                 android:fontFamily="@font/main_font"
                 android:gravity="center_vertical"
-                android:padding="16dp"
-                android:text="Левые шторы 2"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                app:drawableEndCompat="@drawable/up_down_icon_32"
-                app:drawableTint="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/rightCurtain2Button"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/leftCurtain1Button" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/leftCurtain1Button"
-                android:layout_width="172dp"
-                android:layout_height="80dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/button_bg"
-                android:drawablePadding="16dp"
-                android:fontFamily="@font/main_font"
-                android:gravity="center_vertical"
-                android:padding="16dp"
+                android:padding="20dp"
                 android:text="Левые шторы 1"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="12sp"
-                app:drawableEndCompat="@drawable/up_down_icon_32"
+                android:textSize="20sp"
+                app:drawableEndCompat="@drawable/up_down_icon"
                 app:drawableTint="@color/white"
-                app:layout_constraintBottom_toTopOf="@+id/leftCurtain2Button"
-                app:layout_constraintEnd_toStartOf="@+id/rightCurtain1Button"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/rightCurtain1Button"
-                android:layout_width="172dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+                android:id="@+id/leftCurtain2Button"
+                android:layout_width="280dp"
+                android:layout_height="90dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/button_bg"
                 android:drawablePadding="36dp"
                 android:fontFamily="@font/main_font"
                 android:gravity="center_vertical"
-                android:padding="16dp"
-                android:text="Правые шторы 1"
+                android:padding="20dp"
+                android:text="Левые шторы 2"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="12sp"
-                app:drawableEndCompat="@drawable/up_down_icon_32"
-                app:drawableTint="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/leftCurtain1Button"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="spread" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/rightCurtain2Button"
-                android:layout_width="172dp"
-                android:layout_height="80dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/button_bg"
-                android:drawablePadding="36dp"
-                android:fontFamily="@font/main_font"
-                android:gravity="center_vertical"
-                android:padding="16dp"
-                android:text="Правые шторы 2"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                app:drawableEndCompat="@drawable/up_down_icon_32"
+                android:textSize="20sp"
+                app:drawableEndCompat="@drawable/up_down_icon"
                 app:drawableTint="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/leftCurtain2Button"
-                app:layout_constraintTop_toTopOf="@+id/leftCurtain2Button" />
+                app:layout_constraintStart_toStartOf="@+id/leftCurtain1Button"
+                app:layout_constraintTop_toBottomOf="@+id/leftCurtain1Button" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/downDrawerCard"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
+        android:layout_width="212dp"
+        android:layout_height="212dp"
         android:backgroundTint="#99272727"
         app:cardCornerRadius="16dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -299,9 +241,9 @@
 
             <TextView
                 android:id="@+id/downDrawerTextView"
-                android:layout_width="136dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="8dp"
+                android:layout_width="180dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/button_bg"
                 android:fontFamily="@font/main_font"
                 android:gravity="center"
@@ -309,17 +251,17 @@
                 android:text="Сейф"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/downDrawerOpenButton"
-                android:layout_width="64dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_width="80dp"
+                android:layout_height="64dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/button_bg"
                 android:padding="16dp"
                 android:src="@drawable/down_icon"
@@ -330,8 +272,8 @@
 
             <ImageView
                 android:id="@+id/downDrawerCloseButton"
-                android:layout_width="64dp"
-                android:layout_height="48dp"
+                android:layout_width="80dp"
+                android:layout_height="64dp"
                 android:background="@drawable/button_bg"
                 android:padding="16dp"
                 android:src="@drawable/up_icon"
@@ -343,14 +285,15 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/seatsCard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="212dp"
+        android:layout_height="212dp"
         android:backgroundTint="#99272727"
         app:cardCornerRadius="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/leftCurtainsCard">
+        app:layout_constraintBottom_toBottomOf="@+id/leftCurtainsCard"
+        app:layout_constraintEnd_toStartOf="@+id/rightCurtainsCard"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/leftCurtainsCard"
+        app:layout_constraintTop_toTopOf="@+id/leftCurtainsCard">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -358,19 +301,15 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/seatButton"
-                android:layout_width="136dp"
-                android:layout_height="80dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
                 android:background="@drawable/button_bg"
                 android:fontFamily="@font/main_font"
                 android:gravity="center"
                 android:text="Сиденья"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -380,17 +319,76 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/rightCurtainsCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="#99272727"
+        app:cardCornerRadius="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/downDrawerCard">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/rightCurtain1Button"
+                android:layout_width="280dp"
+                android:layout_height="90dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/button_bg"
+                android:drawablePadding="36dp"
+                android:fontFamily="@font/main_font"
+                android:gravity="center_vertical"
+                android:padding="20dp"
+                android:text="Правые шторы 1"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:drawableEndCompat="@drawable/up_down_icon"
+                app:drawableTint="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/rightCurtain2Button"
+                android:layout_width="280dp"
+                android:layout_height="90dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/button_bg"
+                android:drawablePadding="36dp"
+                android:fontFamily="@font/main_font"
+                android:gravity="center_vertical"
+                android:padding="20dp"
+                android:text="Правые шторы 2"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:drawableEndCompat="@drawable/up_down_icon"
+                app:drawableTint="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/rightCurtain1Button"
+                app:layout_constraintTop_toBottomOf="@+id/rightCurtain1Button" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:padding="40dp"
         android:src="@drawable/logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="#CACACA" />
+        app:tint="#00B8D4" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
