@@ -1,7 +1,8 @@
 package com.isayevapps.blackbeaty2
 
 import android.os.Bundle
-import android.widget.TextView
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
@@ -10,18 +11,33 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val lightTextView = findViewById<TextView>(R.id.lightTextView)
+        val viewModel = (application as App).viewModel
+        viewModel.init(this, savedInstanceState == null)
 
-        val rgbTextView = findViewById<TextView>(R.id.rgbTextView)
+        viewModel.states.observe(this) {
+            when (it) {
+                is States.WaitForConnection -> {
+                }
+                is States.Connection -> {
+                    viewModel.searchDevice()
+                }
+                is States.Connected -> {
 
-        lightTextView.setOnClickListener {
-            showLightDialog()
+                }
+            }
         }
 
-        rgbTextView.setOnClickListener {
-            showRGBDialog()
-        }
+        /* val lightTextView = findViewById<TextView>(R.id.lightTextView)
 
+         val rgbTextView = findViewById<TextView>(R.id.rgbTextView)
+
+         lightTextView.setOnClickListener {
+             showLightDialog()
+         }
+
+         rgbTextView.setOnClickListener {
+             showRGBDialog()
+         }*/
 
     }
 
