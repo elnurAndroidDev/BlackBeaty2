@@ -15,6 +15,6 @@
     </style>
 
     <style name="AlertDialogStyle" parent="Theme.Material3.Dark.Dialog.Alert">
-
+        <item name="elevation">2dp</item>
     </style>
 </resources>

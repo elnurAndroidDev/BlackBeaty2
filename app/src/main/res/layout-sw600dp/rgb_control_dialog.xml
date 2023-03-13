@@ -6,9 +6,10 @@
 
     <ImageView
         android:id="@+id/bright_rgb_ico"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_marginStart="16dp"
+        android:padding="8dp"
         android:src="@drawable/brightness_icon"
         app:layout_constraintBottom_toBottomOf="@id/rgbSeekBar"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,7 +19,7 @@
     <SeekBar
         android:id="@+id/rgbSeekBar"
         android:layout_width="0dp"
-        android:layout_height="56dp"
+        android:layout_height="72dp"
         android:layout_margin="16dp"
         android:max="100"
         android:progress="50"
@@ -28,9 +29,9 @@
 
     <ImageView
         android:id="@+id/redCircle"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="24dp"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/color_button_bg"
         android:backgroundTint="#FF0000"
         app:layout_constraintEnd_toStartOf="@+id/violetCircle"
@@ -40,8 +41,8 @@
 
     <ImageView
         android:id="@+id/violetCircle"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
         android:background="@drawable/color_button_bg"
         android:backgroundTint="#673AB7"
         app:layout_constraintEnd_toStartOf="@+id/yellowCircle"
@@ -51,8 +52,8 @@
 
     <ImageView
         android:id="@+id/yellowCircle"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
         android:background="@drawable/color_button_bg"
         android:backgroundTint="#FFEB3B"
         app:layout_constraintEnd_toStartOf="@+id/blueCircle"
@@ -62,8 +63,8 @@
 
     <ImageView
         android:id="@+id/blueCircle"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
         android:background="@drawable/color_button_bg"
         android:backgroundTint="#2196F3"
         app:layout_constraintEnd_toStartOf="@+id/greenCircle"
@@ -73,8 +74,8 @@
 
     <ImageView
         android:id="@+id/greenCircle"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
         android:background="@drawable/color_button_bg"
         android:backgroundTint="#00FF0A"
         app:layout_constraintEnd_toEndOf="parent"
@@ -84,7 +85,7 @@
 
     <top.defaults.colorpicker.ColorPickerView
         android:id="@+id/colorPicker"
-        android:layout_width="0dp"
+        android:layout_width="450dp"
         android:layout_height="450dp"
         android:layout_marginTop="40dp"
         app:enableAlpha="false"

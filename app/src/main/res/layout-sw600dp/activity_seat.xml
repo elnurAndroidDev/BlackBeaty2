@@ -11,6 +11,7 @@
         android:id="@+id/imageView3"
         android:layout_width="212dp"
         android:layout_height="212dp"
+        android:layout_marginTop="8dp"
         android:padding="40dp"
         android:src="@drawable/logo"
         app:layout_constraintEnd_toEndOf="parent"
@@ -181,8 +182,8 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/headButton"
-        android:layout_width="136dp"
-        android:layout_height="136dp"
+        android:layout_width="152dp"
+        android:layout_height="152dp"
         android:layout_marginBottom="80dp"
         android:background="@drawable/button_bg"
         android:text="Подголовник"
@@ -195,8 +196,8 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/backButton"
-        android:layout_width="136dp"
-        android:layout_height="136dp"
+        android:layout_width="152dp"
+        android:layout_height="152dp"
         android:background="@drawable/button_selected_bg"
         android:text="Спинка"
         android:textAllCaps="true"
@@ -208,8 +209,8 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/legButton"
-        android:layout_width="136dp"
-        android:layout_height="136dp"
+        android:layout_width="152dp"
+        android:layout_height="152dp"
         android:background="@drawable/button_bg"
         android:text="Подножник"
         android:textAllCaps="true"
@@ -221,8 +222,8 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/moveButton"
-        android:layout_width="136dp"
-        android:layout_height="136dp"
+        android:layout_width="152dp"
+        android:layout_height="152dp"
         android:background="@drawable/button_bg"
         android:text="Вперед/назад"
         android:textAllCaps="true"
@@ -231,6 +232,31 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/legButton" />
+
+    <FrameLayout
+        android:id="@+id/connectionStatusLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#EB272727"
+        android:elevation="4dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/connectionStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Ожидание подключения..."
+            android:textColor="@color/white"
+            android:textSize="32sp" />
+
+    </FrameLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,7 @@
         android:layout_height="212dp"
         android:backgroundTint="#99272727"
         app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/rgbOffCard"
@@ -71,6 +72,7 @@
         android:layout_marginBottom="56dp"
         android:backgroundTint="#99272727"
         app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
         app:layout_constraintBottom_toTopOf="@+id/seatsCard"
         app:layout_constraintEnd_toStartOf="@+id/rgbOffCard"
         app:layout_constraintHorizontal_bias="0.5"
@@ -120,6 +122,7 @@
         android:layout_height="212dp"
         android:backgroundTint="#99272727"
         app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
         app:layout_constraintEnd_toStartOf="@id/tvCard"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/lightCard"
@@ -167,9 +170,10 @@
         android:id="@+id/leftCurtainsCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
         android:backgroundTint="#99272727"
         app:cardCornerRadius="16dp"
-        android:layout_marginBottom="80dp"
+        app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/tvCard"
         app:layout_constraintHorizontal_bias="0.5"
@@ -272,6 +276,7 @@
         android:layout_height="212dp"
         android:backgroundTint="#99272727"
         app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/seatsCard"
@@ -332,6 +337,7 @@
         android:layout_marginBottom="56dp"
         android:backgroundTint="#99272727"
         app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
         app:layout_constraintBottom_toTopOf="@+id/leftCurtainsCard"
         app:layout_constraintEnd_toStartOf="@+id/downDrawerCard"
         app:layout_constraintHorizontal_bias="0.5"
@@ -371,6 +377,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="#FFC107" />
+
+    <FrameLayout
+        android:id="@+id/connectionStatusLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#EB272727"
+        android:visibility="visible"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/connectionStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Ожидание подключения..."
+            android:textSize="32sp"
+            android:textColor="@color/white"/>
+
+    </FrameLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
