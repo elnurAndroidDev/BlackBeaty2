@@ -8,12 +8,13 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
-import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var lightAlertDialog: AlertDialog
     private lateinit var rgbAlertDialog: AlertDialog
+    private lateinit var connectionStatusLayout: FrameLayout
+    private lateinit var connectionStatusTextView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,25 +23,17 @@ class MainActivity : AppCompatActivity() {
         prepareLightDialog()
         prepareRGBDialog()
 
-        /* val viewModel = (application as App).viewModel
-         viewModel.init(this, savedInstanceState == null)
+        connectionStatusLayout = findViewById(R.id.connectionStatusLayout)
+        connectionStatusTextView = findViewById(R.id.connectionStatus)
 
-         viewModel.states.observe(this) {
-             when (it) {
-                 is States.WaitForConnection -> {
-                 }
-                 is States.Connection -> {
-                     viewModel.searchDevice()
-                 }
-                 is States.Connected -> {
-
-                 }
-             }
-         }*/
-
-        val connectionStatusLayout = findViewById<FrameLayout>(R.id.connectionStatusLayout)
-        connectionStatusLayout.visibility = View.GONE
-
+        val viewModel = (application as App).viewModel
+        viewModel.init(this, savedInstanceState == null)
+        viewModel.states.observe(this) {
+            showOrHideStatusLayout(it)
+            if (it is States.Connection) {
+                viewModel.searchDevice()
+            }
+        }
 
         val lightTextView = findViewById<TextView>(R.id.lightTextView)
         val rgbTextView = findViewById<TextView>(R.id.rgbTextView)
@@ -78,5 +71,24 @@ class MainActivity : AppCompatActivity() {
         builder.setView(dialogLayout)
         builder.setPositiveButton("OK") { dialogInterface, _ -> dialogInterface.dismiss() }
         rgbAlertDialog = builder.create()
+    }
+
+    private fun showOrHideStatusLayout(state: States) {
+        if (state is States.WaitForConnection) {
+            if (connectionStatusLayout.visibility != View.VISIBLE)
+                connectionStatusLayout.visibility = View.VISIBLE
+            if (connectionStatusTextView.text.toString() != "Ожидание подключения...")
+                connectionStatusTextView.text = "Ожидание подключения..."
+        }
+        if (state is States.Connection) {
+            if (connectionStatusLayout.visibility != View.VISIBLE)
+                connectionStatusLayout.visibility = View.VISIBLE
+            if (connectionStatusTextView.text.toString() != "Поиск устройства...")
+                connectionStatusTextView.text = "Поиск устройства..."
+        }
+        if (state is States.Connected) {
+            if (connectionStatusLayout.visibility != View.GONE)
+                connectionStatusLayout.visibility = View.GONE
+        }
     }
 }

@@ -12,7 +12,6 @@ class ViewModel(private val model: Model) {
 
     private val networkChangesCallback = object : NetworkChangesCallback {
         override fun onAvailable() {
-            Log.d("MyTag", "connection")
             _states.postValue(States.Connection)
         }
 

@@ -44,6 +44,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.github.duanhong169:colorpicker:1.1.6'
     implementation 'com.github.tejmagar:AndroidWiFiTools:1.0.2'
+    implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'androidx.core:core-ktx:1.9.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

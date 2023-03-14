@@ -7,6 +7,7 @@ import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.util.Log
 import androidx.core.content.ContextCompat.getSystemService
+import com.google.gson.Gson
 import tej.wifitoolslib.DevicesFinder
 import tej.wifitoolslib.interfaces.OnDeviceFindListener
 import tej.wifitoolslib.models.DeviceItem
@@ -27,12 +28,19 @@ class Model(private val context: Context) {
             override fun onDeviceFound(device: DeviceItem) {
                 thread {
                     try {
+                        //Log.d("MyTag", device.ipAddress)
+                        val a = ItemOperation(11, 0, 0)
+                        val code = a.toCode()
+                        val value = a.getValue()
+                        val message = "c${code}v$value"
                         val response =
-                            URL("http://${device.ipAddress}/hello").readText()
-                        if (response == "hi") {
+                            URL("http://${device.ipAddress}/$message").readText()
+                        Log.d("MyTag", "heyyy")
+                        if (response == "200") {
                             deviceAddress = device.ipAddress
                         }
-                    } catch (_: Exception) {
+                    } catch (e: Exception) {
+                        //Log.d("MyTag", e.message.toString())
                     }
                 }
             }
@@ -41,7 +49,7 @@ class Model(private val context: Context) {
                 if (deviceAddress == "" && hasWifi()) {
                     deviceCallback.onNotFound()
                 }
-                if (deviceAddress != "") {
+                if (deviceAddress != "" && hasWifi()) {
                     deviceCallback.onFound()
                 }
             }
@@ -83,10 +91,9 @@ class Model(private val context: Context) {
     }
 
     fun searchDevice() {
+
         try {
-            Log.d("MyTag", "searching")
             if (!deviceFinder.isRunning) {
-                Log.d("MyTag", "started new searching")
                 deviceFinder.setTimeout(5000).start()
             }
         } catch (_: Exception) {
