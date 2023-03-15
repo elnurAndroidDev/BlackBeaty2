@@ -25,6 +25,7 @@ class ViewModel(private val model: Model) {
 
     private val deviceCallback = object : DeviceCallback {
         override fun onFound() {
+            startIsAliveChecking()
             _states.postValue(States.Connected)
         }
 
@@ -38,6 +39,10 @@ class ViewModel(private val model: Model) {
             model.registerNetworkChanges(networkChangesCallback)
             model.setDeviceFinder(activityContext, deviceCallback)
         }
+    }
+
+    fun startIsAliveChecking() {
+        model.startIsAliveChecking(deviceCallback)
     }
 
     fun searchDevice() {
@@ -76,6 +81,13 @@ class ViewModel(private val model: Model) {
         model.sendCommand(Command(Command.BAR_ID, 0, value))
     }
 
+    fun setSeatCommand(id: Int, op: Int, value: Int) {
+        model.setSeatCommand(id, op, value)
+    }
+
+    fun stopSendingSeatCommand() {
+        model.stopSendingSeatCommand()
+    }
 
 
 }

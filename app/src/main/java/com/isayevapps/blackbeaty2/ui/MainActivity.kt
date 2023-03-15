@@ -2,6 +2,7 @@ package com.isayevapps.blackbeaty2.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.states.observe(this) {
             showOrHideStatus(it)
             if (it is States.Connection) {
+                Log.d("MyTag", "connection...")
                 viewModel.searchDevice()
             }
         }

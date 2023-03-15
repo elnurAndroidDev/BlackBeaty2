@@ -1,6 +1,11 @@
 package com.isayevapps.blackbeaty2.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.method.MovementMethod
+import android.util.Log
+import android.view.ActionMode
+import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
@@ -12,7 +17,10 @@ import com.isayevapps.blackbeaty2.viewmodels.States
 class SeatActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySeatBinding
+    private var currentPos = 0
+    private var currentPart = 0
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySeatBinding.inflate(layoutInflater)
@@ -22,6 +30,7 @@ class SeatActivity : AppCompatActivity() {
         viewModel.states.observe(this) {
             showOrHideStatus(it)
             if (it is States.Connection) {
+                Log.d("MyTag", "seat connection...")
                 viewModel.searchDevice()
             }
         }
@@ -67,24 +76,66 @@ class SeatActivity : AppCompatActivity() {
             binding.seatPartLeftButton.visibility = View.VISIBLE
             binding.seatPartRightButton.visibility = View.VISIBLE
         }
+
+        binding.seatPartUpButton.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                viewModel.setSeatCommand(currentPos, currentPart, 1)
+            }
+            if (event.action == MotionEvent.ACTION_UP) {
+                viewModel.stopSendingSeatCommand()
+            }
+            true
+        }
+
+        binding.seatPartDownButton.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                viewModel.setSeatCommand(currentPos, currentPart, 0)
+            }
+            if (event.action == MotionEvent.ACTION_UP) {
+                viewModel.stopSendingSeatCommand()
+            }
+            true
+        }
+
+        binding.seatPartLeftButton.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                viewModel.setSeatCommand(currentPos, currentPart, 0)
+            }
+            if (event.action == MotionEvent.ACTION_UP) {
+                viewModel.stopSendingSeatCommand()
+            }
+            true
+        }
+
+        binding.seatPartRightButton.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                viewModel.setSeatCommand(currentPos, currentPart, 1)
+            }
+            if (event.action == MotionEvent.ACTION_UP) {
+                viewModel.stopSendingSeatCommand()
+            }
+            true
+        }
     }
 
-    private fun selectPos(i: Int) {
+    private fun selectPos(pos: Int) {
+        currentPos = pos-1
         val buttonBGDrawable =
             ResourcesCompat.getDrawable(resources, R.drawable.button_bg, null)
         val buttonSelectedBGDrawable =
             ResourcesCompat.getDrawable(resources, R.drawable.button_selected_bg, null)
         binding.seatPos1Button.background =
-            if (i == 1) buttonSelectedBGDrawable else buttonBGDrawable
+            if (pos == 1) buttonSelectedBGDrawable else buttonBGDrawable
         binding.seatPos2Button.background =
-            if (i == 2) buttonSelectedBGDrawable else buttonBGDrawable
+            if (pos == 2) buttonSelectedBGDrawable else buttonBGDrawable
         binding.seatPos3Button.background =
-            if (i == 3) buttonSelectedBGDrawable else buttonBGDrawable
+            if (pos == 3) buttonSelectedBGDrawable else buttonBGDrawable
         binding.seatPos4Button.background =
-            if (i == 4) buttonSelectedBGDrawable else buttonBGDrawable
+            if (pos == 4) buttonSelectedBGDrawable else buttonBGDrawable
     }
 
     private fun selectPart(i: Int) {
+        currentPart = i-1
         val buttonBGDrawable =
             ResourcesCompat.getDrawable(resources, R.drawable.button_bg, null)
         val buttonSelectedBGDrawable =
