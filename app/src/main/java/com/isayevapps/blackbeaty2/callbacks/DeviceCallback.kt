@@ -1,4 +1,4 @@
-package com.isayevapps.blackbeaty2
+package com.isayevapps.blackbeaty2.callbacks
 
 interface DeviceCallback {
     fun onFound()

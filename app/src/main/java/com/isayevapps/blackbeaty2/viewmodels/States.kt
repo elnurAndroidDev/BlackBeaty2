@@ -1,4 +1,4 @@
-package com.isayevapps.blackbeaty2
+package com.isayevapps.blackbeaty2.viewmodels
 
 sealed class States {
     object WaitForConnection : States()

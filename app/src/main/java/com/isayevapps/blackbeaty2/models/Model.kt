@@ -1,13 +1,13 @@
-package com.isayevapps.blackbeaty2
+package com.isayevapps.blackbeaty2.models
 
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import android.util.Log
 import androidx.core.content.ContextCompat.getSystemService
-import com.google.gson.Gson
+import com.isayevapps.blackbeaty2.callbacks.DeviceCallback
+import com.isayevapps.blackbeaty2.callbacks.NetworkChangesCallback
 import tej.wifitoolslib.DevicesFinder
 import tej.wifitoolslib.interfaces.OnDeviceFindListener
 import tej.wifitoolslib.models.DeviceItem
@@ -23,24 +23,20 @@ class Model(private val context: Context) {
     fun setDeviceFinder(activityContext: Context, deviceCallback: DeviceCallback) {
         deviceFinder = DevicesFinder(activityContext, object : OnDeviceFindListener {
             override fun onStart() {
+                deviceAddress = ""
             }
 
             override fun onDeviceFound(device: DeviceItem) {
                 thread {
                     try {
-                        //Log.d("MyTag", device.ipAddress)
-                        val a = ItemOperation(11, 0, 0)
-                        val code = a.toCode()
-                        val value = a.getValue()
-                        val message = "c${code}v$value"
+                        val c = Command(11, 0, 0)
+                        val commandString = c.toString()
                         val response =
-                            URL("http://${device.ipAddress}/$message").readText()
-                        Log.d("MyTag", "heyyy")
+                            URL("http://${device.ipAddress}/$commandString").readText()
                         if (response == "200") {
                             deviceAddress = device.ipAddress
                         }
-                    } catch (e: Exception) {
-                        //Log.d("MyTag", e.message.toString())
+                    } catch (_: Exception) {
                     }
                 }
             }
@@ -50,6 +46,12 @@ class Model(private val context: Context) {
                     deviceCallback.onNotFound()
                 }
                 if (deviceAddress != "" && hasWifi()) {
+                    val sharedPref =
+                        context.getSharedPreferences("APP_SHARED_PREF", Context.MODE_PRIVATE)
+                    with(sharedPref.edit()) {
+                        putString("LAST_DEVICE_ADDRESS", deviceAddress)
+                        apply()
+                    }
                     deviceCallback.onFound()
                 }
             }
@@ -90,14 +92,34 @@ class Model(private val context: Context) {
         connectivityManager.requestNetwork(networkRequest, networkCallback)
     }
 
-    fun searchDevice() {
-
-        try {
-            if (!deviceFinder.isRunning) {
-                deviceFinder.setTimeout(5000).start()
+    fun searchDevice(deviceCallback: DeviceCallback) {
+        thread {
+            try {
+                val sharedPref =
+                    context.getSharedPreferences("APP_SHARED_PREF", Context.MODE_PRIVATE)
+                val deviceAddress = sharedPref.getString("LAST_DEVICE_ADDRESS", "")
+                var response = ""
+                if (deviceAddress != "")
+                    response = URL("http://$deviceAddress/hello").readText()
+                if (response == "hi" && hasWifi()) {
+                    deviceCallback.onFound()
+                } else {
+                    if (!deviceFinder.isRunning) {
+                        deviceFinder.setTimeout(5000).start()
+                    }
+                }
+            } catch (_: Exception) {
             }
-        } catch (_: Exception) {
         }
+    }
 
+    fun sendCommand(command: Command) {
+        thread {
+            try {
+                val commandString = command.toString()
+                URL("http://$deviceAddress/$commandString").readText()
+            } catch (_: Exception) {
+            }
+        }
     }
 }

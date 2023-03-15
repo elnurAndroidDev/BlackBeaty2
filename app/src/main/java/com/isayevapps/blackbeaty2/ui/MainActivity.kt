@@ -1,55 +1,51 @@
-package com.isayevapps.blackbeaty2
+package com.isayevapps.blackbeaty2.ui
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatButton
+import com.isayevapps.blackbeaty2.App
+import com.isayevapps.blackbeaty2.R
+import com.isayevapps.blackbeaty2.databinding.ActivityMainBinding
+import com.isayevapps.blackbeaty2.viewmodels.States
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var lightAlertDialog: AlertDialog
     private lateinit var rgbAlertDialog: AlertDialog
-    private lateinit var connectionStatusLayout: FrameLayout
-    private lateinit var connectionStatusTextView: TextView
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         prepareLightDialog()
         prepareRGBDialog()
 
-        connectionStatusLayout = findViewById(R.id.connectionStatusLayout)
-        connectionStatusTextView = findViewById(R.id.connectionStatus)
-
         val viewModel = (application as App).viewModel
         viewModel.init(this, savedInstanceState == null)
         viewModel.states.observe(this) {
-            showOrHideStatusLayout(it)
+            showOrHideStatus(it)
             if (it is States.Connection) {
                 viewModel.searchDevice()
             }
         }
 
-        val lightTextView = findViewById<TextView>(R.id.lightTextView)
-        val rgbTextView = findViewById<TextView>(R.id.rgbTextView)
-        val seatButton = findViewById<AppCompatButton>(R.id.seatButton)
-
-        seatButton.setOnClickListener {
+        binding.seatButton.setOnClickListener {
             startActivity(Intent(this, SeatActivity::class.java))
         }
 
-        lightTextView.setOnClickListener {
+        binding.lightTextView.setOnClickListener {
             lightAlertDialog.show()
         }
 
-        rgbTextView.setOnClickListener {
+        binding.rgbTextView.setOnClickListener {
             rgbAlertDialog.show()
         }
+
+        binding.lightOffButton
 
     }
 
@@ -73,22 +69,22 @@ class MainActivity : AppCompatActivity() {
         rgbAlertDialog = builder.create()
     }
 
-    private fun showOrHideStatusLayout(state: States) {
+    private fun showOrHideStatus(state: States) {
         if (state is States.WaitForConnection) {
-            if (connectionStatusLayout.visibility != View.VISIBLE)
-                connectionStatusLayout.visibility = View.VISIBLE
-            if (connectionStatusTextView.text.toString() != "Ожидание подключения...")
-                connectionStatusTextView.text = "Ожидание подключения..."
+            if (binding.connectionStatus.visibility != View.VISIBLE)
+                binding.connectionStatus.visibility = View.VISIBLE
+            if (binding.connectionStatus.text.toString() != "Ожидание подключения...")
+                binding.connectionStatus.text = "Ожидание подключения..."
         }
         if (state is States.Connection) {
-            if (connectionStatusLayout.visibility != View.VISIBLE)
-                connectionStatusLayout.visibility = View.VISIBLE
-            if (connectionStatusTextView.text.toString() != "Поиск устройства...")
-                connectionStatusTextView.text = "Поиск устройства..."
+            if (binding.connectionStatus.visibility != View.VISIBLE)
+                binding.connectionStatus.visibility = View.VISIBLE
+            if (binding.connectionStatus.text.toString() != "Поиск устройства...")
+                binding.connectionStatus.text = "Поиск устройства..."
         }
         if (state is States.Connected) {
-            if (connectionStatusLayout.visibility != View.GONE)
-                connectionStatusLayout.visibility = View.GONE
+            if (binding.connectionStatus.visibility != View.GONE)
+                binding.connectionStatus.visibility = View.GONE
         }
     }
 }

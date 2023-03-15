@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_img"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/tvCard"
@@ -398,28 +398,23 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tint="#CACACA" />
 
-    <FrameLayout
-        android:id="@+id/connectionStatusLayout"
+
+    <TextView
+        android:id="@+id/connectionStatus"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:background="#EB272727"
         android:elevation="4dp"
-        android:visibility="gone"
+        android:text="Ожидание подключения..."
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:visibility="visible"
+        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/connectionStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Ожидание подключения..."
-            android:textSize="24sp"
-            android:textColor="@color/white"/>
-
-    </FrameLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

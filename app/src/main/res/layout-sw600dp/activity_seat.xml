@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_img"
-    tools:context=".SeatActivity">
+    tools:context=".ui.SeatActivity">
 
     <ImageView
         android:id="@+id/imageView3"
@@ -233,30 +233,22 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/legButton" />
 
-    <FrameLayout
-        android:id="@+id/connectionStatusLayout"
+    <TextView
+        android:id="@+id/connectionStatus"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:background="#EB272727"
         android:elevation="4dp"
+        android:text="Ожидание подключения..."
+        android:textColor="@color/white"
+        android:textSize="24sp"
         android:visibility="visible"
+        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-
-        <TextView
-            android:id="@+id/connectionStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Ожидание подключения..."
-            android:textColor="@color/white"
-            android:textSize="32sp" />
-
-    </FrameLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
