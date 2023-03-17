@@ -183,54 +183,54 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
-    <androidx.appcompat.widget.AppCompatButton
+    <ImageView
         android:id="@+id/headButton"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_marginBottom="80dp"
         android:background="@drawable/button_selected_bg"
-        android:text="Подголовник"
-        android:textAllCaps="true"
-        android:textColor="@color/white"
+        android:src="@drawable/seat_head"
+        android:padding="12dp"
+        app:tint="#fff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/backButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <ImageView
         android:id="@+id/backButton"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:background="@drawable/button_bg"
-        android:text="Спинка"
-        android:textAllCaps="true"
-        android:textColor="@color/white"
+        android:src="@drawable/seat_back"
+        android:padding="12dp"
+        app:tint="#fff"
         app:layout_constraintBottom_toBottomOf="@+id/headButton"
         app:layout_constraintEnd_toStartOf="@+id/legButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/headButton" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <ImageView
         android:id="@+id/legButton"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:background="@drawable/button_bg"
-        android:text="Подножник"
-        android:textAllCaps="true"
-        android:textColor="@color/white"
+        android:src="@drawable/seat_leg"
+        android:padding="12dp"
+        app:tint="#fff"
         app:layout_constraintBottom_toBottomOf="@+id/backButton"
         app:layout_constraintEnd_toStartOf="@+id/moveButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/backButton" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <ImageView
         android:id="@+id/moveButton"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:background="@drawable/button_bg"
-        android:text="Вперед/назад"
-        android:textAllCaps="true"
-        android:textColor="@color/white"
+        android:src="@drawable/seat_rails"
+        android:padding="12dp"
+        app:tint="#fff"
         app:layout_constraintBottom_toBottomOf="@+id/headButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -246,7 +246,7 @@
         android:text="Ожидание подключения..."
         android:textColor="@color/white"
         android:textSize="24sp"
-        android:visibility="visible"
+        android:visibility="gone"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

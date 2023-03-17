@@ -9,7 +9,6 @@ import android.util.Log
 import androidx.core.content.ContextCompat.getSystemService
 import com.isayevapps.blackbeaty2.callbacks.DeviceCallback
 import com.isayevapps.blackbeaty2.callbacks.NetworkChangesCallback
-import okhttp3.OkHttp
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import tej.wifitoolslib.DevicesFinder
