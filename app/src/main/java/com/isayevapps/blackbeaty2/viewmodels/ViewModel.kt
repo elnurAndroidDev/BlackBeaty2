@@ -65,7 +65,7 @@ class ViewModel(private val model: Model) {
         model.sendCommand(Command(Command.RGB_ID, 1, value))
     }
 
-    fun setRGBColor(value: Int) {
+    fun sendRGBColor(value: Int) {
         model.sendCommand(Command(Command.RGB_ID, 2, value))
     }
 
@@ -81,13 +81,12 @@ class ViewModel(private val model: Model) {
         model.sendCommand(Command(Command.BAR_ID, 0, value))
     }
 
-    fun setSeatCommand(id: Int, op: Int, value: Int) {
-        model.setSeatCommand(id, op, value)
+    fun setLongCommand(id: Int, op: Int, value: Int) {
+        model.setLongCommand(id, op, value)
     }
 
-    fun stopSendingSeatCommand() {
-        model.stopSendingSeatCommand()
+    fun stopSendingLongCommand() {
+        model.stopSendingLongCommand()
     }
-
 
 }

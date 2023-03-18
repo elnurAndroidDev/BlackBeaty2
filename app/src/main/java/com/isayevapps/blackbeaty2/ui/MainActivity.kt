@@ -10,12 +10,15 @@ import com.isayevapps.blackbeaty2.App
 import com.isayevapps.blackbeaty2.R
 import com.isayevapps.blackbeaty2.databinding.ActivityMainBinding
 import com.isayevapps.blackbeaty2.viewmodels.States
+import com.isayevapps.blackbeaty2.viewmodels.ViewModel
+import top.defaults.colorpicker.ColorPickerView
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var lightAlertDialog: AlertDialog
     private lateinit var rgbAlertDialog: AlertDialog
     private lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel: ViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         prepareLightDialog()
         prepareRGBDialog()
 
-        val viewModel = (application as App).viewModel
+        viewModel = (application as App).viewModel
         viewModel.init(this, savedInstanceState == null)
         viewModel.states.observe(this) {
             showOrHideStatus(it)
@@ -33,6 +36,10 @@ class MainActivity : AppCompatActivity() {
                 Log.d("MyTag", "connection...")
                 viewModel.searchDevice()
             }
+        }
+
+        binding.curtainButton.setOnClickListener{
+            startActivity(Intent(this, CurtainActivity::class.java))
         }
 
         binding.seatButton.setOnClickListener {
@@ -46,8 +53,6 @@ class MainActivity : AppCompatActivity() {
         binding.rgbTextView.setOnClickListener {
             rgbAlertDialog.show()
         }
-
-        binding.lightOffButton
 
     }
 
@@ -69,6 +74,13 @@ class MainActivity : AppCompatActivity() {
         builder.setView(dialogLayout)
         builder.setPositiveButton("OK") { dialogInterface, _ -> dialogInterface.dismiss() }
         rgbAlertDialog = builder.create()
+
+        val colorPicker = dialogLayout.findViewById<ColorPickerView>(R.id.colorPicker)
+        colorPicker.subscribe { color, _, _ ->
+            val hexColor = String.format("#%06X", 0xFFFFFF and color)
+            val intColor = hexColor.substring(1).toInt(radix=16)
+            viewModel.sendRGBColor(intColor)
+        }
     }
 
     private fun showOrHideStatus(state: States) {

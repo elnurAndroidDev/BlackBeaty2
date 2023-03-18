@@ -161,7 +161,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/leftCurtainsCard"
+        android:id="@+id/curtainsCard"
         android:layout_width="240dp"
         android:layout_height="240dp"
         android:backgroundTint="#99272727"
@@ -177,7 +177,7 @@
             android:layout_height="match_parent">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/leftCurtain1Button"
+                android:id="@+id/curtainButton"
                 android:layout_width="208dp"
                 android:layout_height="208dp"
                 android:background="@drawable/button_bg"
@@ -203,7 +203,7 @@
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/leftCurtainsCard"
+        app:layout_constraintEnd_toStartOf="@+id/curtainsCard"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lightCard">
@@ -220,7 +220,6 @@
                 android:background="@drawable/button_bg"
                 android:fontFamily="@font/main_font"
                 android:gravity="center"
-                android:padding="16dp"
                 android:text="Сейф"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
@@ -263,7 +262,7 @@
         app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/leftCurtainsCard"
+        app:layout_constraintStart_toEndOf="@+id/curtainsCard"
         app:layout_constraintTop_toTopOf="@+id/downDrawerCard">
 
         <androidx.constraintlayout.widget.ConstraintLayout

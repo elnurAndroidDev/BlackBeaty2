@@ -23,18 +23,17 @@ class Model(private val context: Context) {
 
     private lateinit var deviceFinder: DevicesFinder
     private var deviceAddress = ""
-    private var flagSeat = false
-    private var seatID = 0
-    private var seatOP = 0
-    private var seatVal = 0
-
+    private var flag = false
+    private var ID = 0
+    private var OP = 0
+    private var VALUE = 0
 
     private val client =
-        OkHttpClient.Builder().readTimeout(1, TimeUnit.SECONDS).connectTimeout(1, TimeUnit.SECONDS)
+        OkHttpClient.Builder().readTimeout(500, TimeUnit.MILLISECONDS).connectTimeout(500, TimeUnit.MILLISECONDS)
             .build()
 
     init {
-        sendSeatCommand()
+        sendLongCommand()
     }
 
     fun setDeviceFinder(activityContext: Context, deviceCallback: DeviceCallback) {
@@ -46,14 +45,20 @@ class Model(private val context: Context) {
 
             override fun onDeviceFound(device: DeviceItem) {
                 thread {
+                    val (commandString, expectedResponse) = checkingRequest()
                     try {
-                        val (commandString, expectedResponse) = checkingRequest()
-                        //Log.d("MyTag", "$commandString $expectedResponse")
-                        val response = URL("http://${device.ipAddress}/$commandString").readText()
-                        if (response == expectedResponse.toString()) {
-                            deviceAddress = device.ipAddress
+                        val request = Request.Builder()
+                            .url("http://${device.ipAddress}/$commandString")
+                            .build()
+                        client.newCall(request).execute().use { response ->
+                            if (response.isSuccessful) {
+                                if (response.body!!.string() == expectedResponse && hasWifi()) {
+                                    deviceAddress = device.ipAddress
+                                    saveIPToMemory(deviceAddress)
+                                    deviceCallback.onFound()
+                                }
+                            }
                         }
-                        //Log.d("MyTag", response)
                     } catch (_: Exception) {
                     }
                 }
@@ -62,15 +67,6 @@ class Model(private val context: Context) {
             override fun onComplete(deviceItems: List<DeviceItem>) {
                 if (deviceAddress == "" && hasWifi()) {
                     deviceCallback.onNotFound()
-                }
-                if (deviceAddress != "" && hasWifi()) {
-                    val sharedPref =
-                        context.getSharedPreferences("APP_SHARED_PREF", Context.MODE_PRIVATE)
-                    with(sharedPref.edit()) {
-                        putString("LAST_DEVICE_ADDRESS", deviceAddress)
-                        apply()
-                    }
-                    deviceCallback.onFound()
                 }
             }
 
@@ -112,23 +108,23 @@ class Model(private val context: Context) {
 
     fun searchDevice(deviceCallback: DeviceCallback) {
         thread {
-            val sharedPref =
-                context.getSharedPreferences("APP_SHARED_PREF", Context.MODE_PRIVATE)
-            val _deviceAddress = sharedPref.getString("LAST_DEVICE_ADDRESS", "")
             val (commandString, expectedResponse) = checkingRequest()
-            val request = Request.Builder()
-                .url("http://$_deviceAddress/$commandString")
-                .build()
+            val ipAddressFromMemory = getIPFromMemory()
             try {
-                client.newCall(request).execute().use { response ->
-                    if (response.isSuccessful) {
-                        if (response.body!!.string() == expectedResponse.toString()) {
-                            deviceAddress = _deviceAddress!!
-                            deviceCallback.onFound()
+                if(!deviceFinder.isRunning) {
+                    val request = Request.Builder()
+                        .url("http://$ipAddressFromMemory/$commandString")
+                        .build()
+                    client.newCall(request).execute().use { response ->
+                        if (response.isSuccessful) {
+                            if (response.body!!.string() == expectedResponse) {
+                                deviceAddress = ipAddressFromMemory
+                                deviceCallback.onFound()
+                            }
                         }
                     }
                 }
-            } catch (_: Exception) {
+            } catch (e: Exception) {
                 if (!deviceFinder.isRunning) {
                     deviceFinder.setTimeout(5000).start()
                 }
@@ -136,23 +132,13 @@ class Model(private val context: Context) {
         }
     }
 
-    fun sendCommand(command: Command) {
-        thread {
-            try {
-                val commandString = command.toString()
-                URL("http://$deviceAddress/$commandString").readText()
-            } catch (_: Exception) {
-            }
-        }
-    }
-
-    fun checkingRequest(): Pair<String, Int> {
+    fun checkingRequest(): Pair<String, String> {
         val randomID = (20..100).random()
         val randomValue = (1..10000).random()
         val randomOP = (0..255).random()
         val c = Command(randomID, randomOP, randomValue)
         val expectedResponse =
-            (((randomID * 255) + randomOP + 9852) * 1.658 + randomValue).toInt()
+            (((randomID * 255) + randomOP + 9852) * 1.658 + randomValue).toInt().toString()
         val commandString = c.toString()
         return Pair(commandString, expectedResponse)
     }
@@ -160,63 +146,100 @@ class Model(private val context: Context) {
     fun startIsAliveChecking(deviceCallback: DeviceCallback) {
         thread {
             while (true) {
-                Log.d("MyTag", "isAlive")
-                val (commandString, expectedResponse) = checkingRequest()
+                if (!flag) {
+                    Log.d("MyTag", "isAlive")
+                    val (commandString, expectedResponse) = checkingRequest()
+                    try {
+                        val request = Request.Builder()
+                            .url("http://$deviceAddress/$commandString")
+                            .build()
+                        client.newCall(request).execute().use { response ->
+                            if (response.isSuccessful) {
+                                if (response.body!!.string() == expectedResponse) {
+                                    Log.d("MyTag", "Alive")
+                                }
+                            }
+                        }
+                    } catch (e: Exception) {
+                        Log.d("MyTag", "not alive ${e.message.toString()}")
+                        if (hasWifi())
+                            deviceCallback.onNotFound()
+                        return@thread
+                    }
+                    Thread.sleep(5000)
+                }
+            }
+        }
+    }
+
+    fun sendCommand(command: Command) {
+        thread {
+            val commandString = command.toString()
+            try {
                 val request = Request.Builder()
                     .url("http://$deviceAddress/$commandString")
                     .build()
-                try {
-                    client.newCall(request).execute().use { response ->
-                        if (response.isSuccessful) {
-                            if (response.body!!.string() == expectedResponse.toString()) {
-                                Log.d("MyTag", "Alive")
-                            }
-                        }
+                client.newCall(request).execute().use { response ->
+                    if (response.isSuccessful) {
+                        Log.d("MyTag", "sent command $commandString")
                     }
-                } catch (_: Exception) {
-                    Log.d("MyTag", "not alive3")
-                    if (hasWifi())
-                        deviceCallback.onNotFound()
-                    return@thread
                 }
-                Thread.sleep(5000)
+            } catch (_: Exception) {
             }
         }
     }
 
-    private fun sendSeatCommand() {
+    fun setLongCommand(id: Int, op: Int, value: Int) {
+        ID = id
+        OP = op
+        VALUE = value
+        flag = true
+    }
+
+    private fun sendLongCommand() {
         thread {
             while (true) {
-                if (flagSeat) {
+                if (flag) {
                     Log.d("MyTag", "sending")
-                    val c = Command(seatID, seatOP, seatVal)
+                    val c = Command(ID, OP, VALUE)
                     val commandString = c.toString()
-                    val request = Request.Builder()
-                        .url("http://$deviceAddress/$commandString")
-                        .build()
                     try {
+                        val request = Request.Builder()
+                            .url("http://$deviceAddress/$commandString")
+                            .build()
                         client.newCall(request).execute().use { response ->
                             if (response.isSuccessful) {
-                                Log.d("MyTag", "sent seat command")
+                                Log.d("MyTag", "sent command")
                             }
                         }
                     } catch (_: Exception) {
-                        Log.d("MyTag", "not sent seat commannd")
+                        Log.d("MyTag", "not sent commannd")
                     }
                 }
-                Thread.sleep(500)
             }
         }
     }
 
-    fun stopSendingSeatCommand() {
-        flagSeat = false
+    fun stopSendingLongCommand() {
+        flag = false
     }
 
-    fun setSeatCommand(id: Int, op: Int, value: Int) {
-        seatID = id
-        seatOP = op
-        seatVal = value
-        flagSeat = true
+    private fun saveIPToMemory(ipAddress: String) {
+        val sharedPref =
+            context.getSharedPreferences(
+                "APP_SHARED_PREF",
+                Context.MODE_PRIVATE
+            )
+        with(sharedPref.edit()) {
+            putString("LAST_DEVICE_ADDRESS", ipAddress)
+            apply()
+        }
+    }
+
+    private fun getIPFromMemory(): String {
+        val sharedPref =
+            context.getSharedPreferences("APP_SHARED_PREF", Context.MODE_PRIVATE)
+        val ipAddress = sharedPref.getString("LAST_DEVICE_ADDRESS", "")
+        return ipAddress ?: ""
     }
 }

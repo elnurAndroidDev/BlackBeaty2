@@ -79,40 +79,40 @@ class SeatActivity : AppCompatActivity() {
 
         binding.seatPartUpButton.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                viewModel.setSeatCommand(currentPos, currentPart, 1)
+                viewModel.setLongCommand(currentPos, currentPart, 1)
             }
             if (event.action == MotionEvent.ACTION_UP) {
-                viewModel.stopSendingSeatCommand()
+                viewModel.stopSendingLongCommand()
             }
             true
         }
 
         binding.seatPartDownButton.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                viewModel.setSeatCommand(currentPos, currentPart, 0)
+                viewModel.setLongCommand(currentPos, currentPart, 0)
             }
             if (event.action == MotionEvent.ACTION_UP) {
-                viewModel.stopSendingSeatCommand()
+                viewModel.stopSendingLongCommand()
             }
             true
         }
 
         binding.seatPartLeftButton.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                viewModel.setSeatCommand(currentPos, currentPart, 0)
+                viewModel.setLongCommand(currentPos, currentPart, 0)
             }
             if (event.action == MotionEvent.ACTION_UP) {
-                viewModel.stopSendingSeatCommand()
+                viewModel.stopSendingLongCommand()
             }
             true
         }
 
         binding.seatPartRightButton.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                viewModel.setSeatCommand(currentPos, currentPart, 1)
+                viewModel.setLongCommand(currentPos, currentPart, 1)
             }
             if (event.action == MotionEvent.ACTION_UP) {
-                viewModel.stopSendingSeatCommand()
+                viewModel.stopSendingLongCommand()
             }
             true
         }
