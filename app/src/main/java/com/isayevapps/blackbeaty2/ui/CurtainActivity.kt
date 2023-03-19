@@ -31,7 +31,7 @@ class CurtainActivity : AppCompatActivity() {
 
         binding.leftCurtain1CloseButton.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                viewModel.setLongCommand(4, 0, 1)
+                viewModel.startLongCommand(4, 0, 1)
             }
             if (event.action == MotionEvent.ACTION_UP) {
                 viewModel.stopSendingLongCommand()
@@ -41,7 +41,7 @@ class CurtainActivity : AppCompatActivity() {
 
         binding.leftCurtain1OpenButton.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                viewModel.setLongCommand(4, 0, 0)
+                viewModel.startLongCommand(4, 0, 0)
             }
             if (event.action == MotionEvent.ACTION_UP) {
                 viewModel.stopSendingLongCommand()
@@ -51,7 +51,7 @@ class CurtainActivity : AppCompatActivity() {
 
         binding.leftCurtain2CloseButton.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                viewModel.setLongCommand(5, 0, 1)
+                viewModel.startLongCommand(5, 0, 1)
             }
             if (event.action == MotionEvent.ACTION_UP) {
                 viewModel.stopSendingLongCommand()
@@ -61,7 +61,7 @@ class CurtainActivity : AppCompatActivity() {
 
         binding.leftCurtain2OpenButton.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                viewModel.setLongCommand(5, 0, 0)
+                viewModel.startLongCommand(5, 0, 0)
             }
             if (event.action == MotionEvent.ACTION_UP) {
                 viewModel.stopSendingLongCommand()
@@ -71,7 +71,7 @@ class CurtainActivity : AppCompatActivity() {
 
         binding.rightCurtain1CloseButton.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                viewModel.setLongCommand(6, 0, 1)
+                viewModel.startLongCommand(6, 0, 1)
             }
             if (event.action == MotionEvent.ACTION_UP) {
                 viewModel.stopSendingLongCommand()
@@ -81,7 +81,7 @@ class CurtainActivity : AppCompatActivity() {
 
         binding.rightCurtain1OpenButton.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                viewModel.setLongCommand(6, 0, 0)
+                viewModel.startLongCommand(6, 0, 0)
             }
             if (event.action == MotionEvent.ACTION_UP) {
                 viewModel.stopSendingLongCommand()
@@ -91,7 +91,7 @@ class CurtainActivity : AppCompatActivity() {
 
         binding.rightCurtain2CloseButton.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                viewModel.setLongCommand(7, 0, 1)
+                viewModel.startLongCommand(7, 0, 1)
             }
             if (event.action == MotionEvent.ACTION_UP) {
                 viewModel.stopSendingLongCommand()
@@ -101,7 +101,7 @@ class CurtainActivity : AppCompatActivity() {
 
         binding.rightCurtain2OpenButton.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                viewModel.setLongCommand(7, 0, 0)
+                viewModel.startLongCommand(7, 0, 0)
             }
             if (event.action == MotionEvent.ACTION_UP) {
                 viewModel.stopSendingLongCommand()

@@ -8,10 +8,15 @@ data class Command(
     override fun toString() = "(\$code\$:${id * 255 + op},\$value\$:$value)"
 
     companion object {
-        fun curtainId(position: Int) = position + 3
         const val BAR_ID = 8
         const val TV_ID = 10
         const val LIGHT_ID = 11
         const val RGB_ID = 12
+        const val ON = 1
+        const val OFF = 0
+        const val UP = 1
+        const val DOWN = 0
+        const val RIGHT = 1
+        const val LEFT = 0
     }
 }

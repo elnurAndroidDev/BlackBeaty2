@@ -14,7 +14,6 @@ import okhttp3.Request
 import tej.wifitoolslib.DevicesFinder
 import tej.wifitoolslib.interfaces.OnDeviceFindListener
 import tej.wifitoolslib.models.DeviceItem
-import java.net.URL
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
 
@@ -33,7 +32,7 @@ class Model(private val context: Context) {
             .build()
 
     init {
-        sendLongCommand()
+        sendingLongCommand()
     }
 
     fun setDeviceFinder(activityContext: Context, deviceCallback: DeviceCallback) {
@@ -189,14 +188,14 @@ class Model(private val context: Context) {
         }
     }
 
-    fun setLongCommand(id: Int, op: Int, value: Int) {
+    fun startLongCommand(id: Int, op: Int, value: Int) {
         ID = id
         OP = op
         VALUE = value
         flag = true
     }
 
-    private fun sendLongCommand() {
+    private fun sendingLongCommand() {
         thread {
             while (true) {
                 if (flag) {

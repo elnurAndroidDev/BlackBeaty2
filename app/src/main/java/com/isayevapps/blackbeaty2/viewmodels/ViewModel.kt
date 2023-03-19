@@ -13,6 +13,18 @@ class ViewModel(private val model: Model) {
     private val _states = MutableLiveData<States>()
     val states = _states as LiveData<States>
 
+    private var seatPos = 1
+    private var seatPart = 1
+
+    fun getSeatPos() = seatPos
+    fun setSeatPos(pos: Int) {
+        seatPos = pos
+    }
+    fun getSeatPart() = seatPart
+    fun setSeatPart(part: Int) {
+        seatPart = part
+    }
+
     private val networkChangesCallback = object : NetworkChangesCallback {
         override fun onAvailable() {
             _states.postValue(States.Connection)
@@ -57,11 +69,11 @@ class ViewModel(private val model: Model) {
         model.sendCommand(Command(Command.LIGHT_ID, 0, 0))
     }
 
-    fun setLightBrightness(value: Int) {
+    fun sendLightBrightness(value: Int) {
         model.sendCommand(Command(Command.LIGHT_ID, 1, value))
     }
 
-    fun setRGBBrightness(value: Int) {
+    fun sendRGBBrightness(value: Int) {
         model.sendCommand(Command(Command.RGB_ID, 1, value))
     }
 
@@ -73,16 +85,16 @@ class ViewModel(private val model: Model) {
         model.sendCommand(Command(Command.RGB_ID, 0, 0))
     }
 
-    fun onOffCurtain(pos: Int) {
-        model.sendCommand(Command(Command.curtainId(pos), 0, 0))
-    }
-
     fun openCloseBar(value: Int) {
         model.sendCommand(Command(Command.BAR_ID, 0, value))
     }
 
-    fun setLongCommand(id: Int, op: Int, value: Int) {
-        model.setLongCommand(id, op, value)
+    fun sendCurtainCommand(id: Int, value: Int) {
+        model.startLongCommand(id, 0, value)
+    }
+
+    fun sendSeatCommand(value: Int) {
+        model.startLongCommand(seatPos-1, seatPart-1, value)
     }
 
     fun stopSendingLongCommand() {

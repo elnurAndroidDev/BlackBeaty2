@@ -2,9 +2,7 @@ package com.isayevapps.blackbeaty2.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.text.method.MovementMethod
 import android.util.Log
-import android.view.ActionMode
 import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -12,13 +10,14 @@ import androidx.core.content.res.ResourcesCompat
 import com.isayevapps.blackbeaty2.App
 import com.isayevapps.blackbeaty2.R
 import com.isayevapps.blackbeaty2.databinding.ActivitySeatBinding
+import com.isayevapps.blackbeaty2.models.Command
 import com.isayevapps.blackbeaty2.viewmodels.States
+import com.isayevapps.blackbeaty2.viewmodels.ViewModel
 
 class SeatActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySeatBinding
-    private var currentPos = 0
-    private var currentPart = 0
+    private lateinit var viewModel: ViewModel
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +25,7 @@ class SeatActivity : AppCompatActivity() {
         binding = ActivitySeatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val viewModel = (application as App).viewModel
+        viewModel = (application as App).viewModel
         viewModel.states.observe(this) {
             showOrHideStatus(it)
             if (it is States.Connection) {
@@ -34,6 +33,8 @@ class SeatActivity : AppCompatActivity() {
                 viewModel.searchDevice()
             }
         }
+        selectPos(viewModel.getSeatPos())
+        selectPart(viewModel.getSeatPart())
 
         binding.seatPos1Button.setOnClickListener {
             selectPos(1)
@@ -50,36 +51,21 @@ class SeatActivity : AppCompatActivity() {
 
         binding.headButton.setOnClickListener {
             selectPart(1)
-            binding.seatPartUpButton.visibility = View.VISIBLE
-            binding.seatPartDownButton.visibility = View.VISIBLE
-            binding.seatPartLeftButton.visibility = View.GONE
-            binding.seatPartRightButton.visibility = View.GONE
+
         }
         binding.backButton.setOnClickListener {
             selectPart(2)
-            binding.seatPartUpButton.visibility = View.GONE
-            binding.seatPartDownButton.visibility = View.GONE
-            binding.seatPartLeftButton.visibility = View.VISIBLE
-            binding.seatPartRightButton.visibility = View.VISIBLE
         }
         binding.legButton.setOnClickListener {
             selectPart(3)
-            binding.seatPartUpButton.visibility = View.VISIBLE
-            binding.seatPartDownButton.visibility = View.VISIBLE
-            binding.seatPartLeftButton.visibility = View.GONE
-            binding.seatPartRightButton.visibility = View.GONE
         }
         binding.moveButton.setOnClickListener {
             selectPart(4)
-            binding.seatPartUpButton.visibility = View.GONE
-            binding.seatPartDownButton.visibility = View.GONE
-            binding.seatPartLeftButton.visibility = View.VISIBLE
-            binding.seatPartRightButton.visibility = View.VISIBLE
         }
 
         binding.seatPartUpButton.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                viewModel.setLongCommand(currentPos, currentPart, 1)
+                viewModel.sendSeatCommand(Command.UP)
             }
             if (event.action == MotionEvent.ACTION_UP) {
                 viewModel.stopSendingLongCommand()
@@ -89,7 +75,7 @@ class SeatActivity : AppCompatActivity() {
 
         binding.seatPartDownButton.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                viewModel.setLongCommand(currentPos, currentPart, 0)
+                viewModel.sendSeatCommand(Command.DOWN)
             }
             if (event.action == MotionEvent.ACTION_UP) {
                 viewModel.stopSendingLongCommand()
@@ -99,7 +85,7 @@ class SeatActivity : AppCompatActivity() {
 
         binding.seatPartLeftButton.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                viewModel.setLongCommand(currentPos, currentPart, 0)
+                viewModel.sendSeatCommand(Command.LEFT)
             }
             if (event.action == MotionEvent.ACTION_UP) {
                 viewModel.stopSendingLongCommand()
@@ -109,7 +95,7 @@ class SeatActivity : AppCompatActivity() {
 
         binding.seatPartRightButton.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                viewModel.setLongCommand(currentPos, currentPart, 1)
+                viewModel.sendSeatCommand(Command.RIGHT)
             }
             if (event.action == MotionEvent.ACTION_UP) {
                 viewModel.stopSendingLongCommand()
@@ -119,7 +105,7 @@ class SeatActivity : AppCompatActivity() {
     }
 
     private fun selectPos(pos: Int) {
-        currentPos = pos-1
+        viewModel.setSeatPos(pos)
         val buttonBGDrawable =
             ResourcesCompat.getDrawable(resources, R.drawable.button_bg, null)
         val buttonSelectedBGDrawable =
@@ -135,7 +121,7 @@ class SeatActivity : AppCompatActivity() {
     }
 
     private fun selectPart(i: Int) {
-        currentPart = i-1
+        viewModel.setSeatPart(i)
         val buttonBGDrawable =
             ResourcesCompat.getDrawable(resources, R.drawable.button_bg, null)
         val buttonSelectedBGDrawable =
@@ -144,6 +130,33 @@ class SeatActivity : AppCompatActivity() {
         binding.backButton.background = if (i == 2) buttonSelectedBGDrawable else buttonBGDrawable
         binding.legButton.background = if (i == 3) buttonSelectedBGDrawable else buttonBGDrawable
         binding.moveButton.background = if (i == 4) buttonSelectedBGDrawable else buttonBGDrawable
+
+        if (i == 1) {
+            binding.seatPartUpButton.visibility = View.VISIBLE
+            binding.seatPartDownButton.visibility = View.VISIBLE
+            binding.seatPartLeftButton.visibility = View.GONE
+            binding.seatPartRightButton.visibility = View.GONE
+        }
+
+        if (i == 2) {
+            binding.seatPartUpButton.visibility = View.GONE
+            binding.seatPartDownButton.visibility = View.GONE
+            binding.seatPartLeftButton.visibility = View.VISIBLE
+            binding.seatPartRightButton.visibility = View.VISIBLE
+        }
+        if (i == 3) {
+            binding.seatPartUpButton.visibility = View.VISIBLE
+            binding.seatPartDownButton.visibility = View.VISIBLE
+            binding.seatPartLeftButton.visibility = View.GONE
+            binding.seatPartRightButton.visibility = View.GONE
+        }
+
+        if (i == 4) {
+            binding.seatPartUpButton.visibility = View.GONE
+            binding.seatPartDownButton.visibility = View.GONE
+            binding.seatPartLeftButton.visibility = View.VISIBLE
+            binding.seatPartRightButton.visibility = View.VISIBLE
+        }
     }
 
     private fun showOrHideStatus(state: States) {
