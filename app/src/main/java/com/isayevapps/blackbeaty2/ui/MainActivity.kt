@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         prepareLightDialog()
         prepareRGBDialog()
 
-        viewModel = (application as App).viewModel
+        /*viewModel = (application as App).viewModel
         viewModel.init(this, savedInstanceState == null)
         viewModel.states.observe(this) {
             showOrHideStatus(it)
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d("MyTag", "connection...")
                 viewModel.searchDevice()
             }
-        }
+        }*/
 
         binding.curtainButton.setOnClickListener{
             startActivity(Intent(this, CurtainActivity::class.java))
@@ -59,27 +59,27 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.rgbOffButton.setOnClickListener {
-            viewModel.onOffRGB()
+            //viewModel.onOffRGB()
         }
 
         binding.lightOffButton.setOnClickListener {
-            viewModel.onOffLight()
+            //viewModel.onOffLight()
         }
 
         binding.downDrawerCloseButton.setOnClickListener {
-            viewModel.openCloseBar(Command.CLOSE)
+            //viewModel.openCloseBar(Command.CLOSE)
         }
 
         binding.downDrawerOpenButton.setOnClickListener {
-            viewModel.openCloseBar(Command.OPEN)
+            //viewModel.openCloseBar(Command.OPEN)
         }
 
         binding.tvDownButton.setOnClickListener {
-            viewModel.upDownTV(Command.DOWN)
+            //viewModel.upDownTV(Command.DOWN)
         }
 
         binding.tvUpButton.setOnClickListener {
-            viewModel.upDownTV(Command.UP)
+            //viewModel.upDownTV(Command.UP)
         }
 
     }
@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity() {
         val lightBrightness = dialogLayout.findViewById<SeekBar>(R.id.lightSeekBar)
         lightBrightness.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             override fun onProgressChanged(sb: SeekBar?, progress: Int, fromUser: Boolean) {
-                viewModel.sendLightBrightness(progress)
+                //viewModel.sendLightBrightness(progress)
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity() {
         val colorPicker = dialogLayout.findViewById<ColorPickerView>(R.id.colorPicker)
         colorPicker.subscribe { color, _, _ ->
             val hexColor = String.format("#%06X", 0xFFFFFF and color)
-            viewModel.sendRGBColor(hexColorToInt(hexColor))
+            //viewModel.sendRGBColor(hexColorToInt(hexColor))
         }
 
         val redCircle = dialogLayout.findViewById<ImageView>(R.id.redCircle)
@@ -128,19 +128,19 @@ class MainActivity : AppCompatActivity() {
         val greenCircle = dialogLayout.findViewById<ImageView>(R.id.greenCircle)
 
         redCircle.setOnClickListener {
-            viewModel.sendRGBColor(hexColorToInt("#FF0000"))
+            //viewModel.sendRGBColor(hexColorToInt("#FF0000"))
         }
         violetCircle.setOnClickListener {
-            viewModel.sendRGBColor(hexColorToInt("#673AB7"))
+            //viewModel.sendRGBColor(hexColorToInt("#673AB7"))
         }
         yellowCircle.setOnClickListener {
-            viewModel.sendRGBColor(hexColorToInt("#FFEB3B"))
+            //viewModel.sendRGBColor(hexColorToInt("#FFEB3B"))
         }
         blueCircle.setOnClickListener {
-            viewModel.sendRGBColor(hexColorToInt("#2196F3"))
+            //viewModel.sendRGBColor(hexColorToInt("#2196F3"))
         }
         greenCircle.setOnClickListener {
-            viewModel.sendRGBColor(hexColorToInt("#00FF0A"))
+            //viewModel.sendRGBColor(hexColorToInt("#00FF0A"))
         }
     }
 
