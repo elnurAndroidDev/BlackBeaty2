@@ -4,11 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
+import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.isayevapps.blackbeaty2.App
 import com.isayevapps.blackbeaty2.R
 import com.isayevapps.blackbeaty2.databinding.ActivityMainBinding
+import com.isayevapps.blackbeaty2.models.Command
 import com.isayevapps.blackbeaty2.viewmodels.States
 import com.isayevapps.blackbeaty2.viewmodels.ViewModel
 import top.defaults.colorpicker.ColorPickerView
@@ -54,6 +58,30 @@ class MainActivity : AppCompatActivity() {
             rgbAlertDialog.show()
         }
 
+        binding.rgbOffButton.setOnClickListener {
+            viewModel.onOffRGB()
+        }
+
+        binding.lightOffButton.setOnClickListener {
+            viewModel.onOffLight()
+        }
+
+        binding.downDrawerCloseButton.setOnClickListener {
+            viewModel.openCloseBar(Command.CLOSE)
+        }
+
+        binding.downDrawerOpenButton.setOnClickListener {
+            viewModel.openCloseBar(Command.OPEN)
+        }
+
+        binding.tvDownButton.setOnClickListener {
+            viewModel.upDownTV(Command.DOWN)
+        }
+
+        binding.tvUpButton.setOnClickListener {
+            viewModel.upDownTV(Command.UP)
+        }
+
     }
 
     private fun prepareLightDialog() {
@@ -64,6 +92,19 @@ class MainActivity : AppCompatActivity() {
         builder.setView(dialogLayout)
         builder.setPositiveButton("OK") { dialogInterface, _ -> dialogInterface.dismiss() }
         lightAlertDialog = builder.create()
+        val lightBrightness = dialogLayout.findViewById<SeekBar>(R.id.lightSeekBar)
+        lightBrightness.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+            override fun onProgressChanged(sb: SeekBar?, progress: Int, fromUser: Boolean) {
+                viewModel.sendLightBrightness(progress)
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+            }
+
+        })
     }
 
     private fun prepareRGBDialog() {
@@ -74,12 +115,32 @@ class MainActivity : AppCompatActivity() {
         builder.setView(dialogLayout)
         builder.setPositiveButton("OK") { dialogInterface, _ -> dialogInterface.dismiss() }
         rgbAlertDialog = builder.create()
-
         val colorPicker = dialogLayout.findViewById<ColorPickerView>(R.id.colorPicker)
         colorPicker.subscribe { color, _, _ ->
             val hexColor = String.format("#%06X", 0xFFFFFF and color)
-            val intColor = hexColor.substring(1).toInt(radix=16)
-            viewModel.sendRGBColor(intColor)
+            viewModel.sendRGBColor(hexColorToInt(hexColor))
+        }
+
+        val redCircle = dialogLayout.findViewById<ImageView>(R.id.redCircle)
+        val violetCircle = dialogLayout.findViewById<ImageView>(R.id.violetCircle)
+        val yellowCircle = dialogLayout.findViewById<ImageView>(R.id.yellowCircle)
+        val blueCircle = dialogLayout.findViewById<ImageView>(R.id.blueCircle)
+        val greenCircle = dialogLayout.findViewById<ImageView>(R.id.greenCircle)
+
+        redCircle.setOnClickListener {
+            viewModel.sendRGBColor(hexColorToInt("#FF0000"))
+        }
+        violetCircle.setOnClickListener {
+            viewModel.sendRGBColor(hexColorToInt("#673AB7"))
+        }
+        yellowCircle.setOnClickListener {
+            viewModel.sendRGBColor(hexColorToInt("#FFEB3B"))
+        }
+        blueCircle.setOnClickListener {
+            viewModel.sendRGBColor(hexColorToInt("#2196F3"))
+        }
+        greenCircle.setOnClickListener {
+            viewModel.sendRGBColor(hexColorToInt("#00FF0A"))
         }
     }
 
@@ -100,5 +161,18 @@ class MainActivity : AppCompatActivity() {
             if (binding.connectionStatus.visibility != View.GONE)
                 binding.connectionStatus.visibility = View.GONE
         }
+    }
+
+    private fun hexColorToInt(hex: String): Int {
+        var result = 0
+        try {
+            result = if (hex[0] == '#') {
+                hex.substring(1).toInt(radix = 16)
+            } else {
+                hex.toInt(radix = 16)
+            }
+        } catch (_: Exception) {
+        }
+        return result
     }
 }

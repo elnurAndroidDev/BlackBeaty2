@@ -21,9 +21,8 @@
         android:layout_width="0dp"
         android:layout_height="64dp"
         android:layout_margin="16dp"
-        android:max="100"
-        android:min="10"
-        android:progress="50"
+        android:max="255"
+        android:min="20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/bright_rgb_ico"
         app:layout_constraintTop_toTopOf="parent" />

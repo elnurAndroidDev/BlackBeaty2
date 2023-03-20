@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="#673AB7" />
+        app:tint="#CACACA" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/directionsCard"

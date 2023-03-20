@@ -37,30 +37,30 @@ class SeatActivity : AppCompatActivity() {
         selectPart(viewModel.getSeatPart())
 
         binding.seatPos1Button.setOnClickListener {
-            selectPos(1)
+            selectPos(0)
         }
         binding.seatPos2Button.setOnClickListener {
-            selectPos(2)
+            selectPos(1)
         }
         binding.seatPos3Button.setOnClickListener {
-            selectPos(3)
+            selectPos(2)
         }
         binding.seatPos4Button.setOnClickListener {
-            selectPos(4)
+            selectPos(3)
         }
 
         binding.headButton.setOnClickListener {
-            selectPart(1)
+            selectPart(0)
 
         }
         binding.backButton.setOnClickListener {
-            selectPart(2)
+            selectPart(1)
         }
         binding.legButton.setOnClickListener {
-            selectPart(3)
+            selectPart(2)
         }
         binding.moveButton.setOnClickListener {
-            selectPart(4)
+            selectPart(3)
         }
 
         binding.seatPartUpButton.setOnTouchListener { _, event ->
@@ -111,13 +111,13 @@ class SeatActivity : AppCompatActivity() {
         val buttonSelectedBGDrawable =
             ResourcesCompat.getDrawable(resources, R.drawable.button_selected_bg, null)
         binding.seatPos1Button.background =
-            if (pos == 1) buttonSelectedBGDrawable else buttonBGDrawable
+            if (pos == 0) buttonSelectedBGDrawable else buttonBGDrawable
         binding.seatPos2Button.background =
-            if (pos == 2) buttonSelectedBGDrawable else buttonBGDrawable
+            if (pos == 1) buttonSelectedBGDrawable else buttonBGDrawable
         binding.seatPos3Button.background =
-            if (pos == 3) buttonSelectedBGDrawable else buttonBGDrawable
+            if (pos == 2) buttonSelectedBGDrawable else buttonBGDrawable
         binding.seatPos4Button.background =
-            if (pos == 4) buttonSelectedBGDrawable else buttonBGDrawable
+            if (pos == 3) buttonSelectedBGDrawable else buttonBGDrawable
     }
 
     private fun selectPart(i: Int) {
@@ -126,32 +126,32 @@ class SeatActivity : AppCompatActivity() {
             ResourcesCompat.getDrawable(resources, R.drawable.button_bg, null)
         val buttonSelectedBGDrawable =
             ResourcesCompat.getDrawable(resources, R.drawable.button_selected_bg, null)
-        binding.headButton.background = if (i == 1) buttonSelectedBGDrawable else buttonBGDrawable
-        binding.backButton.background = if (i == 2) buttonSelectedBGDrawable else buttonBGDrawable
-        binding.legButton.background = if (i == 3) buttonSelectedBGDrawable else buttonBGDrawable
-        binding.moveButton.background = if (i == 4) buttonSelectedBGDrawable else buttonBGDrawable
+        binding.headButton.background = if (i == 0) buttonSelectedBGDrawable else buttonBGDrawable
+        binding.backButton.background = if (i == 1) buttonSelectedBGDrawable else buttonBGDrawable
+        binding.legButton.background = if (i == 2) buttonSelectedBGDrawable else buttonBGDrawable
+        binding.moveButton.background = if (i == 3) buttonSelectedBGDrawable else buttonBGDrawable
 
-        if (i == 1) {
+        if (i == 0) {
             binding.seatPartUpButton.visibility = View.VISIBLE
             binding.seatPartDownButton.visibility = View.VISIBLE
             binding.seatPartLeftButton.visibility = View.GONE
             binding.seatPartRightButton.visibility = View.GONE
         }
 
-        if (i == 2) {
+        if (i == 1) {
             binding.seatPartUpButton.visibility = View.GONE
             binding.seatPartDownButton.visibility = View.GONE
             binding.seatPartLeftButton.visibility = View.VISIBLE
             binding.seatPartRightButton.visibility = View.VISIBLE
         }
-        if (i == 3) {
+        if (i == 2) {
             binding.seatPartUpButton.visibility = View.VISIBLE
             binding.seatPartDownButton.visibility = View.VISIBLE
             binding.seatPartLeftButton.visibility = View.GONE
             binding.seatPartRightButton.visibility = View.GONE
         }
 
-        if (i == 4) {
+        if (i == 3) {
             binding.seatPartUpButton.visibility = View.GONE
             binding.seatPartDownButton.visibility = View.GONE
             binding.seatPartLeftButton.visibility = View.VISIBLE

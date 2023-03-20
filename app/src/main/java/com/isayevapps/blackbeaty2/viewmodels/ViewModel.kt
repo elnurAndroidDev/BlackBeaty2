@@ -13,13 +13,14 @@ class ViewModel(private val model: Model) {
     private val _states = MutableLiveData<States>()
     val states = _states as LiveData<States>
 
-    private var seatPos = 1
-    private var seatPart = 1
+    private var seatPos = 0
+    private var seatPart = 0
 
     fun getSeatPos() = seatPos
     fun setSeatPos(pos: Int) {
         seatPos = pos
     }
+
     fun getSeatPart() = seatPart
     fun setSeatPart(part: Int) {
         seatPart = part
@@ -61,7 +62,7 @@ class ViewModel(private val model: Model) {
         model.searchDevice(deviceCallback)
     }
 
-    fun showHideTV(value: Int) {
+    fun upDownTV(value: Int) {
         model.sendCommand(Command(Command.TV_ID, 0, value))
     }
 
@@ -94,7 +95,7 @@ class ViewModel(private val model: Model) {
     }
 
     fun sendSeatCommand(value: Int) {
-        model.startLongCommand(seatPos-1, seatPart-1, value)
+        model.startLongCommand(seatPos, seatPart, value)
     }
 
     fun stopSendingLongCommand() {
