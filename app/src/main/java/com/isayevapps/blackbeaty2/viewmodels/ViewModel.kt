@@ -13,6 +13,9 @@ class ViewModel(private val model: Model) {
     private val _states = MutableLiveData<States>()
     val states = _states as LiveData<States>
 
+    val ledBrightness = MutableLiveData<Int>()
+    val rgbBrightness = MutableLiveData<Int>()
+
     private var seatPos = 0
     private var seatPart = 0
 
@@ -38,6 +41,7 @@ class ViewModel(private val model: Model) {
 
     private val deviceCallback = object : DeviceCallback {
         override fun onFound() {
+            getBrightnessAndOnOff()
             startIsAliveChecking()
             _states.postValue(States.Connected)
         }
@@ -62,28 +66,30 @@ class ViewModel(private val model: Model) {
         model.searchDevice(deviceCallback)
     }
 
-    fun upDownTV(value: Int) {
-        model.sendCommand(Command(Command.TV_ID, 0, value))
+    fun getBrightnessAndOnOff() {
+        model.getBrightnessAndOnOff(
+            { value -> ledBrightness.postValue(value) },
+            { value -> rgbBrightness.postValue(value) })
     }
 
     fun onOffLight() {
-        model.sendCommand(Command(Command.LIGHT_ID, 0, 0))
+        model.sendLightOnOffCommand { value -> ledBrightness.postValue(value) }
     }
 
     fun sendLightBrightness(value: Int) {
-        model.sendCommand(Command(Command.LIGHT_ID, 1, value))
+        model.sendLedBrightness(value) { v -> ledBrightness.postValue(v) }
     }
 
     fun sendRGBBrightness(value: Int) {
-        model.sendCommand(Command(Command.RGB_ID, 1, value))
+        model.sendRGBBrightness(value) { v -> rgbBrightness.postValue(v) }
     }
 
     fun sendRGBColor(value: Int) {
-        model.sendCommand(Command(Command.RGB_ID, 2, value))
+        model.sendCommand(Command(Command.RGB_ID, 1, value))
     }
 
     fun onOffRGB() {
-        model.sendCommand(Command(Command.RGB_ID, 0, 0))
+        model.sendRGBOnOffCommand { value -> rgbBrightness.postValue(value) }
     }
 
     fun openCloseBar(value: Int) {
@@ -91,15 +97,18 @@ class ViewModel(private val model: Model) {
     }
 
     fun sendCurtainCommand(id: Int, value: Int) {
-        model.startLongCommand(id, 0, value)
+        model.sendCommand(Command(id, 0, value))
     }
 
     fun sendSeatCommand(value: Int) {
-        model.startLongCommand(seatPos, seatPart, value)
+        model.sendCommand(Command(seatPos, seatPart, value))
     }
 
-    fun stopSendingLongCommand() {
-        model.stopSendingLongCommand()
+    fun buttonActionDown() {
+        model.buttonActionDown()
     }
 
+    fun buttonActionUp() {
+        model.buttonActionUp()
+    }
 }

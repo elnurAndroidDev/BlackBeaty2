@@ -1,20 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/bright_rgb_ico"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/brightness_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/rgbSeekBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rgbSeekBar"
+        app:tint="@color/white" />
+
+    <SeekBar
+        android:id="@+id/rgbSeekBar"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_margin="16dp"
+        android:max="255"
+        android:min="20"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/bright_rgb_ico"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/redCircle"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/color_button_bg"
         android:backgroundTint="#FF0000"
         app:layout_constraintEnd_toStartOf="@+id/violetCircle"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/rgbSeekBar" />
 
     <ImageView
         android:id="@+id/violetCircle"
@@ -60,16 +83,61 @@
         app:layout_constraintStart_toEndOf="@+id/blueCircle"
         app:layout_constraintTop_toTopOf="@+id/redCircle" />
 
-    <top.defaults.colorpicker.ColorPickerView
-        android:id="@+id/colorPicker"
-        android:layout_width="0dp"
-        android:layout_height="450dp"
-        android:layout_marginTop="40dp"
-        app:enableAlpha="false"
-        app:enableBrightness="true"
-        app:layout_constraintEnd_toEndOf="@+id/greenCircle"
-        app:layout_constraintStart_toStartOf="@+id/redCircle"
+    <ImageView
+        android:id="@+id/pinkCircle"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="@drawable/color_button_bg"
+        android:backgroundTint="#FF1493"
+        app:layout_constraintEnd_toStartOf="@+id/darkGreenCircle"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/goldCircle"
+        app:layout_constraintTop_toTopOf="@+id/aquaCircle" />
+
+    <ImageView
+        android:id="@+id/aquaCircle"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/color_button_bg"
+        android:backgroundTint="#00FFFF"
+        app:layout_constraintEnd_toStartOf="@+id/goldCircle"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/redCircle" />
+
+    <ImageView
+        android:id="@+id/goldCircle"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="@drawable/color_button_bg"
+        android:backgroundTint="#FFD700"
+        app:layout_constraintEnd_toStartOf="@+id/pinkCircle"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/aquaCircle"
+        app:layout_constraintTop_toTopOf="@+id/aquaCircle" />
+
+    <ImageView
+        android:id="@+id/orangeColor"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="@drawable/color_button_bg"
+        android:backgroundTint="#ff8700"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/darkGreenCircle"
+        app:layout_constraintTop_toTopOf="@+id/aquaCircle" />
+
+    <ImageView
+        android:id="@+id/darkGreenCircle"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="@drawable/color_button_bg"
+        android:backgroundTint="#006400"
+        app:layout_constraintEnd_toStartOf="@+id/orangeColor"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/pinkCircle"
+        app:layout_constraintTop_toTopOf="@+id/aquaCircle" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

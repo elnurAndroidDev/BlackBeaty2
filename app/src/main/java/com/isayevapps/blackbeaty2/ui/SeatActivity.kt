@@ -63,42 +63,58 @@ class SeatActivity : AppCompatActivity() {
             selectPart(3)
         }
 
-        binding.seatPartUpButton.setOnTouchListener { _, event ->
+        binding.seatPartUpButton.setOnTouchListener { view, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 viewModel.sendSeatCommand(Command.UP)
+                viewModel.buttonActionDown()
+                view.background = ResourcesCompat.getDrawable(resources, R.drawable.button_pressed, null)
             }
             if (event.action == MotionEvent.ACTION_UP) {
-                viewModel.stopSendingLongCommand()
+                viewModel.sendSeatCommand(Command.STOP)
+                viewModel.buttonActionUp()
+                view.background = ResourcesCompat.getDrawable(resources, R.drawable.button_bg, null)
             }
             true
         }
 
-        binding.seatPartDownButton.setOnTouchListener { _, event ->
+        binding.seatPartDownButton.setOnTouchListener { view, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 viewModel.sendSeatCommand(Command.DOWN)
+                viewModel.buttonActionDown()
+                view.background = ResourcesCompat.getDrawable(resources, R.drawable.button_pressed, null)
             }
             if (event.action == MotionEvent.ACTION_UP) {
-                viewModel.stopSendingLongCommand()
+                viewModel.sendSeatCommand(Command.STOP)
+                viewModel.buttonActionUp()
+                view.background = ResourcesCompat.getDrawable(resources, R.drawable.button_bg, null)
             }
             true
         }
 
-        binding.seatPartLeftButton.setOnTouchListener { _, event ->
+        binding.seatPartLeftButton.setOnTouchListener { view, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 viewModel.sendSeatCommand(Command.LEFT)
+                viewModel.buttonActionDown()
+                view.background = ResourcesCompat.getDrawable(resources, R.drawable.button_pressed, null)
             }
             if (event.action == MotionEvent.ACTION_UP) {
-                viewModel.stopSendingLongCommand()
+                viewModel.sendSeatCommand(Command.STOP)
+                viewModel.buttonActionUp()
+                view.background = ResourcesCompat.getDrawable(resources, R.drawable.button_bg, null)
             }
             true
         }
 
-        binding.seatPartRightButton.setOnTouchListener { _, event ->
+        binding.seatPartRightButton.setOnTouchListener { view, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 viewModel.sendSeatCommand(Command.RIGHT)
+                viewModel.buttonActionDown()
+                view.background = ResourcesCompat.getDrawable(resources, R.drawable.button_pressed, null)
             }
             if (event.action == MotionEvent.ACTION_UP) {
-                viewModel.stopSendingLongCommand()
+                viewModel.sendSeatCommand(Command.STOP)
+                viewModel.buttonActionUp()
+                view.background = ResourcesCompat.getDrawable(resources, R.drawable.button_bg, null)
             }
             true
         }

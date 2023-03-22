@@ -9,14 +9,16 @@ data class Command(
 
     companion object {
         const val BAR_ID = 8
-        const val TV_ID = 10
-        const val LIGHT_ID = 11
-        const val RGB_ID = 12
+        const val LIGHT_ID = 10
+        const val RGB_ID = 11
         const val UP = 1
-        const val DOWN = 0
+        const val DOWN = 2
         const val RIGHT = 1
-        const val LEFT = 0
-        const val OPEN = 0
-        const val CLOSE = 1
+        const val LEFT = 2
+        const val OPEN_BAR = 1
+        const val CLOSE_BAR = 2
+        const val OPEN_CURTAIN = 1
+        const val CLOSE_CURTAIN = 2
+        const val STOP = 0
     }
 }

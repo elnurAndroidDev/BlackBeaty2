@@ -5,6 +5,8 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.util.Log
 import androidx.core.content.ContextCompat.getSystemService
 import com.isayevapps.blackbeaty2.callbacks.DeviceCallback
@@ -22,18 +24,14 @@ class Model(private val context: Context) {
 
     private lateinit var deviceFinder: DevicesFinder
     private var deviceAddress = ""
-    private var flag = false
-    private var ID = 0
-    private var OP = 0
-    private var VALUE = 0
+    private var failCount = 0
+    private var buttonPressed = false
+    private val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
     private val client =
-        OkHttpClient.Builder().readTimeout(500, TimeUnit.MILLISECONDS).connectTimeout(500, TimeUnit.MILLISECONDS)
+        OkHttpClient.Builder().readTimeout(2, TimeUnit.SECONDS)
+            .connectTimeout(2, TimeUnit.SECONDS)
             .build()
-
-    init {
-        sendingLongCommand()
-    }
 
     fun setDeviceFinder(activityContext: Context, deviceCallback: DeviceCallback) {
         deviceFinder = DevicesFinder(activityContext, object : OnDeviceFindListener {
@@ -51,7 +49,7 @@ class Model(private val context: Context) {
                             .build()
                         client.newCall(request).execute().use { response ->
                             if (response.isSuccessful) {
-                                if (response.body!!.string() == expectedResponse && hasWifi()) {
+                                if (response.body!!.string() == expectedResponse.toString() && hasWifi()) {
                                     deviceAddress = device.ipAddress
                                     saveIPToMemory(deviceAddress)
                                     deviceCallback.onFound()
@@ -110,13 +108,13 @@ class Model(private val context: Context) {
             val (commandString, expectedResponse) = checkingRequest()
             val ipAddressFromMemory = getIPFromMemory()
             try {
-                if(!deviceFinder.isRunning) {
+                if (!deviceFinder.isRunning) {
                     val request = Request.Builder()
                         .url("http://$ipAddressFromMemory/$commandString")
                         .build()
                     client.newCall(request).execute().use { response ->
                         if (response.isSuccessful) {
-                            if (response.body!!.string() == expectedResponse) {
+                            if (response.body!!.string() == expectedResponse.toString()) {
                                 deviceAddress = ipAddressFromMemory
                                 deviceCallback.onFound()
                             }
@@ -131,44 +129,52 @@ class Model(private val context: Context) {
         }
     }
 
-    fun checkingRequest(): Pair<String, String> {
-        val randomID = (20..100).random()
-        val randomValue = (1..10000).random()
-        val randomOP = (0..255).random()
-        val c = Command(randomID, randomOP, randomValue)
-        val expectedResponse =
-            (((randomID * 255) + randomOP + 9852) * 1.658 + randomValue).toInt().toString()
-        val commandString = c.toString()
-        return Pair(commandString, expectedResponse)
-    }
-
     fun startIsAliveChecking(deviceCallback: DeviceCallback) {
         thread {
             while (true) {
-                if (!flag) {
-                    Log.d("MyTag", "isAlive")
-                    val (commandString, expectedResponse) = checkingRequest()
-                    try {
-                        val request = Request.Builder()
-                            .url("http://$deviceAddress/$commandString")
-                            .build()
-                        client.newCall(request).execute().use { response ->
-                            if (response.isSuccessful) {
-                                if (response.body!!.string() == expectedResponse) {
-                                    Log.d("MyTag", "Alive")
-                                }
+                //Log.d("MyTag", "isAlive")
+                val (commandString, expectedResponse) = checkingRequest()
+                try {
+                    val request = Request.Builder()
+                        .url("http://$deviceAddress/$commandString")
+                        .build()
+                    client.newCall(request).execute().use { response ->
+                        if (response.isSuccessful) {
+                            //Log.d("MyTag", "Alive")
+                            failCount = 0
+                            val responseCode = response.body!!.string().toInt()
+                            if ((responseCode == (expectedResponse + 1)) && buttonPressed) {
+                                Log.d("MyTag", "вибрация")
+                                vibrator.vibrate(
+                                    VibrationEffect.createOneShot(
+                                        10000,
+                                        VibrationEffect.DEFAULT_AMPLITUDE
+                                    )
+                                )
                             }
                         }
-                    } catch (e: Exception) {
-                        Log.d("MyTag", "not alive ${e.message.toString()}")
-                        if (hasWifi())
-                            deviceCallback.onNotFound()
+                    }
+                } catch (e: Exception) {
+                    failCount++
+                    Log.d("MyTag", "not alive ${e.message.toString()}")
+                    if (hasWifi() && failCount == 5) {
+                        failCount = 0
+                        deviceCallback.onNotFound()
                         return@thread
                     }
-                    Thread.sleep(5000)
                 }
+                Thread.sleep(1000)
             }
         }
+    }
+
+    fun buttonActionDown() {
+        buttonPressed = true
+    }
+
+    fun buttonActionUp() {
+        buttonPressed = false
+        vibrator.cancel()
     }
 
     fun sendCommand(command: Command) {
@@ -188,39 +194,132 @@ class Model(private val context: Context) {
         }
     }
 
-    fun startLongCommand(id: Int, op: Int, value: Int) {
-        ID = id
-        OP = op
-        VALUE = value
-        flag = true
-    }
-
-    private fun sendingLongCommand() {
+    fun sendRGBOnOffCommand(setRGBOnOff: (Int) -> Unit) {
         thread {
-            while (true) {
-                if (flag) {
-                    Log.d("MyTag", "sending")
-                    val c = Command(ID, OP, VALUE)
-                    val commandString = c.toString()
-                    try {
-                        val request = Request.Builder()
-                            .url("http://$deviceAddress/$commandString")
-                            .build()
-                        client.newCall(request).execute().use { response ->
-                            if (response.isSuccessful) {
-                                Log.d("MyTag", "sent command")
-                            }
-                        }
-                    } catch (_: Exception) {
-                        Log.d("MyTag", "not sent commannd")
+            val command = Command(Command.RGB_ID, 0, 0).toString()
+            val expectedRGBOnOffResponse = (((11 * 255) + 0 + 9852) * 1.658 + 0).toInt()
+            try {
+                val request = Request.Builder()
+                    .url("http://$deviceAddress/$command")
+                    .build()
+                client.newCall(request).execute().use { response ->
+                    if (response.isSuccessful) {
+                        val responseInt = response.body!!.string().toInt()
+                        setRGBOnOff(responseInt - expectedRGBOnOffResponse)
+                        Log.d("MyTag", "get rgb on off ${responseInt - expectedRGBOnOffResponse}")
                     }
                 }
+            } catch (e: Exception) {
+                Log.d("MyTag", "${e.message.toString()} aaa")
             }
         }
     }
 
-    fun stopSendingLongCommand() {
-        flag = false
+    fun sendLedBrightness(value: Int, setLightOnOff: (Int) -> Unit) {
+        thread {
+            val command = Command(Command.LIGHT_ID, 1, value).toString()
+            val expectedLightOnOffResponse = (((10 * 255) + 1 + 9852) * 1.658 + value).toInt()
+            try {
+                //Log.d("MyTag", "начало")
+                val request = Request.Builder()
+                    .url("http://$deviceAddress/$command")
+                    .build()
+                client.newCall(request).execute().use { response ->
+                    if (response.isSuccessful) {
+                        val responseInt = response.body!!.string().toInt()
+                        setLightOnOff(responseInt - expectedLightOnOffResponse)
+                        Log.d("MyTag", "get bright on off ${responseInt - expectedLightOnOffResponse}")
+                    }
+                }
+            } catch (e: Exception) {
+                Log.d("MyTag", "${e.message.toString()} led bright")
+            }
+        }
+    }
+
+    fun sendRGBBrightness(value: Int, setRGBBrightness: (Int) -> Unit) {
+        thread {
+            val command = Command(Command.RGB_ID, 2, value).toString()
+            val expectedLightOnOffResponse = (((11 * 255) + 2 + 9852) * 1.658 + value).toInt()
+            try {
+                val request = Request.Builder()
+                    .url("http://$deviceAddress/$command")
+                    .build()
+                client.newCall(request).execute().use { response ->
+                    if (response.isSuccessful) {
+                        val responseInt = response.body!!.string().toInt()
+                        setRGBBrightness(responseInt - expectedLightOnOffResponse)
+                        Log.d("MyTag", "get rgb bright ${responseInt - expectedLightOnOffResponse}")
+                    }
+                }
+            } catch (e: Exception) {
+                Log.d("MyTag", "${e.message.toString()} rgb bright")
+            }
+        }
+    }
+
+    fun sendLightOnOffCommand(setLightOnOff: (Int) -> Unit) {
+        thread {
+            val command = Command(Command.LIGHT_ID, 0, 0).toString()
+            val expectedLightOnOffResponse = (((10 * 255) + 0 + 9852) * 1.658 + 0).toInt()
+            try {
+                Log.d("MyTag", "начало")
+                val request = Request.Builder()
+                    .url("http://$deviceAddress/$command")
+                    .build()
+                client.newCall(request).execute().use { response ->
+                    if (response.isSuccessful) {
+                        val responseInt = response.body!!.string().toInt()
+                        setLightOnOff(responseInt - expectedLightOnOffResponse)
+                        Log.d("MyTag", "get light on off ${responseInt - expectedLightOnOffResponse}")
+                    }
+                }
+            } catch (e: Exception) {
+                Log.d("MyTag", "${e.message.toString()} heyy")
+            }
+        }
+    }
+
+    fun getBrightnessAndOnOff(setBrightness: (Int) -> Unit, setRGBBrightness: (Int) -> Unit) {
+        thread {
+            val getBrightnessRequest = Command(10, 5, 0).toString()
+            val expectedBrightnessResponse = (((10 * 255) + 5 + 9852) * 1.658 + 0).toInt()
+            val getRGBBrightnessRequest = Command(11, 5, 0).toString()
+            val expectedRGBBrightnessResponse = (((11 * 255) + 5 + 9852) * 1.658 + 0).toInt()
+            try {
+                var request = Request.Builder()
+                    .url("http://$deviceAddress/$getBrightnessRequest")
+                    .build()
+                client.newCall(request).execute().use { response ->
+                    if (response.isSuccessful) {
+                        val responseInt = response.body!!.string().toInt()
+                        setBrightness(responseInt - expectedBrightnessResponse)
+                        Log.d("MyTag", "sent command get brightness")
+                    }
+                }
+                request = Request.Builder()
+                    .url("http://$deviceAddress/$getRGBBrightnessRequest")
+                    .build()
+                client.newCall(request).execute().use { response ->
+                    if (response.isSuccessful) {
+                        val responseInt = response.body!!.string().toInt()
+                        setRGBBrightness(responseInt - expectedRGBBrightnessResponse)
+                    }
+                }
+            } catch (_: Exception) {
+            }
+        }
+    }
+
+    fun checkingRequest(): Pair<String, Int> {
+        val randomID = (20..100).random()
+        val randomValue = (1..10000).random()
+        val randomOP = (0..255).random()
+        val c = Command(randomID, randomOP, randomValue)
+        val expectedResponse =
+            (((randomID * 255) + randomOP + 9852) * 1.658 + randomValue).toInt()
+        val commandString = c.toString()
+        return Pair(commandString, expectedResponse)
     }
 
     private fun saveIPToMemory(ipAddress: String) {
