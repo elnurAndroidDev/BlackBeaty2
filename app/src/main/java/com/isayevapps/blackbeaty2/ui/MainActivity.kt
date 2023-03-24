@@ -74,12 +74,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.lightTextView.setOnClickListener {
-            lightBrightness.progress = viewModel.ledBrightness.value!!
+            lightBrightness.progress = viewModel.ledBrightness.value ?: 0
             lightAlertDialog.show()
         }
 
         binding.rgbTextView.setOnClickListener {
-            rgbBrightness.progress = viewModel.rgbBrightness.value!!
+            rgbBrightness.progress = viewModel.rgbBrightness.value ?: 0
             rgbAlertDialog.show()
         }
 
