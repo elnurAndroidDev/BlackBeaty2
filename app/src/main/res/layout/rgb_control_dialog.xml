@@ -139,5 +139,15 @@
         app:layout_constraintStart_toEndOf="@+id/pinkCircle"
         app:layout_constraintTop_toTopOf="@+id/aquaCircle" />
 
+    <top.defaults.colorpicker.ColorPickerView
+        android:id="@+id/colorPickerView"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:layout_marginTop="16dp"
+        android:background="#3C3C3C"
+        app:layout_constraintEnd_toEndOf="@+id/orangeColor"
+        app:layout_constraintStart_toStartOf="@+id/aquaCircle"
+        app:layout_constraintTop_toBottomOf="@+id/aquaCircle" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -138,6 +137,16 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/pinkCircle"
         app:layout_constraintTop_toTopOf="@+id/aquaCircle" />
+
+    <top.defaults.colorpicker.ColorPickerView
+        android:id="@+id/colorPickerView"
+        android:layout_width="550dp"
+        android:layout_height="550dp"
+        android:layout_marginTop="32dp"
+        android:background="#3C3C3C"
+        app:layout_constraintEnd_toEndOf="@+id/orangeColor"
+        app:layout_constraintStart_toStartOf="@+id/aquaCircle"
+        app:layout_constraintTop_toBottomOf="@+id/aquaCircle" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

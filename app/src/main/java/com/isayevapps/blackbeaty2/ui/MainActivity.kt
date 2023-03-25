@@ -3,6 +3,7 @@ package com.isayevapps.blackbeaty2.ui
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
@@ -20,6 +21,7 @@ import com.isayevapps.blackbeaty2.databinding.ActivityMainBinding
 import com.isayevapps.blackbeaty2.models.Command
 import com.isayevapps.blackbeaty2.viewmodels.States
 import com.isayevapps.blackbeaty2.viewmodels.ViewModel
+import top.defaults.colorpicker.ColorPickerView
 
 class MainActivity : AppCompatActivity() {
 
@@ -187,6 +189,14 @@ class MainActivity : AppCompatActivity() {
         rgbAlertDialog = builder.create()
         rgbBrightness = dialogLayout.findViewById(R.id.rgbSeekBar)
 
+        val colorPicker = dialogLayout.findViewById<ColorPickerView>(R.id.colorPickerView)
+        colorPicker.setInitialColor(Color.WHITE)
+        colorPicker.subscribe { color, _, _ ->
+            val hexColor = String.format("#%06X", 0xFFFFFF and color)
+            val intColor = hexColorToInt(hexColor)
+            viewModel.sendRGBColor(intColor)
+        }
+
         rgbBrightness.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             override fun onProgressChanged(sb: SeekBar?, progress: Int, fromUser: Boolean) {
                 viewModel.sendRGBBrightness(progress)
@@ -214,33 +224,43 @@ class MainActivity : AppCompatActivity() {
 
         redCircle.setOnClickListener {
             viewModel.sendRGBColor(hexColorToInt("#FF0000"))
+            colorPicker.setInitialColor(Color.parseColor("#FF0000"))
         }
         violetCircle.setOnClickListener {
             viewModel.sendRGBColor(hexColorToInt("#673AB7"))
+            colorPicker.setInitialColor(Color.parseColor("#673AB7"))
         }
         yellowCircle.setOnClickListener {
             viewModel.sendRGBColor(hexColorToInt("#FFEB3B"))
+            colorPicker.setInitialColor(Color.parseColor("#FFEB3B"))
         }
         blueCircle.setOnClickListener {
             viewModel.sendRGBColor(hexColorToInt("#2196F3"))
+            colorPicker.setInitialColor(Color.parseColor("#2196F3"))
         }
         greenCircle.setOnClickListener {
             viewModel.sendRGBColor(hexColorToInt("#00FF0A"))
+            colorPicker.setInitialColor(Color.parseColor("#00FF0A"))
         }
         aquaCircle.setOnClickListener {
             viewModel.sendRGBColor(hexColorToInt("#00FFFF"))
+            colorPicker.setInitialColor(Color.parseColor("#00FFFF"))
         }
         goldCircle.setOnClickListener {
             viewModel.sendRGBColor(hexColorToInt("#FFD700"))
+            colorPicker.setInitialColor(Color.parseColor("#FFD700"))
         }
         pinkCircle.setOnClickListener {
             viewModel.sendRGBColor(hexColorToInt("#FF1493"))
+            colorPicker.setInitialColor(Color.parseColor("#FF1493"))
         }
         darkGreenCircle.setOnClickListener {
             viewModel.sendRGBColor(hexColorToInt("#006400"))
+            colorPicker.setInitialColor(Color.parseColor("#006400"))
         }
         orangeCircle.setOnClickListener {
             viewModel.sendRGBColor(hexColorToInt("#FF8700"))
+            colorPicker.setInitialColor(Color.parseColor("#FF8700"))
         }
     }
 
