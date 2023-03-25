@@ -14,7 +14,7 @@ class ViewModel(private val model: Model) {
     val states = _states as LiveData<States>
 
     val ledBrightness = MutableLiveData<Int>()
-    val rgbBrightness = MutableLiveData<Int>()
+    val rgbOnOff = MutableLiveData<Int>()
 
     private var seatPos = 0
     private var seatPart = 0
@@ -69,7 +69,7 @@ class ViewModel(private val model: Model) {
     fun getBrightnessAndOnOff() {
         model.getBrightnessAndOnOff(
             { value -> ledBrightness.postValue(value) },
-            { value -> rgbBrightness.postValue(value) })
+            { value -> rgbOnOff.postValue(value) })
     }
 
     fun onOffLight() {
@@ -80,16 +80,12 @@ class ViewModel(private val model: Model) {
         model.sendLedBrightness(value) { v -> ledBrightness.postValue(v) }
     }
 
-    fun sendRGBBrightness(value: Int) {
-        model.sendRGBBrightness(value) { v -> rgbBrightness.postValue(v) }
-    }
-
     fun sendRGBColor(value: Int) {
         model.sendCommand(Command(Command.RGB_ID, 1, value))
     }
 
     fun onOffRGB() {
-        model.sendRGBOnOffCommand { value -> rgbBrightness.postValue(value) }
+        model.sendRGBOnOffCommand { value -> rgbOnOff.postValue(value) }
     }
 
     fun openCloseBar(value: Int) {

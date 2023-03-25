@@ -7,7 +7,6 @@ import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.util.Log
 import androidx.core.content.ContextCompat.getSystemService
 import com.isayevapps.blackbeaty2.callbacks.DeviceCallback
 import com.isayevapps.blackbeaty2.callbacks.NetworkChangesCallback
@@ -37,7 +36,6 @@ class Model(private val context: Context) {
         deviceFinder = DevicesFinder(activityContext, object : OnDeviceFindListener {
             override fun onStart() {
                 deviceAddress = ""
-                Log.d("MyTag", "starting searching")
             }
 
             override fun onDeviceFound(device: DeviceItem) {
@@ -132,7 +130,6 @@ class Model(private val context: Context) {
     fun startIsAliveChecking(deviceCallback: DeviceCallback) {
         thread {
             while (true) {
-                //Log.d("MyTag", "isAlive")
                 val (commandString, expectedResponse) = checkingRequest()
                 try {
                     val request = Request.Builder()
@@ -140,11 +137,9 @@ class Model(private val context: Context) {
                         .build()
                     client.newCall(request).execute().use { response ->
                         if (response.isSuccessful) {
-                            //Log.d("MyTag", "Alive")
                             failCount = 0
                             val responseCode = response.body!!.string().toInt()
                             if ((responseCode == (expectedResponse + 1)) && buttonPressed) {
-                                Log.d("MyTag", "вибрация")
                                 vibrator.vibrate(
                                     VibrationEffect.createOneShot(
                                         10000,
@@ -154,9 +149,8 @@ class Model(private val context: Context) {
                             }
                         }
                     }
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                     failCount++
-                    Log.d("MyTag", "not alive ${e.message.toString()}")
                     if (hasWifi() && failCount == 5) {
                         failCount = 0
                         deviceCallback.onNotFound()
@@ -184,11 +178,7 @@ class Model(private val context: Context) {
                 val request = Request.Builder()
                     .url("http://$deviceAddress/$commandString")
                     .build()
-                client.newCall(request).execute().use { response ->
-                    if (response.isSuccessful) {
-                        Log.d("MyTag", "sent command $commandString")
-                    }
-                }
+                client.newCall(request).execute().use {}
             } catch (_: Exception) {
             }
         }
@@ -206,11 +196,9 @@ class Model(private val context: Context) {
                     if (response.isSuccessful) {
                         val responseInt = response.body!!.string().toInt()
                         setRGBOnOff(responseInt - expectedRGBOnOffResponse)
-                        Log.d("MyTag", "get rgb on off ${responseInt - expectedRGBOnOffResponse}")
                     }
                 }
-            } catch (e: Exception) {
-                Log.d("MyTag", "${e.message.toString()} aaa")
+            } catch (_: Exception) {
             }
         }
     }
@@ -220,7 +208,6 @@ class Model(private val context: Context) {
             val command = Command(Command.LIGHT_ID, 1, value).toString()
             val expectedLightOnOffResponse = (((10 * 255) + 1 + 9852) * 1.658 + value).toInt()
             try {
-                //Log.d("MyTag", "начало")
                 val request = Request.Builder()
                     .url("http://$deviceAddress/$command")
                     .build()
@@ -228,32 +215,9 @@ class Model(private val context: Context) {
                     if (response.isSuccessful) {
                         val responseInt = response.body!!.string().toInt()
                         setLightOnOff(responseInt - expectedLightOnOffResponse)
-                        Log.d("MyTag", "get bright on off ${responseInt - expectedLightOnOffResponse}")
                     }
                 }
-            } catch (e: Exception) {
-                Log.d("MyTag", "${e.message.toString()} led bright")
-            }
-        }
-    }
-
-    fun sendRGBBrightness(value: Int, setRGBBrightness: (Int) -> Unit) {
-        thread {
-            val command = Command(Command.RGB_ID, 2, value).toString()
-            val expectedLightOnOffResponse = (((11 * 255) + 2 + 9852) * 1.658 + value).toInt()
-            try {
-                val request = Request.Builder()
-                    .url("http://$deviceAddress/$command")
-                    .build()
-                client.newCall(request).execute().use { response ->
-                    if (response.isSuccessful) {
-                        val responseInt = response.body!!.string().toInt()
-                        setRGBBrightness(responseInt - expectedLightOnOffResponse)
-                        Log.d("MyTag", "get rgb bright ${responseInt - expectedLightOnOffResponse}")
-                    }
-                }
-            } catch (e: Exception) {
-                Log.d("MyTag", "${e.message.toString()} rgb bright")
+            } catch (_: Exception) {
             }
         }
     }
@@ -263,7 +227,6 @@ class Model(private val context: Context) {
             val command = Command(Command.LIGHT_ID, 0, 0).toString()
             val expectedLightOnOffResponse = (((10 * 255) + 0 + 9852) * 1.658 + 0).toInt()
             try {
-                Log.d("MyTag", "начало")
                 val request = Request.Builder()
                     .url("http://$deviceAddress/$command")
                     .build()
@@ -271,11 +234,9 @@ class Model(private val context: Context) {
                     if (response.isSuccessful) {
                         val responseInt = response.body!!.string().toInt()
                         setLightOnOff(responseInt - expectedLightOnOffResponse)
-                        Log.d("MyTag", "get light on off ${responseInt - expectedLightOnOffResponse}")
                     }
                 }
-            } catch (e: Exception) {
-                Log.d("MyTag", "${e.message.toString()} heyy")
+            } catch (_: Exception) {
             }
         }
     }
@@ -294,7 +255,6 @@ class Model(private val context: Context) {
                     if (response.isSuccessful) {
                         val responseInt = response.body!!.string().toInt()
                         setBrightness(responseInt - expectedBrightnessResponse)
-                        Log.d("MyTag", "sent command get brightness")
                     }
                 }
                 request = Request.Builder()

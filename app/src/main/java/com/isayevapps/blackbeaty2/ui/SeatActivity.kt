@@ -2,7 +2,6 @@ package com.isayevapps.blackbeaty2.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -29,7 +28,6 @@ class SeatActivity : AppCompatActivity() {
         viewModel.states.observe(this) {
             showOrHideStatus(it)
             if (it is States.Connection) {
-                Log.d("MyTag", "seat connection...")
                 viewModel.searchDevice()
             }
         }
