@@ -81,7 +81,7 @@ class ViewModel(private val model: Model) {
     }
 
     fun sendRGBColor(value: Int) {
-        model.sendCommand(Command(Command.RGB_ID, 1, value))
+        model.sendColor(value) { v -> rgbOnOff.postValue(v) }
     }
 
     fun onOffRGB() {
