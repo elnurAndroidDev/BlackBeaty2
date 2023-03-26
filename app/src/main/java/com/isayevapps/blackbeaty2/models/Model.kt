@@ -222,25 +222,6 @@ class Model(private val context: Context) {
         }
     }
 
-    fun sendColor(value: Int, setRGBOnOff: (Int) -> Unit) {
-        thread {
-            val command = Command(Command.RGB_ID, 1, value).toString()
-            val expectedLightOnOffResponse = (((11 * 255) + 1 + 9852) * 1.658 + value).toInt()
-            try {
-                val request = Request.Builder()
-                    .url("http://$deviceAddress/$command")
-                    .build()
-                client.newCall(request).execute().use { response ->
-                    if (response.isSuccessful) {
-                        val responseInt = response.body!!.string().toInt()
-                        setRGBOnOff(responseInt - expectedLightOnOffResponse)
-                    }
-                }
-            } catch (_: Exception) {
-            }
-        }
-    }
-
     fun sendLightOnOffCommand(setLightOnOff: (Int) -> Unit) {
         thread {
             val command = Command(Command.LIGHT_ID, 0, 0).toString()
@@ -260,7 +241,7 @@ class Model(private val context: Context) {
         }
     }
 
-    fun getBrightnessAndOnOff(setBrightness: (Int) -> Unit, setRGBBrightness: (Int) -> Unit) {
+    fun getBrightnessAndOnOff(setBrightness: (Int) -> Unit, setRGBOnOffColor: (Int) -> Unit) {
         thread {
             val getBrightnessRequest = Command(10, 5, 0).toString()
             val expectedBrightnessResponse = (((10 * 255) + 5 + 9852) * 1.658 + 0).toInt()
@@ -282,7 +263,7 @@ class Model(private val context: Context) {
                 client.newCall(request).execute().use { response ->
                     if (response.isSuccessful) {
                         val responseInt = response.body!!.string().toInt()
-                        setRGBBrightness(responseInt - expectedRGBBrightnessResponse)
+                        setRGBOnOffColor(responseInt - expectedRGBBrightnessResponse)
                     }
                 }
             } catch (_: Exception) {

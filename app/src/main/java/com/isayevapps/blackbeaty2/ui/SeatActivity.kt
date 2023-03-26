@@ -1,5 +1,4 @@
 package com.isayevapps.blackbeaty2.ui
-
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.MotionEvent

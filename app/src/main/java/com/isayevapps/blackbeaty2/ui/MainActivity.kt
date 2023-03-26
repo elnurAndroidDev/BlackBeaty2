@@ -1,6 +1,7 @@
 package com.isayevapps.blackbeaty2.ui
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -26,9 +27,14 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var lightAlertDialog: AlertDialog
     private lateinit var rgbAlertDialog: AlertDialog
+    private lateinit var setNewColorDialog: AlertDialog
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: ViewModel
     private lateinit var lightBrightness: SeekBar
+    private lateinit var newColorPicker: ColorPickerView
+    private var colorCircleToChange: ImageView? = null
+    private var newColor = ""
+    private var colorKey = ""
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +73,7 @@ class MainActivity : AppCompatActivity() {
 
         prepareLightDialog()
         prepareRGBDialog()
+        prepareSetNewColorDialog()
 
         binding.seatButton.setOnClickListener {
             startActivity(Intent(this, SeatActivity::class.java))
@@ -184,55 +191,134 @@ class MainActivity : AppCompatActivity() {
         builder.setPositiveButton("OK") { dialogInterface, _ -> dialogInterface.dismiss() }
         rgbAlertDialog = builder.create()
 
-        val colorPicker = dialogLayout.findViewById<ColorPickerView>(R.id.colorPickerView)
-        colorPicker.setInitialColor(Color.WHITE)
-        colorPicker.subscribe { color, _, _ ->
+        val mainColorPicker = dialogLayout.findViewById<ColorPickerView>(R.id.colorPickerView)
+        mainColorPicker.setInitialColor(Color.WHITE)
+        mainColorPicker.subscribe { color, _, _ ->
             val hexColor = String.format("#%06X", 0xFFFFFF and color)
-            val intColor = hexColorToInt(hexColor)
+            val intColor = viewModel.hexColorToInt(hexColor)
             viewModel.sendRGBColor(intColor)
         }
 
-        val redCircle = dialogLayout.findViewById<ImageView>(R.id.redCircle)
-        val violetCircle = dialogLayout.findViewById<ImageView>(R.id.violetCircle)
-        val yellowCircle = dialogLayout.findViewById<ImageView>(R.id.yellowCircle)
-        val blueCircle = dialogLayout.findViewById<ImageView>(R.id.blueCircle)
-        val greenCircle = dialogLayout.findViewById<ImageView>(R.id.greenCircle)
-        val aquaCircle = dialogLayout.findViewById<ImageView>(R.id.aquaCircle)
-        val darkBlueCircle = dialogLayout.findViewById<ImageView>(R.id.darkBlueCircle)
-        val pinkCircle = dialogLayout.findViewById<ImageView>(R.id.pinkCircle)
-        val darkGreenCircle = dialogLayout.findViewById<ImageView>(R.id.darkGreenCircle)
-        val orangeCircle = dialogLayout.findViewById<ImageView>(R.id.orangeColor)
+        val circle1 = dialogLayout.findViewById<ImageView>(R.id.redCircle)
+        val circle2 = dialogLayout.findViewById<ImageView>(R.id.violetCircle)
+        val circle3 = dialogLayout.findViewById<ImageView>(R.id.yellowCircle)
+        val circle4 = dialogLayout.findViewById<ImageView>(R.id.blueCircle)
+        val circle5 = dialogLayout.findViewById<ImageView>(R.id.greenCircle)
+        val circle6 = dialogLayout.findViewById<ImageView>(R.id.aquaCircle)
+        val circle7 = dialogLayout.findViewById<ImageView>(R.id.darkBlueCircle)
+        val circle8 = dialogLayout.findViewById<ImageView>(R.id.pinkCircle)
+        val circle9 = dialogLayout.findViewById<ImageView>(R.id.darkGreenCircle)
+        val circle10 = dialogLayout.findViewById<ImageView>(R.id.orangeColor)
 
-        redCircle.setOnClickListener {
-            colorPicker.setInitialColor(Color.parseColor("#FF0000"))
+        setColorToCircle(circle1, "color1", "#FF0000")
+        setColorToCircle(circle2, "color2", "#673AB7")
+        setColorToCircle(circle3, "color3", "#FFEB3B")
+        setColorToCircle(circle4, "color4", "#2196F3")
+        setColorToCircle(circle5, "color5", "#00FF0A")
+        setColorToCircle(circle6, "color6", "#00FFFF")
+        setColorToCircle(circle7, "color7", "#003FDD")
+        setColorToCircle(circle8, "color8", "#FF1493")
+        setColorToCircle(circle9, "color9", "#006400")
+        setColorToCircle(circle10, "color10", "#FF8700")
+
+
+        circle1.setOnLongClickListener {
+            showNewColorDialog(circle1, "color1")
+            true
         }
-        violetCircle.setOnClickListener {
-            colorPicker.setInitialColor(Color.parseColor("#673AB7"))
+
+        circle2.setOnLongClickListener {
+            showNewColorDialog(circle2, "color2")
+            true
         }
-        yellowCircle.setOnClickListener {
-            colorPicker.setInitialColor(Color.parseColor("#FFEB3B"))
+
+        circle3.setOnLongClickListener {
+            showNewColorDialog(circle3, "color3")
+            true
         }
-        blueCircle.setOnClickListener {
-            colorPicker.setInitialColor(Color.parseColor("#2196F3"))
+
+        circle4.setOnLongClickListener {
+            showNewColorDialog(circle4, "color4")
+            true
         }
-        greenCircle.setOnClickListener {
-            colorPicker.setInitialColor(Color.parseColor("#00FF0A"))
+
+        circle5.setOnLongClickListener {
+            showNewColorDialog(circle5, "color5")
+            true
         }
-        aquaCircle.setOnClickListener {
-            colorPicker.setInitialColor(Color.parseColor("#00FFFF"))
+
+        circle6.setOnLongClickListener {
+            showNewColorDialog(circle6, "color6")
+            true
         }
-        darkBlueCircle.setOnClickListener {
-            colorPicker.setInitialColor(Color.parseColor("#003FDD"))
+
+        circle7.setOnLongClickListener {
+            showNewColorDialog(circle7, "color7")
+            true
         }
-        pinkCircle.setOnClickListener {
-            colorPicker.setInitialColor(Color.parseColor("#FF1493"))
+
+        circle8.setOnLongClickListener {
+            showNewColorDialog(circle8, "color8")
+            true
         }
-        darkGreenCircle.setOnClickListener {
-            colorPicker.setInitialColor(Color.parseColor("#006400"))
+
+        circle9.setOnLongClickListener {
+            showNewColorDialog(circle9, "color9")
+            true
         }
-        orangeCircle.setOnClickListener {
-            colorPicker.setInitialColor(Color.parseColor("#FF8700"))
+
+        circle10.setOnLongClickListener {
+            showNewColorDialog(circle10, "color10")
+            true
         }
+
+
+        circle1.setOnClickListener {
+            val hexColor = it.getTag(COLOR_KEY).toString()
+            mainColorPicker.setInitialColor(Color.parseColor(hexColor))
+        }
+        circle2.setOnClickListener {
+            val hexColor = it.getTag(COLOR_KEY).toString()
+            mainColorPicker.setInitialColor(Color.parseColor(hexColor))
+        }
+        circle3.setOnClickListener {
+            val hexColor = it.getTag(COLOR_KEY).toString()
+            mainColorPicker.setInitialColor(Color.parseColor(hexColor))
+        }
+        circle4.setOnClickListener {
+            val hexColor = it.getTag(COLOR_KEY).toString()
+            mainColorPicker.setInitialColor(Color.parseColor(hexColor))
+        }
+        circle5.setOnClickListener {
+            val hexColor = it.getTag(COLOR_KEY).toString()
+            mainColorPicker.setInitialColor(Color.parseColor(hexColor))
+        }
+        circle6.setOnClickListener {
+            val hexColor = it.getTag(COLOR_KEY).toString()
+            mainColorPicker.setInitialColor(Color.parseColor(hexColor))
+        }
+        circle7.setOnClickListener {
+            val hexColor = it.getTag(COLOR_KEY).toString()
+            mainColorPicker.setInitialColor(Color.parseColor(hexColor))
+        }
+        circle8.setOnClickListener {
+            val hexColor = it.getTag(COLOR_KEY).toString()
+            mainColorPicker.setInitialColor(Color.parseColor(hexColor))
+        }
+        circle9.setOnClickListener {
+            val hexColor = it.getTag(COLOR_KEY).toString()
+            mainColorPicker.setInitialColor(Color.parseColor(hexColor))
+        }
+        circle10.setOnClickListener {
+            val hexColor = it.getTag(COLOR_KEY).toString()
+            mainColorPicker.setInitialColor(Color.parseColor(hexColor))
+        }
+    }
+
+    private fun setColorToCircle(circle: ImageView, colorKey: String, defaultColor: String) {
+        val color = getColorFromMemory(colorKey, defaultColor)
+        circle.background.setTint(Color.parseColor(color))
+        circle.setTag(COLOR_KEY, color)
     }
 
     private fun showOrHideStatus(state: States) {
@@ -254,16 +340,57 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun hexColorToInt(hex: String): Int {
-        var result = 0
-        try {
-            result = if (hex[0] == '#') {
-                hex.substring(1).toInt(radix = 16)
-            } else {
-                hex.toInt(radix = 16)
-            }
-        } catch (_: Exception) {
+    private fun prepareSetNewColorDialog() {
+        val builder = AlertDialog.Builder(this, R.style.AlertDialogStyle)
+        val inflater = layoutInflater
+        builder.setTitle("Установить новый цвет")
+        val dialogLayout = inflater.inflate(R.layout.set_new_color_dialog, null)
+        builder.setView(dialogLayout)
+        builder.setNegativeButton("Отмена") { dialogInterface, _ -> dialogInterface.dismiss() }
+        builder.setPositiveButton("OK") { dialogInterface, _ ->
+            colorCircleToChange?.background?.setTint(Color.parseColor(newColor))
+            colorCircleToChange?.setTag(COLOR_KEY, newColor)
+            saveColorToMemory(colorKey, newColor)
+            dialogInterface.dismiss()
         }
-        return result
+
+        newColorPicker = dialogLayout.findViewById(R.id.colorPickerView2)
+        newColorPicker.subscribe { color, _, _ ->
+            val hexColor = String.format("#%06X", 0xFFFFFF and color)
+            newColor = hexColor
+        }
+
+        setNewColorDialog = builder.create()
+    }
+
+    private fun showNewColorDialog(circle: ImageView, _colorKey: String) {
+        colorCircleToChange = circle
+        colorKey = _colorKey
+        val hexColor = circle.getTag(COLOR_KEY).toString()
+        newColorPicker.setInitialColor(Color.parseColor(hexColor))
+        setNewColorDialog.show()
+    }
+
+    private fun getColorFromMemory(colorKey: String, defaultColor: String): String {
+        val sharedPref =
+            this.getSharedPreferences("RGB_COLORS", Context.MODE_PRIVATE)
+        val c = sharedPref.getString(colorKey, defaultColor)
+        return c ?: defaultColor
+    }
+
+    private fun saveColorToMemory(colorKey: String, hexColor: String) {
+        val sharedPref =
+            this.getSharedPreferences(
+                "RGB_COLORS",
+                Context.MODE_PRIVATE
+            )
+        with(sharedPref.edit()) {
+            putString(colorKey, hexColor)
+            apply()
+        }
+    }
+
+    companion object {
+        const val COLOR_KEY = R.color.white
     }
 }
