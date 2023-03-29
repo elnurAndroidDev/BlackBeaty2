@@ -7,12 +7,20 @@
     android:background="@drawable/background_img"
     tools:context=".ui.SeatActivity">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.7" />
+
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="110dp"
         android:layout_height="110dp"
         android:layout_marginTop="32dp"
         android:src="@drawable/logo"
+        app:tint="@color/gold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,11 +31,10 @@
         android:layout_height="324dp"
         android:backgroundTint="#99272727"
         app:cardCornerRadius="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/seatPositionCard"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintBottom_toTopOf="@+id/seatPos3Button"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/seatPos1Button">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -99,103 +106,22 @@
 
     </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/seatPositionCard"
-        android:layout_width="324dp"
-        android:layout_height="324dp"
-        android:backgroundTint="#99272727"
-        app:cardCornerRadius="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/directionsCard"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/seatPos1Button"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:background="@drawable/button_selected_bg"
-                android:text="1"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="28sp"
-                app:layout_constraintBottom_toTopOf="@+id/seatPos3Button"
-                app:layout_constraintEnd_toStartOf="@+id/seatPos2Button"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/seatPos2Button"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:background="@drawable/button_bg"
-                android:text="2"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="28sp"
-                app:layout_constraintBottom_toTopOf="@+id/seatPos4Button"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/seatPos1Button"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/seatPos3Button"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:background="@drawable/button_bg"
-                android:text="3"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="28sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/seatPos4Button"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/seatPos1Button" />
-
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/seatPos4Button"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:background="@drawable/button_bg"
-                android:text="4"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="28sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/seatPos3Button"
-                app:layout_constraintTop_toBottomOf="@+id/seatPos2Button" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/headButton"
         android:layout_width="152dp"
         android:layout_height="152dp"
-        android:layout_marginBottom="80dp"
         android:background="@drawable/button_selected_bg"
+        android:drawableTop="@drawable/seat_head"
+        android:drawableTint="@color/white"
         android:text="Подголовник"
         android:textAllCaps="true"
         android:textColor="@color/white"
-        android:drawableTop="@drawable/seat_head"
-        android:drawableTint="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/backButton"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/backButton"
@@ -261,6 +187,66 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/seatPos1Button"
+        android:layout_width="170dp"
+        android:layout_height="160dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_selected_bg"
+        android:fontFamily="@font/main_font"
+        android:text="Левое сиденье 1"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/seatPos2Button"
+        android:layout_width="170dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/button_bg"
+        android:fontFamily="@font/main_font"
+        android:text="Правое сиденье 1"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/seatPos3Button"
+        android:layout_width="170dp"
+        android:layout_height="160dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/button_bg"
+        android:fontFamily="@font/main_font"
+        android:text="Левое сиденье 2"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/seatPos4Button"
+        android:layout_width="170dp"
+        android:layout_height="160dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/button_bg"
+        android:fontFamily="@font/main_font"
+        android:text="Правое сиденье 2"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
     private var colorCircleToChange: ImageView? = null
     private var newColor = ""
     private var colorKey = ""
+    private var colorFor = ForRGB
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +58,17 @@ class MainActivity : AppCompatActivity() {
                     ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
             } else {
                 binding.rgbOffButton.imageTintList =
-                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.green))
+                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.gold))
+            }
+        }
+
+        viewModel.starSkyOnOff.observe(this) {
+            if (it == 0) {
+                binding.starSkyOffButton.imageTintList =
+                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
+            } else {
+                binding.starSkyOffButton.imageTintList =
+                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.gold))
             }
         }
 
@@ -67,7 +78,7 @@ class MainActivity : AppCompatActivity() {
                     ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
             } else {
                 binding.lightOffButton.imageTintList =
-                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.green))
+                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.gold))
             }
         }
 
@@ -84,7 +95,17 @@ class MainActivity : AppCompatActivity() {
             lightAlertDialog.show()
         }
 
+        binding.starSkyTextView.setOnClickListener {
+            colorFor = ForStarSky
+            rgbAlertDialog.show()
+        }
+
+        binding.starSkyOffButton.setOnClickListener {
+            viewModel.onOffStarSky()
+        }
+
         binding.rgbTextView.setOnClickListener {
+            colorFor = ForRGB
             rgbAlertDialog.show()
         }
 
@@ -196,7 +217,10 @@ class MainActivity : AppCompatActivity() {
         mainColorPicker.subscribe { color, _, _ ->
             val hexColor = String.format("#%06X", 0xFFFFFF and color)
             val intColor = viewModel.hexColorToInt(hexColor)
-            viewModel.sendRGBColor(intColor)
+            if (colorFor == ForRGB)
+                viewModel.sendRGBColor(intColor)
+            else
+                viewModel.sendStarSkyColor(intColor)
         }
 
         val circle1 = dialogLayout.findViewById<ImageView>(R.id.redCircle)
@@ -392,5 +416,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val COLOR_KEY = R.color.white
+        const val ForRGB = 0
+        const val ForStarSky = 1
     }
 }

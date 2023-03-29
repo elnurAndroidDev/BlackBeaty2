@@ -203,6 +203,25 @@ class Model(private val context: Context) {
         }
     }
 
+    fun sendStarSkyOnOffCommand(setStarSkyOnOff: (Int) -> Unit) {
+        thread {
+            val command = Command(Command.STAR_SKY_ID, 0, 0).toString()
+            val expectedStarSkyOnOffResponse = (((12 * 255) + 0 + 9852) * 1.658 + 0).toInt()
+            try {
+                val request = Request.Builder()
+                    .url("http://$deviceAddress/$command")
+                    .build()
+                client.newCall(request).execute().use { response ->
+                    if (response.isSuccessful) {
+                        val responseInt = response.body!!.string().toInt()
+                        setStarSkyOnOff(responseInt - expectedStarSkyOnOffResponse)
+                    }
+                }
+            } catch (_: Exception) {
+            }
+        }
+    }
+
     fun sendLedBrightness(value: Int, setLightOnOff: (Int) -> Unit) {
         thread {
             val command = Command(Command.LIGHT_ID, 1, value).toString()

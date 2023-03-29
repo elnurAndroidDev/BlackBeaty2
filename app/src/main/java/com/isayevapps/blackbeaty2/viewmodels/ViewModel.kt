@@ -15,6 +15,7 @@ class ViewModel(private val model: Model) {
 
     val ledBrightness = MutableLiveData<Int>()
     val rgbOnOff = MutableLiveData<Int>()
+    val starSkyOnOff = MutableLiveData<Int>()
 
     private var seatPos = 0
     private var seatPart = 0
@@ -82,6 +83,14 @@ class ViewModel(private val model: Model) {
 
     fun sendRGBColor(value: Int) {
         model.sendCommand(Command(Command.RGB_ID, 1, value))
+    }
+
+    fun sendStarSkyColor(value: Int) {
+        model.sendCommand(Command(Command.STAR_SKY_ID, 1, value))
+    }
+
+    fun onOffStarSky() {
+        model.sendStarSkyOnOffCommand { value -> starSkyOnOff.postValue(value) }
     }
 
     fun onOffRGB() {

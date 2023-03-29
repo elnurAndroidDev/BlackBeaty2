@@ -15,7 +15,8 @@
         android:src="@drawable/logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/gold" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/lightCard"
@@ -24,10 +25,10 @@
         android:backgroundTint="#99272727"
         app:cardCornerRadius="16dp"
         app:layout_constraintBottom_toTopOf="@+id/rgbOffCard"
-        app:layout_constraintEnd_toStartOf="@+id/seatsCard"
+        app:layout_constraintEnd_toStartOf="@+id/starSkyCard"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView">
+        app:layout_constraintTop_toBottomOf="@+id/imageView">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -71,7 +72,7 @@
         android:layout_height="224dp"
         android:backgroundTint="#99272727"
         app:cardCornerRadius="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/seatButton"
         app:layout_constraintStart_toStartOf="@+id/lightCard"
         app:layout_constraintTop_toBottomOf="@+id/lightCard">
 
@@ -117,7 +118,7 @@
         android:layout_height="224dp"
         android:backgroundTint="#99272727"
         app:cardCornerRadius="16dp"
-        app:layout_constraintStart_toStartOf="@+id/seatsCard"
+        app:layout_constraintStart_toStartOf="@+id/starSkyCard"
         app:layout_constraintTop_toTopOf="@+id/rgbOffCard">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -167,7 +168,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/seatsCard"
+        android:id="@+id/starSkyCard"
         android:layout_width="224dp"
         android:layout_height="224dp"
         android:backgroundTint="#99272727"
@@ -181,22 +182,34 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/seatButton"
+            <TextView
+                android:id="@+id/starSkyTextView"
                 android:layout_width="192dp"
-                android:layout_height="192dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="12dp"
                 android:background="@drawable/button_background"
                 android:fontFamily="@font/main_font"
                 android:gravity="center"
-                android:text="Сиденья"
+                android:text="Звёздное небо"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <ImageView
+                android:id="@+id/starSkyOffButton"
+                android:layout_width="192dp"
+                android:layout_height="64dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/button_background"
+                android:padding="16dp"
+                android:src="@drawable/on_off_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:tint="@color/white" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
@@ -210,8 +223,8 @@
         app:cardElevation="0dp"
         app:layout_constraintEnd_toStartOf="@+id/rightCurtain1Card"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/seatsCard"
-        app:layout_constraintTop_toTopOf="@+id/seatsCard">
+        app:layout_constraintStart_toEndOf="@+id/starSkyCard"
+        app:layout_constraintTop_toTopOf="@+id/lightCard">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -325,7 +338,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/leftCurtain1Card"
-        app:layout_constraintTop_toTopOf="@+id/leftCurtain1Card">
+        app:layout_constraintTop_toTopOf="@+id/lightCard">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -445,6 +458,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/seatButton"
+        android:layout_width="192dp"
+        android:layout_height="80dp"
+        android:background="@drawable/button_background"
+        android:fontFamily="@font/main_font"
+        android:gravity="center"
+        android:text="Сиденья"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rgbOffCard" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
