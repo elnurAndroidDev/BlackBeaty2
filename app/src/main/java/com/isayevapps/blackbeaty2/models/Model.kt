@@ -184,10 +184,10 @@ class Model(private val context: Context) {
         }
     }
 
-    fun sendRGBOnOffCommand(setRGBOnOff: (Int) -> Unit) {
+    fun sendCommandWithCallback(command: Command, callback: (Int) -> Unit) {
         thread {
-            val command = Command(Command.RGB_ID, 0, 0).toString()
-            val expectedRGBOnOffResponse = (((11 * 255) + 0 + 9852) * 1.658 + 0).toInt()
+            val expectedResponse =
+                (((command.getId() * 255) + command.getOp() + 9852) * 1.658 + command.getValue()).toInt()
             try {
                 val request = Request.Builder()
                     .url("http://$deviceAddress/$command")
@@ -195,7 +195,7 @@ class Model(private val context: Context) {
                 client.newCall(request).execute().use { response ->
                     if (response.isSuccessful) {
                         val responseInt = response.body!!.string().toInt()
-                        setRGBOnOff(responseInt - expectedRGBOnOffResponse)
+                        callback(responseInt - expectedResponse)
                     }
                 }
             } catch (_: Exception) {
@@ -203,90 +203,57 @@ class Model(private val context: Context) {
         }
     }
 
-    fun sendStarSkyOnOffCommand(setStarSkyOnOff: (Int) -> Unit) {
+    fun getBrightnessAndOnOff(
+        ledResponseCallback: (Int) -> Unit,
+        rgbResponseCallback: (Int) -> Unit,
+        starSkyResponseCallback: (Int) -> Unit
+    ) {
         thread {
-            val command = Command(Command.STAR_SKY_ID, 0, 0).toString()
-            val expectedStarSkyOnOffResponse = (((12 * 255) + 0 + 9852) * 1.658 + 0).toInt()
+            val getLedInfoRequest = Command(Command.LIGHT_ID, 5, 0)
+            val expectedLedInfoResponse =
+                (((Command.LIGHT_ID * 255) + 5 + 9852) * 1.658 + 0).toInt()
+            val getRGBInfoRequest = Command(Command.RGB_ID, 5, 0)
+            val expectedRGBInfoResponse = (((Command.RGB_ID * 255) + 5 + 9852) * 1.658 + 0).toInt()
+            val getStarSkyInfoRequest = Command(Command.STAR_SKY_ID, 5, 0)
+            val expectedStarSkyInfoResponse =
+                (((Command.STAR_SKY_ID * 255) + 5 + 9852) * 1.658 + 0).toInt()
             try {
                 val request = Request.Builder()
-                    .url("http://$deviceAddress/$command")
+                    .url("http://$deviceAddress/$getLedInfoRequest")
                     .build()
                 client.newCall(request).execute().use { response ->
                     if (response.isSuccessful) {
                         val responseInt = response.body!!.string().toInt()
-                        setStarSkyOnOff(responseInt - expectedStarSkyOnOffResponse)
+                        ledResponseCallback(responseInt - expectedLedInfoResponse)
                     }
                 }
             } catch (_: Exception) {
             }
-        }
-    }
-
-    fun sendLedBrightness(value: Int, setLightOnOff: (Int) -> Unit) {
-        thread {
-            val command = Command(Command.LIGHT_ID, 1, value).toString()
-            val expectedLightOnOffResponse = (((10 * 255) + 1 + 9852) * 1.658 + value).toInt()
             try {
                 val request = Request.Builder()
-                    .url("http://$deviceAddress/$command")
+                    .url("http://$deviceAddress/$getRGBInfoRequest")
                     .build()
                 client.newCall(request).execute().use { response ->
                     if (response.isSuccessful) {
                         val responseInt = response.body!!.string().toInt()
-                        setLightOnOff(responseInt - expectedLightOnOffResponse)
+                        rgbResponseCallback(responseInt - expectedRGBInfoResponse)
                     }
                 }
             } catch (_: Exception) {
             }
-        }
-    }
-
-    fun sendLightOnOffCommand(setLightOnOff: (Int) -> Unit) {
-        thread {
-            val command = Command(Command.LIGHT_ID, 0, 0).toString()
-            val expectedLightOnOffResponse = (((10 * 255) + 0 + 9852) * 1.658 + 0).toInt()
             try {
                 val request = Request.Builder()
-                    .url("http://$deviceAddress/$command")
+                    .url("http://$deviceAddress/$getStarSkyInfoRequest")
                     .build()
                 client.newCall(request).execute().use { response ->
                     if (response.isSuccessful) {
                         val responseInt = response.body!!.string().toInt()
-                        setLightOnOff(responseInt - expectedLightOnOffResponse)
+                        starSkyResponseCallback(responseInt - expectedStarSkyInfoResponse)
                     }
                 }
             } catch (_: Exception) {
             }
-        }
-    }
 
-    fun getBrightnessAndOnOff(setBrightness: (Int) -> Unit, setRGBOnOffColor: (Int) -> Unit) {
-        thread {
-            val getBrightnessRequest = Command(10, 5, 0).toString()
-            val expectedBrightnessResponse = (((10 * 255) + 5 + 9852) * 1.658 + 0).toInt()
-            val getRGBBrightnessRequest = Command(11, 5, 0).toString()
-            val expectedRGBBrightnessResponse = (((11 * 255) + 5 + 9852) * 1.658 + 0).toInt()
-            try {
-                var request = Request.Builder()
-                    .url("http://$deviceAddress/$getBrightnessRequest")
-                    .build()
-                client.newCall(request).execute().use { response ->
-                    if (response.isSuccessful) {
-                        val responseInt = response.body!!.string().toInt()
-                        setBrightness(responseInt - expectedBrightnessResponse)
-                    }
-                }
-                request = Request.Builder()
-                    .url("http://$deviceAddress/$getRGBBrightnessRequest")
-                    .build()
-                client.newCall(request).execute().use { response ->
-                    if (response.isSuccessful) {
-                        val responseInt = response.body!!.string().toInt()
-                        setRGBOnOffColor(responseInt - expectedRGBBrightnessResponse)
-                    }
-                }
-            } catch (_: Exception) {
-            }
         }
     }
 

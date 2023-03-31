@@ -70,15 +70,28 @@ class ViewModel(private val model: Model) {
     fun getBrightnessAndOnOff() {
         model.getBrightnessAndOnOff(
             { value -> ledBrightness.postValue(value) },
-            { value -> rgbOnOff.postValue(value) })
+            { value -> rgbOnOff.postValue(value) },
+            { value -> starSkyOnOff.postValue(value) })
     }
 
     fun onOffLight() {
-        model.sendLightOnOffCommand { value -> ledBrightness.postValue(value) }
+        model.sendCommandWithCallback(
+            Command(
+                Command.LIGHT_ID,
+                0,
+                0
+            )
+        ) { value -> ledBrightness.postValue(value) }
     }
 
     fun sendLightBrightness(value: Int) {
-        model.sendLedBrightness(value) { v -> ledBrightness.postValue(v) }
+        model.sendCommandWithCallback(
+            Command(
+                Command.LIGHT_ID,
+                1,
+                value
+            )
+        ) { v -> ledBrightness.postValue(v) }
     }
 
     fun sendRGBColor(value: Int) {
@@ -90,11 +103,20 @@ class ViewModel(private val model: Model) {
     }
 
     fun onOffStarSky() {
-        model.sendStarSkyOnOffCommand { value -> starSkyOnOff.postValue(value) }
+        model.sendCommandWithCallback(
+            Command(
+                Command.STAR_SKY_ID,
+                0,
+                0
+            )
+        ) { value -> starSkyOnOff.postValue(value) }
     }
 
     fun onOffRGB() {
-        model.sendRGBOnOffCommand { value -> rgbOnOff.postValue(value) }
+        model.sendCommandWithCallback(Command(Command.RGB_ID, 0, 0))
+        { value ->
+            rgbOnOff.postValue(value)
+        }
     }
 
     fun openCloseBar(value: Int) {

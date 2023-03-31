@@ -7,6 +7,10 @@ data class Command(
 ) {
     override fun toString() = "(\$code\$:${id * 255 + op},\$value\$:$value)"
 
+    fun getId() = id
+    fun getOp() = op
+    fun getValue() = value
+
     companion object {
         const val BAR_ID = 8
         const val LIGHT_ID = 10
