@@ -6,15 +6,21 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
+import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import com.google.android.material.tabs.TabLayout
 import com.isayevapps.blackbeaty2.App
 import com.isayevapps.blackbeaty2.R
 import com.isayevapps.blackbeaty2.databinding.ActivityMainBinding
@@ -32,6 +38,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: ViewModel
     private lateinit var lightBrightness: SeekBar
     private lateinit var newColorPicker: ColorPickerView
+    private lateinit var spinner: Spinner
+    private lateinit var tabLayout: TabLayout
     private var colorCircleToChange: ImageView? = null
     private var newColor = ""
     private var colorKey = ""
@@ -44,13 +52,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModel = (application as App).viewModel
-        viewModel.init(this, savedInstanceState == null)
+        /*viewModel.init(this, savedInstanceState == null)
         viewModel.states.observe(this) {
             showOrHideStatus(it)
             if (it is States.Connection) {
                 viewModel.searchDevice()
             }
-        }
+        }*/
 
         viewModel.rgbOnOff.observe(this) {
             if (it == 0) {
@@ -212,6 +220,17 @@ class MainActivity : AppCompatActivity() {
         builder.setPositiveButton("OK") { dialogInterface, _ -> dialogInterface.dismiss() }
         rgbAlertDialog = builder.create()
 
+        val circle1 = dialogLayout.findViewById<ImageView>(R.id.redCircle)
+        val circle2 = dialogLayout.findViewById<ImageView>(R.id.violetCircle)
+        val circle3 = dialogLayout.findViewById<ImageView>(R.id.yellowCircle)
+        val circle4 = dialogLayout.findViewById<ImageView>(R.id.blueCircle)
+        val circle5 = dialogLayout.findViewById<ImageView>(R.id.greenCircle)
+        val circle6 = dialogLayout.findViewById<ImageView>(R.id.aquaCircle)
+        val circle7 = dialogLayout.findViewById<ImageView>(R.id.darkBlueCircle)
+        val circle8 = dialogLayout.findViewById<ImageView>(R.id.pinkCircle)
+        val circle9 = dialogLayout.findViewById<ImageView>(R.id.darkGreenCircle)
+        val circle10 = dialogLayout.findViewById<ImageView>(R.id.orangeColor)
+
         val mainColorPicker = dialogLayout.findViewById<ColorPickerView>(R.id.colorPickerView)
         mainColorPicker.setInitialColor(Color.WHITE)
         mainColorPicker.subscribe { color, _, _ ->
@@ -223,16 +242,57 @@ class MainActivity : AppCompatActivity() {
                 viewModel.sendStarSkyColor(intColor)
         }
 
-        val circle1 = dialogLayout.findViewById<ImageView>(R.id.redCircle)
-        val circle2 = dialogLayout.findViewById<ImageView>(R.id.violetCircle)
-        val circle3 = dialogLayout.findViewById<ImageView>(R.id.yellowCircle)
-        val circle4 = dialogLayout.findViewById<ImageView>(R.id.blueCircle)
-        val circle5 = dialogLayout.findViewById<ImageView>(R.id.greenCircle)
-        val circle6 = dialogLayout.findViewById<ImageView>(R.id.aquaCircle)
-        val circle7 = dialogLayout.findViewById<ImageView>(R.id.darkBlueCircle)
-        val circle8 = dialogLayout.findViewById<ImageView>(R.id.pinkCircle)
-        val circle9 = dialogLayout.findViewById<ImageView>(R.id.darkGreenCircle)
-        val circle10 = dialogLayout.findViewById<ImageView>(R.id.orangeColor)
+        val colorPickerCover = dialogLayout.findViewById<View>(R.id.colorPickerCover)
+
+        spinner = dialogLayout.findViewById<Spinner>(R.id.effectsSpinner)
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.effects,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+        }
+
+        spinner.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                pos: Int,
+                id: Long
+            ) {
+                val effect = parent?.getItemAtPosition(pos).toString()
+                if (effect == "Цвет") {
+                    colorPickerCover.visibility = View.GONE
+                    circle1.isEnabled = true
+                    circle2.isEnabled = true
+                    circle3.isEnabled = true
+                    circle4.isEnabled = true
+                    circle5.isEnabled = true
+                    circle6.isEnabled = true
+                    circle7.isEnabled = true
+                    circle8.isEnabled = true
+                    circle9.isEnabled = true
+                    circle10.isEnabled = true
+                } else {
+                    colorPickerCover.visibility = View.VISIBLE
+                    circle1.isEnabled = false
+                    circle2.isEnabled = false
+                    circle3.isEnabled = false
+                    circle4.isEnabled = false
+                    circle5.isEnabled = false
+                    circle6.isEnabled = false
+                    circle7.isEnabled = false
+                    circle8.isEnabled = false
+                    circle9.isEnabled = false
+                    circle10.isEnabled = false
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+        }
 
         setColorToCircle(circle1, "color1", "#FF0000")
         setColorToCircle(circle2, "color2", "#673AB7")

@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Управление</string>
+
+    <string-array name="effects">
+        <item>Цвет</item>
+        <item>Радуга</item>
+        <item>Фокус</item>
+    </string-array>
 </resources>
