@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green">#00FF00</color>
     <color name="gold">#EABA0E</color>
+    <color name="selectedColor">#201059</color>
+    <color name="unselectedColor">#242939</color>
 </resources>

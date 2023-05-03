@@ -13,8 +13,8 @@ class ViewModel(private val model: Model) {
     private val _states = MutableLiveData<States>()
     val states = _states as LiveData<States>
 
-    val ledBrightness = MutableLiveData<Int>()
-    val rgbOnOff = MutableLiveData<Int>()
+    val lightBrightness = MutableLiveData<Int>()
+    val ledOnOff = MutableLiveData<Int>()
     val starSkyOnOff = MutableLiveData<Int>()
 
     private var seatPos = 0
@@ -69,8 +69,8 @@ class ViewModel(private val model: Model) {
 
     fun getBrightnessAndOnOff() {
         model.getBrightnessAndOnOff(
-            { value -> ledBrightness.postValue(value) },
-            { value -> rgbOnOff.postValue(value) },
+            { value -> lightBrightness.postValue(value) },
+            { value -> ledOnOff.postValue(value) },
             { value -> starSkyOnOff.postValue(value) })
     }
 
@@ -81,7 +81,7 @@ class ViewModel(private val model: Model) {
                 0,
                 0
             )
-        ) { value -> ledBrightness.postValue(value) }
+        ) { value -> lightBrightness.postValue(value) }
     }
 
     fun sendLightBrightness(value: Int) {
@@ -91,15 +91,11 @@ class ViewModel(private val model: Model) {
                 1,
                 value
             )
-        ) { v -> ledBrightness.postValue(v) }
+        ) { v -> lightBrightness.postValue(v) }
     }
 
-    fun sendRGBColor(value: Int) {
-        model.sendCommand(Command(Command.RGB_ID, 1, value))
-    }
-
-    fun sendStarSkyColor(value: Int) {
-        model.sendCommand(Command(Command.STAR_SKY_ID, 1, value))
+    fun sendColor(value: Int) {
+        model.sendCommand(Command(Command.COLOR_ID, 0, value))
     }
 
     fun onOffStarSky() {
@@ -112,10 +108,9 @@ class ViewModel(private val model: Model) {
         ) { value -> starSkyOnOff.postValue(value) }
     }
 
-    fun onOffRGB() {
-        model.sendCommandWithCallback(Command(Command.RGB_ID, 0, 0))
-        { value ->
-            rgbOnOff.postValue(value)
+    fun onOffLed() {
+        model.sendCommandWithCallback(Command(Command.RGB_UP_ID, 0, 0)) { value ->
+            ledOnOff.postValue(value)
         }
     }
 
@@ -150,5 +145,9 @@ class ViewModel(private val model: Model) {
         } catch (_: Exception) {
         }
         return result
+    }
+
+    fun sendEffect(ledId: Int, op: Int) {
+        model.sendCommand(Command(ledId, op, 0))
     }
 }

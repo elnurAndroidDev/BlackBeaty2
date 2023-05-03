@@ -17,4 +17,12 @@
     <style name="AlertDialogStyle" parent="Theme.Material3.Dark.Dialog.Alert">
         <item name="elevation">2dp</item>
     </style>
+
+    <style name="MineCustomTabTextSmall" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="MineCustomTabTextBig" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">20sp</item>
+    </style>
 </resources>

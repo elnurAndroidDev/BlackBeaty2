@@ -4,6 +4,12 @@
     <string-array name="effects">
         <item>Цвет</item>
         <item>Радуга</item>
+        <item>Конфетти</item>
+        <item>Бегущие огни</item>
+        <item>Циклон</item>
         <item>Фокус</item>
+        <item>Радуга с мерцанием</item>
+        <item>Все эффекты</item>
+        <item>Светомузыка</item>
     </string-array>
 </resources>

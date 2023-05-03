@@ -14,8 +14,8 @@
 
     <ImageView
         android:id="@+id/redCircle"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:layout_marginStart="16dp"
         android:background="@drawable/color_button_bg"
         android:backgroundTint="#FF0000"
@@ -23,12 +23,12 @@
         app:layout_constraintEnd_toStartOf="@+id/violetCircle"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/effectsSpinner" />
 
     <ImageView
         android:id="@+id/greenCircle"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/color_button_bg"
@@ -40,8 +40,8 @@
 
     <ImageView
         android:id="@+id/blueCircle"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:layout_marginStart="16dp"
         android:background="@drawable/color_button_bg"
         android:backgroundTint="#2196F3"
@@ -52,8 +52,8 @@
 
     <ImageView
         android:id="@+id/yellowCircle"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:layout_marginStart="16dp"
         android:background="@drawable/color_button_bg"
         android:backgroundTint="#FFEB3B"
@@ -64,8 +64,8 @@
 
     <ImageView
         android:id="@+id/violetCircle"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:layout_marginStart="16dp"
         android:background="@drawable/color_button_bg"
         android:backgroundTint="#673AB7"
@@ -76,8 +76,8 @@
 
     <ImageView
         android:id="@+id/aquaCircle"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:layout_marginStart="16dp"
         android:background="@drawable/color_button_bg"
         android:backgroundTint="#00FFFF"
@@ -88,21 +88,21 @@
         app:layout_constraintTop_toBottomOf="@+id/redCircle" />
 
     <ImageView
-        android:id="@+id/darkBlueCircle"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:id="@+id/pinkCircle"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:layout_marginStart="16dp"
         android:background="@drawable/color_button_bg"
-        android:backgroundTint="#003FDD"
-        app:layout_constraintEnd_toStartOf="@+id/pinkCircle"
+        android:backgroundTint="#FF1493"
+        app:layout_constraintEnd_toStartOf="@+id/darkGreenCircle"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/aquaCircle"
+        app:layout_constraintStart_toEndOf="@+id/darkBlueCircle"
         app:layout_constraintTop_toTopOf="@+id/aquaCircle" />
 
     <ImageView
         android:id="@+id/darkGreenCircle"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:layout_marginStart="16dp"
         android:background="@drawable/color_button_bg"
         android:backgroundTint="#006400"
@@ -113,8 +113,8 @@
 
     <ImageView
         android:id="@+id/orangeColor"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/color_button_bg"
@@ -125,27 +125,84 @@
         app:layout_constraintTop_toTopOf="@+id/aquaCircle" />
 
     <ImageView
-        android:id="@+id/pinkCircle"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:id="@+id/darkBlueCircle"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:layout_marginStart="16dp"
         android:background="@drawable/color_button_bg"
-        android:backgroundTint="#FF1493"
-        app:layout_constraintEnd_toStartOf="@+id/darkGreenCircle"
+        android:backgroundTint="#003FDD"
+        app:layout_constraintEnd_toStartOf="@+id/pinkCircle"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/darkBlueCircle"
+        app:layout_constraintStart_toEndOf="@+id/aquaCircle"
         app:layout_constraintTop_toTopOf="@+id/aquaCircle" />
 
     <top.defaults.colorpicker.ColorPickerView
         android:id="@+id/colorPickerView"
-        android:layout_width="400dp"
-        android:layout_height="400dp"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
         android:background="@drawable/color_picker_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="parent"
         app:onlyUpdateOnTouchEventUp="true" />
+
+
+    <Spinner
+        android:id="@+id/effectsSpinner"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="@color/white"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/redCircle"
+        app:layout_constraintEnd_toStartOf="@+id/colorPickerView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/effectsSpinner"
+        app:layout_constraintEnd_toEndOf="@+id/effectsSpinner"
+        app:layout_constraintStart_toStartOf="@+id/effectsSpinner"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabBackground="@drawable/tabs_selector"
+        app:tabGravity="fill"
+        app:tabIndicator="@null"
+        app:tabMaxWidth="0dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/black"
+        app:tabTextAppearance="@style/MineCustomTabTextSmall"
+        app:tabTextColor="#B5B5B5">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/topLedTab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Верхняя" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/bottomLedTab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Нижняя" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <View
+        android:id="@+id/colorPickerCover"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:elevation="5dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/colorPickerView"
+        app:layout_constraintEnd_toEndOf="@+id/colorPickerView"
+        app:layout_constraintStart_toStartOf="@+id/colorPickerView"
+        app:layout_constraintTop_toTopOf="@+id/colorPickerView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

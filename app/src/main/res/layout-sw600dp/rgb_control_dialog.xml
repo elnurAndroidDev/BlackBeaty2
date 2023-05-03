@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -15,7 +14,7 @@
         app:layout_constraintEnd_toStartOf="@+id/violetCircle"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/effectsSpinner" />
 
     <ImageView
         android:id="@+id/violetCircle"
@@ -127,6 +126,61 @@
         app:layout_constraintEnd_toEndOf="@+id/orangeColor"
         app:layout_constraintStart_toStartOf="@+id/aquaCircle"
         app:layout_constraintTop_toBottomOf="@+id/aquaCircle" />
+
+    <View
+        android:id="@+id/colorPickerCover"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:elevation="5dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/colorPickerView"
+        app:layout_constraintEnd_toEndOf="@+id/colorPickerView"
+        app:layout_constraintStart_toStartOf="@+id/colorPickerView"
+        app:layout_constraintTop_toTopOf="@+id/colorPickerView" />
+
+    <Spinner
+        android:id="@+id/effectsSpinner"
+        android:layout_width="0dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/white"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@+id/greenCircle"
+        app:layout_constraintStart_toStartOf="@+id/redCircle"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="0dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="16dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@+id/effectsSpinner"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/effectsSpinner"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabBackground="@drawable/tabs_selector"
+        app:tabGravity="fill"
+        app:tabIndicator="@null"
+        app:tabMaxWidth="0dp"
+        app:tabMode="fixed"
+        app:tabTextAppearance="@style/MineCustomTabTextBig"
+        app:tabSelectedTextColor="@color/black"
+        app:tabTextColor="#B5B5B5">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/topLedTab"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Верхняя" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/bottomLedTab"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Нижняя" />
+    </com.google.android.material.tabs.TabLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

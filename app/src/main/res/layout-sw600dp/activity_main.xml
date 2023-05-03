@@ -124,7 +124,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/rgbOffCard"
+        android:id="@+id/starSkyCard"
         android:layout_width="224dp"
         android:layout_height="214dp"
         android:backgroundTint="#99272727"
@@ -140,14 +140,14 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/rgbTextView"
+                android:id="@+id/starSkyTextView"
                 android:layout_width="192dp"
                 android:layout_height="108dp"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/button_background"
                 android:fontFamily="@font/main_font"
                 android:gravity="center"
-                android:text="Подсветка"
+                android:text="Звёздное небо"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="20sp"
@@ -156,7 +156,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/rgbOffButton"
+                android:id="@+id/starSkyOffButton"
                 android:layout_width="192dp"
                 android:layout_height="64dp"
                 android:layout_marginBottom="12dp"
@@ -180,8 +180,8 @@
         app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/starSkyCard"
-        app:layout_constraintTop_toTopOf="@+id/starSkyCard">
+        app:layout_constraintStart_toEndOf="@+id/ledCard"
+        app:layout_constraintTop_toTopOf="@+id/ledCard">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -242,23 +242,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <TextView
-        android:id="@+id/connectionStatus"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#EB272727"
-        android:clickable="true"
-        android:elevation="4dp"
-        android:gravity="center"
-        android:text="Ожидание подключения..."
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/seatButton"
         android:layout_width="192dp"
@@ -286,7 +269,7 @@
         app:layout_constraintEnd_toStartOf="@+id/rightCurtain1Card"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/starSkyCard">
+        app:layout_constraintTop_toBottomOf="@+id/ledCard">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -341,8 +324,8 @@
         android:backgroundTint="#99272727"
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/starSkyCard"
-        app:layout_constraintEnd_toStartOf="@+id/rgbOffCard"
+        app:layout_constraintBottom_toTopOf="@+id/ledCard"
+        app:layout_constraintEnd_toStartOf="@+id/starSkyCard"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView">
@@ -443,7 +426,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/starSkyCard"
+        android:id="@+id/ledCard"
         android:layout_width="224dp"
         android:layout_height="214dp"
         android:backgroundTint="#99272727"
@@ -460,14 +443,14 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/starSkyTextView"
+                android:id="@+id/ledTextView"
                 android:layout_width="192dp"
                 android:layout_height="108dp"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/button_background"
                 android:fontFamily="@font/main_font"
                 android:gravity="center"
-                android:text="Звёздное небо"
+                android:text="Подсветка"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="18sp"
@@ -476,7 +459,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/starSkyOffButton"
+                android:id="@+id/ledOffButton"
                 android:layout_width="192dp"
                 android:layout_height="64dp"
                 android:layout_marginBottom="12dp"
@@ -490,6 +473,23 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/connectionStatus"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#EB272727"
+        android:clickable="true"
+        android:elevation="4dp"
+        android:gravity="center"
+        android:text="Ожидание подключения..."
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

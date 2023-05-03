@@ -43,7 +43,18 @@ class MainActivity : AppCompatActivity() {
     private var colorCircleToChange: ImageView? = null
     private var newColor = ""
     private var colorKey = ""
-    private var colorFor = ForRGB
+
+    private lateinit var circle1: ImageView
+    private lateinit var circle2: ImageView
+    private lateinit var circle3: ImageView
+    private lateinit var circle4: ImageView
+    private lateinit var circle5: ImageView
+    private lateinit var circle6: ImageView
+    private lateinit var circle7: ImageView
+    private lateinit var circle8: ImageView
+    private lateinit var circle9: ImageView
+    private lateinit var circle10: ImageView
+    private lateinit var colorPickerCover: View
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,20 +63,20 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModel = (application as App).viewModel
-        /*viewModel.init(this, savedInstanceState == null)
+        viewModel.init(this, savedInstanceState == null)
         viewModel.states.observe(this) {
             showOrHideStatus(it)
             if (it is States.Connection) {
                 viewModel.searchDevice()
             }
-        }*/
+        }
 
-        viewModel.rgbOnOff.observe(this) {
+        viewModel.ledOnOff.observe(this) {
             if (it == 0) {
-                binding.rgbOffButton.imageTintList =
+                binding.ledOffButton.imageTintList =
                     ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
             } else {
-                binding.rgbOffButton.imageTintList =
+                binding.ledOffButton.imageTintList =
                     ColorStateList.valueOf(ContextCompat.getColor(this, R.color.gold))
             }
         }
@@ -80,7 +91,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.ledBrightness.observe(this) {
+        viewModel.lightBrightness.observe(this) {
             if (it == 0) {
                 binding.lightOffButton.imageTintList =
                     ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
@@ -99,12 +110,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.lightTextView.setOnClickListener {
-            lightBrightness.progress = viewModel.ledBrightness.value ?: 0
+            lightBrightness.progress = viewModel.lightBrightness.value ?: 0
             lightAlertDialog.show()
         }
 
         binding.starSkyTextView.setOnClickListener {
-            colorFor = ForStarSky
+            tabLayout.visibility = View.GONE
+            spinner.visibility = View.GONE
+            enableColors(true)
+            rgbAlertDialog.setTitle("Цвет звёздного неба")
             rgbAlertDialog.show()
         }
 
@@ -112,13 +126,18 @@ class MainActivity : AppCompatActivity() {
             viewModel.onOffStarSky()
         }
 
-        binding.rgbTextView.setOnClickListener {
-            colorFor = ForRGB
+        binding.ledTextView.setOnClickListener {
+            tabLayout.visibility = View.VISIBLE
+            spinner.visibility = View.VISIBLE
+            val effect = getEffectFromMemory()
+            spinner.setSelection(effect)
+            enableColors(effect == 0)
+            rgbAlertDialog.setTitle("Управление подсветкой")
             rgbAlertDialog.show()
         }
 
-        binding.rgbOffButton.setOnClickListener {
-            viewModel.onOffRGB()
+        binding.ledOffButton.setOnClickListener {
+            viewModel.onOffLed()
         }
 
         binding.lightOffButton.setOnClickListener {
@@ -220,37 +239,35 @@ class MainActivity : AppCompatActivity() {
         builder.setPositiveButton("OK") { dialogInterface, _ -> dialogInterface.dismiss() }
         rgbAlertDialog = builder.create()
 
-        val circle1 = dialogLayout.findViewById<ImageView>(R.id.redCircle)
-        val circle2 = dialogLayout.findViewById<ImageView>(R.id.violetCircle)
-        val circle3 = dialogLayout.findViewById<ImageView>(R.id.yellowCircle)
-        val circle4 = dialogLayout.findViewById<ImageView>(R.id.blueCircle)
-        val circle5 = dialogLayout.findViewById<ImageView>(R.id.greenCircle)
-        val circle6 = dialogLayout.findViewById<ImageView>(R.id.aquaCircle)
-        val circle7 = dialogLayout.findViewById<ImageView>(R.id.darkBlueCircle)
-        val circle8 = dialogLayout.findViewById<ImageView>(R.id.pinkCircle)
-        val circle9 = dialogLayout.findViewById<ImageView>(R.id.darkGreenCircle)
-        val circle10 = dialogLayout.findViewById<ImageView>(R.id.orangeColor)
+        circle1 = dialogLayout.findViewById(R.id.redCircle)
+        circle2 = dialogLayout.findViewById(R.id.violetCircle)
+        circle3 = dialogLayout.findViewById(R.id.yellowCircle)
+        circle4 = dialogLayout.findViewById(R.id.blueCircle)
+        circle5 = dialogLayout.findViewById(R.id.greenCircle)
+        circle6 = dialogLayout.findViewById(R.id.aquaCircle)
+        circle7 = dialogLayout.findViewById(R.id.darkBlueCircle)
+        circle8 = dialogLayout.findViewById(R.id.pinkCircle)
+        circle9 = dialogLayout.findViewById(R.id.darkGreenCircle)
+        circle10 = dialogLayout.findViewById(R.id.orangeColor)
+
+        tabLayout = dialogLayout.findViewById(R.id.tabLayout)
+        colorPickerCover = dialogLayout.findViewById(R.id.colorPickerCover)
 
         val mainColorPicker = dialogLayout.findViewById<ColorPickerView>(R.id.colorPickerView)
         mainColorPicker.setInitialColor(Color.WHITE)
         mainColorPicker.subscribe { color, _, _ ->
             val hexColor = String.format("#%06X", 0xFFFFFF and color)
             val intColor = viewModel.hexColorToInt(hexColor)
-            if (colorFor == ForRGB)
-                viewModel.sendRGBColor(intColor)
-            else
-                viewModel.sendStarSkyColor(intColor)
+            viewModel.sendColor(intColor)
         }
 
-        val colorPickerCover = dialogLayout.findViewById<View>(R.id.colorPickerCover)
-
-        spinner = dialogLayout.findViewById<Spinner>(R.id.effectsSpinner)
+        spinner = dialogLayout.findViewById(R.id.effectsSpinner)
         ArrayAdapter.createFromResource(
             this,
             R.array.effects,
-            android.R.layout.simple_spinner_item
+            R.layout.spinner_item
         ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            adapter.setDropDownViewResource(R.layout.dropdown_spinner_item)
             spinner.adapter = adapter
         }
 
@@ -261,31 +278,47 @@ class MainActivity : AppCompatActivity() {
                 pos: Int,
                 id: Long
             ) {
+                Log.d("MyLog", "itemSelected ${parent?.getItemAtPosition(pos).toString()}")
+                val LED_ID =
+                    if (tabLayout.selectedTabPosition == 0) Command.RGB_UP_ID else Command.RGB_DOWN_ID
                 val effect = parent?.getItemAtPosition(pos).toString()
                 if (effect == "Цвет") {
-                    colorPickerCover.visibility = View.GONE
-                    circle1.isEnabled = true
-                    circle2.isEnabled = true
-                    circle3.isEnabled = true
-                    circle4.isEnabled = true
-                    circle5.isEnabled = true
-                    circle6.isEnabled = true
-                    circle7.isEnabled = true
-                    circle8.isEnabled = true
-                    circle9.isEnabled = true
-                    circle10.isEnabled = true
+                    enableColors(true)
+                    saveEffectToMemory(0)
                 } else {
-                    colorPickerCover.visibility = View.VISIBLE
-                    circle1.isEnabled = false
-                    circle2.isEnabled = false
-                    circle3.isEnabled = false
-                    circle4.isEnabled = false
-                    circle5.isEnabled = false
-                    circle6.isEnabled = false
-                    circle7.isEnabled = false
-                    circle8.isEnabled = false
-                    circle9.isEnabled = false
-                    circle10.isEnabled = false
+                    enableColors(false)
+                }
+                if (effect == "Радуга") {
+                    viewModel.sendEffect(LED_ID, 1)
+                    saveEffectToMemory(1)
+                }
+                if (effect == "Конфетти") {
+                    viewModel.sendEffect(LED_ID, 2)
+                    saveEffectToMemory(2)
+                }
+                if (effect == "Бегущие огни") {
+                    viewModel.sendEffect(LED_ID, 3)
+                    saveEffectToMemory(3)
+                }
+                if (effect == "Циклон") {
+                    viewModel.sendEffect(LED_ID, 4)
+                    saveEffectToMemory(4)
+                }
+                if (effect == "Фокус") {
+                    viewModel.sendEffect(LED_ID, 5)
+                    saveEffectToMemory(5)
+                }
+                if (effect == "Радуга с мерцанием") {
+                    viewModel.sendEffect(LED_ID, 6)
+                    saveEffectToMemory(6)
+                }
+                if (effect == "Все эффекты") {
+                    viewModel.sendEffect(LED_ID, 7)
+                    saveEffectToMemory(7)
+                }
+                if (effect == "Светомузыка") {
+                    viewModel.sendEffect(LED_ID, 8)
+                    saveEffectToMemory(8)
                 }
             }
 
@@ -455,6 +488,20 @@ class MainActivity : AppCompatActivity() {
         setNewColorDialog.show()
     }
 
+    private fun enableColors(flag: Boolean){
+        colorPickerCover.visibility = if (flag) View.GONE else View.VISIBLE
+        circle1.isEnabled = flag
+        circle2.isEnabled = flag
+        circle3.isEnabled = flag
+        circle4.isEnabled = flag
+        circle5.isEnabled = flag
+        circle6.isEnabled = flag
+        circle7.isEnabled = flag
+        circle8.isEnabled = flag
+        circle9.isEnabled = flag
+        circle10.isEnabled = flag
+    }
+
     private fun getColorFromMemory(colorKey: String, defaultColor: String): String {
         val sharedPref =
             this.getSharedPreferences("RGB_COLORS", Context.MODE_PRIVATE)
@@ -474,9 +521,26 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun getEffectFromMemory(): Int {
+        val sharedPref =
+            this.getSharedPreferences("RGB_EFFECTS", Context.MODE_PRIVATE)
+        val c = sharedPref.getInt("Effect", 0)
+        return c ?: 0
+    }
+
+    private fun saveEffectToMemory(effect: Int) {
+        val sharedPref =
+            this.getSharedPreferences(
+                "RGB_EFFECTS",
+                Context.MODE_PRIVATE
+            )
+        with(sharedPref.edit()) {
+            putInt("Effect", effect)
+            apply()
+        }
+    }
+
     companion object {
         const val COLOR_KEY = R.color.white
-        const val ForRGB = 0
-        const val ForStarSky = 1
     }
 }
