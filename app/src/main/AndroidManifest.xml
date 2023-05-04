@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
@@ -20,6 +19,9 @@
         android:theme="@style/Theme.BlackBeaty2"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.LightActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.SeatActivity"
             android:exported="false" />

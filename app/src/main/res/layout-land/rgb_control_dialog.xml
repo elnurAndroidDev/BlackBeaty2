@@ -147,39 +147,7 @@
         app:layout_constraintEnd_toStartOf="@+id/colorPickerView"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/effectsSpinner"
-        app:layout_constraintEnd_toEndOf="@+id/effectsSpinner"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/effectsSpinner"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tabBackground="@drawable/tabs_selector"
-        app:tabGravity="fill"
-        app:tabIndicator="@null"
-        app:tabMaxWidth="0dp"
-        app:tabMode="fixed"
-        app:tabTextAppearance="@style/MineCustomTabTextSmall"
-        app:tabSelectedTextColor="@color/black"
-        app:tabTextColor="#B5B5B5">
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/topLedTab"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Верхняя" />
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/bottomLedTab"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Нижняя" />
-    </com.google.android.material.tabs.TabLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/colorPickerCover"

@@ -14,7 +14,8 @@ class ViewModel(private val model: Model) {
     val states = _states as LiveData<States>
 
     val lightBrightness = MutableLiveData<Int>()
-    val ledOnOff = MutableLiveData<Int>()
+    val led1OnOff = MutableLiveData<Int>()
+    val led2OnOff = MutableLiveData<Int>()
     val starSkyOnOff = MutableLiveData<Int>()
 
     private var seatPos = 0
@@ -42,7 +43,10 @@ class ViewModel(private val model: Model) {
 
     private val deviceCallback = object : DeviceCallback {
         override fun onFound() {
-            getBrightnessAndOnOff()
+            getBrightness()
+            getLed1OnOff()
+            getLed2OnOff()
+            getStarSkyOnOff()
             startIsAliveChecking()
             _states.postValue(States.Connected)
         }
@@ -67,11 +71,32 @@ class ViewModel(private val model: Model) {
         model.searchDevice(deviceCallback)
     }
 
-    fun getBrightnessAndOnOff() {
-        model.getBrightnessAndOnOff(
-            { value -> lightBrightness.postValue(value) },
-            { value -> ledOnOff.postValue(value) },
-            { value -> starSkyOnOff.postValue(value) })
+    fun getBrightness() {
+        model.getState(
+            Command(Command.LIGHT_ID, 10, 0)
+        )
+        { value -> lightBrightness.postValue(value) }
+    }
+
+    fun getLed1OnOff() {
+        model.getState(
+            Command(Command.RGB_UP_ID, 10, 0)
+        )
+        { value -> led1OnOff.postValue(value) }
+    }
+
+    fun getLed2OnOff() {
+        model.getState(
+            Command(Command.RGB_DOWN_ID, 10, 0)
+        )
+        { value -> led2OnOff.postValue(value) }
+    }
+
+    fun getStarSkyOnOff() {
+        model.getState(
+            Command(Command.STAR_SKY_ID, 10, 0)
+        )
+        { value -> starSkyOnOff.postValue(value) }
     }
 
     fun onOffLight() {
@@ -108,9 +133,15 @@ class ViewModel(private val model: Model) {
         ) { value -> starSkyOnOff.postValue(value) }
     }
 
-    fun onOffLed() {
+    fun onOffLed1() {
         model.sendCommandWithCallback(Command(Command.RGB_UP_ID, 0, 0)) { value ->
-            ledOnOff.postValue(value)
+            led1OnOff.postValue(value)
+        }
+    }
+
+    fun onOffLed2() {
+        model.sendCommandWithCallback(Command(Command.RGB_DOWN_ID, 0, 0)) { value ->
+            led2OnOff.postValue(value)
         }
     }
 

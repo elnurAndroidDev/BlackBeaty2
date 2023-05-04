@@ -24,12 +24,12 @@ class SeatActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModel = (application as App).viewModel
-        viewModel.states.observe(this) {
+        /*viewModel.states.observe(this) {
             showOrHideStatus(it)
             if (it is States.Connection) {
                 viewModel.searchDevice()
             }
-        }
+        }*/
         selectPos(viewModel.getSeatPos())
         selectPart(viewModel.getSeatPart())
 
@@ -174,20 +174,15 @@ class SeatActivity : AppCompatActivity() {
 
     private fun showOrHideStatus(state: States) {
         if (state is States.WaitForConnection) {
-            if (binding.connectionStatus.visibility != View.VISIBLE)
-                binding.connectionStatus.visibility = View.VISIBLE
-            if (binding.connectionStatus.text.toString() != "Ожидание подключения...")
-                binding.connectionStatus.text = "Ожидание подключения..."
+            binding.connectionStatus.visibility = View.VISIBLE
+            binding.connectionStatus.text = "Ожидание подключения..."
         }
         if (state is States.Connection) {
-            if (binding.connectionStatus.visibility != View.VISIBLE)
-                binding.connectionStatus.visibility = View.VISIBLE
-            if (binding.connectionStatus.text.toString() != "Поиск устройства...")
-                binding.connectionStatus.text = "Поиск устройства..."
+            binding.connectionStatus.visibility = View.VISIBLE
+            binding.connectionStatus.text = "Поиск устройства..."
         }
         if (state is States.Connected) {
-            if (binding.connectionStatus.visibility != View.GONE)
-                binding.connectionStatus.visibility = View.GONE
+            binding.connectionStatus.visibility = View.GONE
         }
     }
 }

@@ -203,57 +203,22 @@ class Model(private val context: Context) {
         }
     }
 
-    fun getBrightnessAndOnOff(
-        lightResponseCallback: (Int) -> Unit,
-        ledResponseCallback: (Int) -> Unit,
-        starSkyResponseCallback: (Int) -> Unit
-    ) {
+    fun getState(command: Command, responseCallback: (Int) -> Unit) {
         thread {
-            val getLightInfoRequest = Command(Command.LIGHT_ID, 5, 0)
-            val expectedLightInfoResponse =
-                (((Command.LIGHT_ID * 255) + 5 + 9852) * 1.658 + 0).toInt()
-            val getLEDInfoRequest = Command(Command.RGB_UP_ID, 5, 0)
-            val expectedLEDInfoResponse = (((Command.RGB_UP_ID * 255) + 5 + 9852) * 1.658 + 0).toInt()
-            val getStarSkyInfoRequest = Command(Command.STAR_SKY_ID, 5, 0)
-            val expectedStarSkyInfoResponse =
-                (((Command.STAR_SKY_ID * 255) + 5 + 9852) * 1.658 + 0).toInt()
+            val expectedResponse =
+                (((command.getId() * 255) + command.getOp() + 9852) * 1.658 + 0).toInt()
             try {
                 val request = Request.Builder()
-                    .url("http://$deviceAddress/$getLightInfoRequest")
+                    .url("http://$deviceAddress/$command")
                     .build()
                 client.newCall(request).execute().use { response ->
                     if (response.isSuccessful) {
                         val responseInt = response.body!!.string().toInt()
-                        lightResponseCallback(responseInt - expectedLightInfoResponse)
+                        responseCallback(responseInt - expectedResponse)
                     }
                 }
             } catch (_: Exception) {
             }
-            try {
-                val request = Request.Builder()
-                    .url("http://$deviceAddress/$getLEDInfoRequest")
-                    .build()
-                client.newCall(request).execute().use { response ->
-                    if (response.isSuccessful) {
-                        val responseInt = response.body!!.string().toInt()
-                        ledResponseCallback(responseInt - expectedLEDInfoResponse)
-                    }
-                }
-            } catch (_: Exception) {
-            }
-            try {
-                val request = Request.Builder()
-                    .url("http://$deviceAddress/$getStarSkyInfoRequest")
-                    .build()
-                client.newCall(request).execute().use { response ->
-                    if (response.isSuccessful) {
-                        val responseInt = response.body!!.string().toInt()
-                        starSkyResponseCallback(responseInt - expectedStarSkyInfoResponse)
-                    }
-                }
-            } catch (_: Exception) {
-            }
-
         }
     }
 
