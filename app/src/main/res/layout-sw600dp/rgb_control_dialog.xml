@@ -5,16 +5,53 @@
     android:layout_height="match_parent">
 
     <ImageView
+        android:id="@+id/bright_ico"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:src="@drawable/brightness_icon"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/rgbSeekBar"
+        app:layout_constraintStart_toStartOf="@+id/redCircle"
+        app:layout_constraintTop_toTopOf="@+id/rgbSeekBar"
+        app:tint="@color/white" />
+
+    <ImageView
+        android:id="@+id/effect_ico"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:src="@drawable/star"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/effectsSpinner"
+        app:layout_constraintStart_toStartOf="@+id/redCircle"
+        app:layout_constraintTop_toTopOf="@+id/effectsSpinner"
+        app:tint="@color/white" />
+
+    <SeekBar
+        android:id="@+id/rgbSeekBar"
+        android:layout_width="0dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:max="255"
+        android:min="50"
+        android:progressTint="@color/gold"
+        android:thumbTint="@color/gold"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@+id/effectsSpinner"
+        app:layout_constraintStart_toEndOf="@+id/bright_ico"
+        app:layout_constraintTop_toBottomOf="@+id/effectsSpinner" />
+
+    <ImageView
         android:id="@+id/redCircle"
         android:layout_width="96dp"
         android:layout_height="96dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/color_button_bg"
         android:backgroundTint="#FF0000"
         app:layout_constraintEnd_toStartOf="@+id/violetCircle"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/effectsSpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/rgbSeekBar" />
 
     <ImageView
         android:id="@+id/violetCircle"
@@ -75,7 +112,7 @@
         android:id="@+id/aquaCircle"
         android:layout_width="96dp"
         android:layout_height="96dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/color_button_bg"
         android:backgroundTint="#00FFFF"
         app:layout_constraintEnd_toStartOf="@+id/darkBlueCircle"
@@ -118,14 +155,16 @@
 
     <top.defaults.colorpicker.ColorPickerView
         android:id="@+id/colorPickerView"
-        android:layout_width="450dp"
-        android:layout_height="450dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="380dp"
+        android:layout_height="380dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/color_picker_bg"
+        app:enableBrightness="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/aquaCircle"
         app:onlyUpdateOnTouchEventUp="true"
-        app:layout_constraintEnd_toEndOf="@+id/orangeColor"
-        app:layout_constraintStart_toStartOf="@+id/aquaCircle"
-        app:layout_constraintTop_toBottomOf="@+id/aquaCircle" />
+        />
 
     <View
         android:id="@+id/colorPickerCover"
@@ -143,11 +182,13 @@
         android:id="@+id/effectsSpinner"
         android:layout_width="0dp"
         android:layout_height="72dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
         android:backgroundTint="@color/white"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="@+id/greenCircle"
-        app:layout_constraintStart_toStartOf="@+id/redCircle"
+        app:layout_constraintStart_toEndOf="@+id/bright_ico"
         app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

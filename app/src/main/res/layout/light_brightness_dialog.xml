@@ -21,7 +21,9 @@
         android:layout_height="64dp"
         android:layout_margin="16dp"
         android:max="255"
-        android:min="20"
+        android:min="50"
+        android:progressTint="@color/gold"
+        android:thumbTint="@color/gold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/bright_rgb_ico"
         app:layout_constraintTop_toTopOf="parent" />

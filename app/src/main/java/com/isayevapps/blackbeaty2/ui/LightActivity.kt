@@ -3,9 +3,7 @@ package com.isayevapps.blackbeaty2.ui
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -13,8 +11,8 @@ import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.google.android.material.tabs.TabLayout
 import com.isayevapps.blackbeaty2.App
 import com.isayevapps.blackbeaty2.R
 import com.isayevapps.blackbeaty2.databinding.ActivityLightBinding
@@ -33,9 +31,12 @@ class LightActivity : AppCompatActivity() {
     private lateinit var setNewColorDialog: AlertDialog
 
     private lateinit var lightBrightness: SeekBar
+    private lateinit var rgbBrightness: SeekBar
+    private lateinit var brightnessIco: ImageView
+    private lateinit var effectIco: ImageView
     private lateinit var newColorPicker: ColorPickerView
-    private lateinit var spinner: Spinner
-    private lateinit var tabLayout: TabLayout
+    private lateinit var mainColorPicker: ColorPickerView
+    private lateinit var effectSpinner: Spinner
     private var colorCircleToChange: ImageView? = null
     private var newColor = ""
     private var colorKey = ""
@@ -125,9 +126,14 @@ class LightActivity : AppCompatActivity() {
 
         binding.led1TextView.setOnClickListener {
             led_id = Command.RGB_UP_ID
-            spinner.visibility = View.VISIBLE
+            effectSpinner.visibility = View.VISIBLE
+            rgbBrightness.visibility = View.VISIBLE
+            brightnessIco.visibility = View.VISIBLE
+            effectIco.visibility = View.VISIBLE
+            mainColorPicker.setEnabledBrightness(false)
+
             val effect = getEffectFromMemory(led_id)
-            spinner.setSelection(effect)
+            effectSpinner.setSelection(effect)
             enableColors(effect == 0)
             rgbAlertDialog.setTitle("Верхняя подсветка")
             rgbAlertDialog.show()
@@ -135,9 +141,13 @@ class LightActivity : AppCompatActivity() {
 
         binding.led2TextView.setOnClickListener {
             led_id = Command.RGB_DOWN_ID
-            spinner.visibility = View.VISIBLE
+            effectSpinner.visibility = View.VISIBLE
+            rgbBrightness.visibility = View.VISIBLE
+            brightnessIco.visibility = View.VISIBLE
+            effectIco.visibility = View.VISIBLE
+            mainColorPicker.setEnabledBrightness(false)
             val effect = getEffectFromMemory(led_id)
-            spinner.setSelection(effect)
+            effectSpinner.setSelection(effect)
             enableColors(effect == 0)
             rgbAlertDialog.setTitle("Нижняя подсветка")
             rgbAlertDialog.show()
@@ -149,7 +159,11 @@ class LightActivity : AppCompatActivity() {
         }
 
         binding.starSkyTextView.setOnClickListener {
-            spinner.visibility = View.GONE
+            effectSpinner.visibility = View.GONE
+            rgbBrightness.visibility = View.GONE
+            brightnessIco.visibility = View.GONE
+            effectIco.visibility = View.GONE
+            mainColorPicker.setEnabledBrightness(true)
             enableColors(true)
             rgbAlertDialog.setTitle("Звёздное небо")
             rgbAlertDialog.show()
@@ -171,13 +185,13 @@ class LightActivity : AppCompatActivity() {
         lightBrightness = dialogLayout.findViewById(R.id.lightSeekBar)
         lightBrightness.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(sb: SeekBar?, progress: Int, fromUser: Boolean) {
-                viewModel.sendLightBrightness(progress)
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
             }
 
             override fun onStopTrackingTouch(p0: SeekBar?) {
+                viewModel.sendLightBrightness(p0?.progress ?: 50)
             }
 
         })
@@ -204,8 +218,11 @@ class LightActivity : AppCompatActivity() {
         circle10 = dialogLayout.findViewById(R.id.orangeColor)
 
         colorPickerCover = dialogLayout.findViewById(R.id.colorPickerCover)
+        rgbBrightness = dialogLayout.findViewById(R.id.rgbSeekBar)
+        brightnessIco = dialogLayout.findViewById(R.id.bright_ico)
+        effectIco = dialogLayout.findViewById(R.id.effect_ico)
 
-        val mainColorPicker = dialogLayout.findViewById<ColorPickerView>(R.id.colorPickerView)
+        mainColorPicker = dialogLayout.findViewById<ColorPickerView>(R.id.colorPickerView)
         mainColorPicker.setInitialColor(Color.WHITE)
         mainColorPicker.subscribe { color, _, _ ->
             val hexColor = String.format("#%06X", 0xFFFFFF and color)
@@ -213,17 +230,17 @@ class LightActivity : AppCompatActivity() {
             viewModel.sendColor(intColor)
         }
 
-        spinner = dialogLayout.findViewById(R.id.effectsSpinner)
+        effectSpinner = dialogLayout.findViewById(R.id.effectsSpinner)
         ArrayAdapter.createFromResource(
             this,
             R.array.effects,
             R.layout.spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(R.layout.dropdown_spinner_item)
-            spinner.adapter = adapter
+            effectSpinner.adapter = adapter
         }
 
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        effectSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -287,97 +304,31 @@ class LightActivity : AppCompatActivity() {
         setColorToCircle(circle9, "color9", "#006400")
         setColorToCircle(circle10, "color10", "#FF8700")
 
+        val circles = arrayOf(
+            circle1,
+            circle2,
+            circle3,
+            circle4,
+            circle5,
+            circle6,
+            circle7,
+            circle8,
+            circle9,
+            circle10
+        )
 
-        circle1.setOnLongClickListener {
-            showNewColorDialog(circle1, "color1")
-            true
-        }
-
-        circle2.setOnLongClickListener {
-            showNewColorDialog(circle2, "color2")
-            true
-        }
-
-        circle3.setOnLongClickListener {
-            showNewColorDialog(circle3, "color3")
-            true
-        }
-
-        circle4.setOnLongClickListener {
-            showNewColorDialog(circle4, "color4")
-            true
-        }
-
-        circle5.setOnLongClickListener {
-            showNewColorDialog(circle5, "color5")
-            true
+        circles.forEachIndexed { id, circle ->
+            circle.setOnLongClickListener {
+                showNewColorDialog(circle, "color${id + 1}")
+                true
+            }
         }
 
-        circle6.setOnLongClickListener {
-            showNewColorDialog(circle6, "color6")
-            true
-        }
-
-        circle7.setOnLongClickListener {
-            showNewColorDialog(circle7, "color7")
-            true
-        }
-
-        circle8.setOnLongClickListener {
-            showNewColorDialog(circle8, "color8")
-            true
-        }
-
-        circle9.setOnLongClickListener {
-            showNewColorDialog(circle9, "color9")
-            true
-        }
-
-        circle10.setOnLongClickListener {
-            showNewColorDialog(circle10, "color10")
-            true
-        }
-
-
-        circle1.setOnClickListener {
-            val hexColor = it.getTag(COLOR_KEY).toString()
-            mainColorPicker.setInitialColor(Color.parseColor(hexColor))
-        }
-        circle2.setOnClickListener {
-            val hexColor = it.getTag(COLOR_KEY).toString()
-            mainColorPicker.setInitialColor(Color.parseColor(hexColor))
-        }
-        circle3.setOnClickListener {
-            val hexColor = it.getTag(COLOR_KEY).toString()
-            mainColorPicker.setInitialColor(Color.parseColor(hexColor))
-        }
-        circle4.setOnClickListener {
-            val hexColor = it.getTag(COLOR_KEY).toString()
-            mainColorPicker.setInitialColor(Color.parseColor(hexColor))
-        }
-        circle5.setOnClickListener {
-            val hexColor = it.getTag(COLOR_KEY).toString()
-            mainColorPicker.setInitialColor(Color.parseColor(hexColor))
-        }
-        circle6.setOnClickListener {
-            val hexColor = it.getTag(COLOR_KEY).toString()
-            mainColorPicker.setInitialColor(Color.parseColor(hexColor))
-        }
-        circle7.setOnClickListener {
-            val hexColor = it.getTag(COLOR_KEY).toString()
-            mainColorPicker.setInitialColor(Color.parseColor(hexColor))
-        }
-        circle8.setOnClickListener {
-            val hexColor = it.getTag(COLOR_KEY).toString()
-            mainColorPicker.setInitialColor(Color.parseColor(hexColor))
-        }
-        circle9.setOnClickListener {
-            val hexColor = it.getTag(COLOR_KEY).toString()
-            mainColorPicker.setInitialColor(Color.parseColor(hexColor))
-        }
-        circle10.setOnClickListener {
-            val hexColor = it.getTag(COLOR_KEY).toString()
-            mainColorPicker.setInitialColor(Color.parseColor(hexColor))
+        for (circle in circles) {
+            circle.setOnClickListener {
+                val hexColor = it.getTag(COLOR_KEY).toString()
+                mainColorPicker.setInitialColor(Color.parseColor(hexColor))
+            }
         }
     }
 

@@ -5,8 +5,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/effect_ico"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/star"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/effectsSpinner"
+        app:layout_constraintStart_toStartOf="@+id/bright_ico"
+        app:layout_constraintTop_toTopOf="@+id/effectsSpinner"
+        app:tint="@color/white" />
+
+    <ImageView
+        android:id="@+id/bright_ico"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/brightness_icon"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/rgbSeekBar"
+        app:layout_constraintStart_toStartOf="@+id/redCircle"
+        app:layout_constraintTop_toTopOf="@+id/rgbSeekBar"
+        app:tint="@color/white" />
+
+    <SeekBar
+        android:id="@+id/rgbSeekBar"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:max="255"
+        android:min="50"
+        android:progressTint="@color/gold"
+        android:thumbTint="@color/gold"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/redCircle"
+        app:layout_constraintEnd_toEndOf="@+id/greenCircle"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/bright_ico"
+        app:layout_constraintTop_toBottomOf="@+id/effectsSpinner" />
+
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
+        android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -14,21 +53,58 @@
 
     <ImageView
         android:id="@+id/redCircle"
-        android:layout_width="88dp"
-        android:layout_height="88dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/color_button_bg"
         android:backgroundTint="#FF0000"
         app:layout_constraintBottom_toTopOf="@+id/aquaCircle"
         app:layout_constraintEnd_toStartOf="@+id/violetCircle"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/effectsSpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/rgbSeekBar" />
+
+    <ImageView
+        android:id="@+id/violetCircle"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/color_button_bg"
+        android:backgroundTint="#673AB7"
+        app:layout_constraintEnd_toStartOf="@+id/yellowCircle"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/redCircle"
+        app:layout_constraintTop_toTopOf="@+id/redCircle" />
+
+    <ImageView
+        android:id="@+id/yellowCircle"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/color_button_bg"
+        android:backgroundTint="#FFEB3B"
+        app:layout_constraintEnd_toStartOf="@+id/blueCircle"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/violetCircle"
+        app:layout_constraintTop_toTopOf="@+id/redCircle" />
+
+    <ImageView
+        android:id="@+id/blueCircle"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/color_button_bg"
+        android:backgroundTint="#2196F3"
+        app:layout_constraintEnd_toStartOf="@+id/greenCircle"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/yellowCircle"
+        app:layout_constraintTop_toTopOf="@+id/redCircle" />
 
     <ImageView
         android:id="@+id/greenCircle"
-        android:layout_width="88dp"
-        android:layout_height="88dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/color_button_bg"
@@ -39,45 +115,21 @@
         app:layout_constraintTop_toTopOf="@+id/redCircle" />
 
     <ImageView
-        android:id="@+id/blueCircle"
-        android:layout_width="88dp"
-        android:layout_height="88dp"
+        android:id="@+id/pinkCircle"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginStart="16dp"
         android:background="@drawable/color_button_bg"
-        android:backgroundTint="#2196F3"
-        app:layout_constraintEnd_toStartOf="@+id/greenCircle"
+        android:backgroundTint="#FF1493"
+        app:layout_constraintEnd_toStartOf="@+id/darkGreenCircle"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/yellowCircle"
-        app:layout_constraintTop_toTopOf="@+id/redCircle" />
-
-    <ImageView
-        android:id="@+id/yellowCircle"
-        android:layout_width="88dp"
-        android:layout_height="88dp"
-        android:layout_marginStart="16dp"
-        android:background="@drawable/color_button_bg"
-        android:backgroundTint="#FFEB3B"
-        app:layout_constraintEnd_toStartOf="@+id/blueCircle"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/violetCircle"
-        app:layout_constraintTop_toTopOf="@+id/redCircle" />
-
-    <ImageView
-        android:id="@+id/violetCircle"
-        android:layout_width="88dp"
-        android:layout_height="88dp"
-        android:layout_marginStart="16dp"
-        android:background="@drawable/color_button_bg"
-        android:backgroundTint="#673AB7"
-        app:layout_constraintEnd_toStartOf="@+id/yellowCircle"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/redCircle"
-        app:layout_constraintTop_toTopOf="@+id/redCircle" />
+        app:layout_constraintStart_toEndOf="@+id/darkBlueCircle"
+        app:layout_constraintTop_toTopOf="@+id/aquaCircle" />
 
     <ImageView
         android:id="@+id/aquaCircle"
-        android:layout_width="88dp"
-        android:layout_height="88dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginStart="16dp"
         android:background="@drawable/color_button_bg"
         android:backgroundTint="#00FFFF"
@@ -88,33 +140,21 @@
         app:layout_constraintTop_toBottomOf="@+id/redCircle" />
 
     <ImageView
-        android:id="@+id/pinkCircle"
-        android:layout_width="88dp"
-        android:layout_height="88dp"
+        android:id="@+id/darkBlueCircle"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginStart="16dp"
         android:background="@drawable/color_button_bg"
-        android:backgroundTint="#FF1493"
-        app:layout_constraintEnd_toStartOf="@+id/darkGreenCircle"
+        android:backgroundTint="#003FDD"
+        app:layout_constraintEnd_toStartOf="@+id/pinkCircle"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/darkBlueCircle"
-        app:layout_constraintTop_toTopOf="@+id/aquaCircle" />
-
-    <ImageView
-        android:id="@+id/darkGreenCircle"
-        android:layout_width="88dp"
-        android:layout_height="88dp"
-        android:layout_marginStart="16dp"
-        android:background="@drawable/color_button_bg"
-        android:backgroundTint="#006400"
-        app:layout_constraintEnd_toStartOf="@+id/orangeColor"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/pinkCircle"
+        app:layout_constraintStart_toEndOf="@+id/aquaCircle"
         app:layout_constraintTop_toTopOf="@+id/aquaCircle" />
 
     <ImageView
         android:id="@+id/orangeColor"
-        android:layout_width="88dp"
-        android:layout_height="88dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/color_button_bg"
@@ -125,40 +165,40 @@
         app:layout_constraintTop_toTopOf="@+id/aquaCircle" />
 
     <ImageView
-        android:id="@+id/darkBlueCircle"
-        android:layout_width="88dp"
-        android:layout_height="88dp"
+        android:id="@+id/darkGreenCircle"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginStart="16dp"
         android:background="@drawable/color_button_bg"
-        android:backgroundTint="#003FDD"
-        app:layout_constraintEnd_toStartOf="@+id/pinkCircle"
+        android:backgroundTint="#006400"
+        app:layout_constraintEnd_toStartOf="@+id/orangeColor"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/aquaCircle"
+        app:layout_constraintStart_toEndOf="@+id/pinkCircle"
         app:layout_constraintTop_toTopOf="@+id/aquaCircle" />
 
     <top.defaults.colorpicker.ColorPickerView
         android:id="@+id/colorPickerView"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:background="@drawable/color_picker_bg"
+        app:enableBrightness="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent"
         app:onlyUpdateOnTouchEventUp="true" />
-
 
     <Spinner
         android:id="@+id/effectsSpinner"
         android:layout_width="0dp"
-        android:layout_height="72dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="@color/white"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/redCircle"
-        app:layout_constraintEnd_toStartOf="@+id/colorPickerView"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/rgbSeekBar"
+        app:layout_constraintEnd_toEndOf="@+id/greenCircle"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/rgbSeekBar"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View

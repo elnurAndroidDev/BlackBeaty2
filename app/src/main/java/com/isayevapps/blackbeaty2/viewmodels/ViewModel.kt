@@ -43,7 +43,7 @@ class ViewModel(private val model: Model) {
 
     private val deviceCallback = object : DeviceCallback {
         override fun onFound() {
-            getBrightness()
+            getLightBrightness()
             getLed1OnOff()
             getLed2OnOff()
             getStarSkyOnOff()
@@ -71,7 +71,7 @@ class ViewModel(private val model: Model) {
         model.searchDevice(deviceCallback)
     }
 
-    fun getBrightness() {
+    fun getLightBrightness() {
         model.getState(
             Command(Command.LIGHT_ID, 10, 0)
         )
@@ -99,16 +99,6 @@ class ViewModel(private val model: Model) {
         { value -> starSkyOnOff.postValue(value) }
     }
 
-    fun onOffLight() {
-        model.sendCommandWithCallback(
-            Command(
-                Command.LIGHT_ID,
-                0,
-                0
-            )
-        ) { value -> lightBrightness.postValue(value) }
-    }
-
     fun sendLightBrightness(value: Int) {
         model.sendCommandWithCallback(
             Command(
@@ -116,7 +106,27 @@ class ViewModel(private val model: Model) {
                 1,
                 value
             )
-        ) { v -> lightBrightness.postValue(v) }
+        ) { _value -> lightBrightness.postValue(_value) }
+    }
+
+    fun sendLed1Brightness(value: Int) {
+        model.sendCommandWithCallback(
+            Command(
+                Command.RGB_UP_ID,
+                2,
+                value
+            )
+        ) { _value -> led1OnOff.postValue(_value) }
+    }
+
+    fun sendLed2Brightness(value: Int) {
+        model.sendCommandWithCallback(
+            Command(
+                Command.RGB_DOWN_ID,
+                2,
+                value
+            )
+        ) { _value -> led2OnOff.postValue(_value) }
     }
 
     fun sendColor(value: Int) {

@@ -203,25 +203,6 @@ class Model(private val context: Context) {
         }
     }
 
-    fun getState(command: Command, responseCallback: (Int) -> Unit) {
-        thread {
-            val expectedResponse =
-                (((command.getId() * 255) + command.getOp() + 9852) * 1.658 + 0).toInt()
-            try {
-                val request = Request.Builder()
-                    .url("http://$deviceAddress/$command")
-                    .build()
-                client.newCall(request).execute().use { response ->
-                    if (response.isSuccessful) {
-                        val responseInt = response.body!!.string().toInt()
-                        responseCallback(responseInt - expectedResponse)
-                    }
-                }
-            } catch (_: Exception) {
-            }
-        }
-    }
-
     fun checkingRequest(): Pair<String, Int> {
         val randomID = (20..100).random()
         val randomValue = (1..10000).random()
