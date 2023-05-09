@@ -159,7 +159,7 @@
         android:layout_height="280dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/color_picker_bg"
-        app:enableBrightness="false"
+        app:enableBrightness="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/aquaCircle"

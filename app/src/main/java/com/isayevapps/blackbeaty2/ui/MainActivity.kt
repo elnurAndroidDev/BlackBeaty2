@@ -1,33 +1,19 @@
 package com.isayevapps.blackbeaty2.ui
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.widget.AdapterView
-import android.widget.AdapterView.OnItemSelectedListener
-import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.SeekBar
-import android.widget.SeekBar.OnSeekBarChangeListener
-import android.widget.Spinner
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import com.google.android.material.tabs.TabLayout
 import com.isayevapps.blackbeaty2.App
 import com.isayevapps.blackbeaty2.R
 import com.isayevapps.blackbeaty2.databinding.ActivityMainBinding
 import com.isayevapps.blackbeaty2.models.Command
 import com.isayevapps.blackbeaty2.viewmodels.States
 import com.isayevapps.blackbeaty2.viewmodels.ViewModel
-import top.defaults.colorpicker.ColorPickerView
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,13 +27,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModel = (application as App).viewModel
-        /*viewModel.init(this, savedInstanceState == null)
+        viewModel.init(this, savedInstanceState == null)
         viewModel.states.observe(this) {
             showOrHideStatus(it)
             if (it is States.Connection) {
                 viewModel.searchDevice()
             }
-        }*/
+        }
 
         binding.seatButton.setOnClickListener {
             startActivity(Intent(this, SeatActivity::class.java))
@@ -58,11 +44,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.downDrawerCloseButton.setOnClickListener {
-            viewModel.openCloseBar(Command.CLOSE_BAR)
+            viewModel.sendBarCommand(Command.CLOSE_BAR)
         }
 
         binding.downDrawerOpenButton.setOnClickListener {
-            viewModel.openCloseBar(Command.OPEN_BAR)
+            viewModel.sendBarCommand(Command.OPEN_BAR)
         }
 
         binding.leftCurtain1CloseButton.setOnTouchListener { view, event ->

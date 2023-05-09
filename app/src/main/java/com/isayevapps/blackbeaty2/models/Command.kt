@@ -15,8 +15,8 @@ data class Command(
         const val BAR_ID = 8
         const val COLOR_ID = 9
         const val LIGHT_ID = 10
-        const val RGB_UP_ID = 12
-        const val RGB_DOWN_ID = 13
+        const val LED1_ID = 12
+        const val LED2_ID = 13
         const val STAR_SKY_ID = 11
         const val UP = 1
         const val DOWN = 2

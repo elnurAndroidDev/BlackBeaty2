@@ -178,10 +178,10 @@
 
     <top.defaults.colorpicker.ColorPickerView
         android:id="@+id/colorPickerView"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="340dp"
+        android:layout_height="340dp"
         android:background="@drawable/color_picker_bg"
-        app:enableBrightness="false"
+        app:enableBrightness="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline"

@@ -155,16 +155,15 @@
 
     <top.defaults.colorpicker.ColorPickerView
         android:id="@+id/colorPickerView"
-        android:layout_width="380dp"
-        android:layout_height="380dp"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/color_picker_bg"
-        app:enableBrightness="false"
+        app:enableBrightness="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/aquaCircle"
-        app:onlyUpdateOnTouchEventUp="true"
-        />
+        app:onlyUpdateOnTouchEventUp="true" />
 
     <View
         android:id="@+id/colorPickerCover"

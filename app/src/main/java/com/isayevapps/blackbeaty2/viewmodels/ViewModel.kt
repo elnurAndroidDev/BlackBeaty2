@@ -1,9 +1,11 @@
 package com.isayevapps.blackbeaty2.viewmodels
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.isayevapps.blackbeaty2.callbacks.DeviceCallback
+import com.isayevapps.blackbeaty2.callbacks.LightObjectUpdater
 import com.isayevapps.blackbeaty2.callbacks.NetworkChangesCallback
 import com.isayevapps.blackbeaty2.models.Command
 import com.isayevapps.blackbeaty2.models.Model
@@ -13,10 +15,18 @@ class ViewModel(private val model: Model) {
     private val _states = MutableLiveData<States>()
     val states = _states as LiveData<States>
 
+    val lightOnOff = MutableLiveData<Int>()
     val lightBrightness = MutableLiveData<Int>()
     val led1OnOff = MutableLiveData<Int>()
+    val led1Brightness = MutableLiveData<Int>()
+    val led1Effect = MutableLiveData<Int>()
+    val led1Color = MutableLiveData<Int>()
     val led2OnOff = MutableLiveData<Int>()
+    val led2Brightness = MutableLiveData<Int>()
+    val led2Effect = MutableLiveData<Int>()
+    val led2Color = MutableLiveData<Int>()
     val starSkyOnOff = MutableLiveData<Int>()
+    val starSkyColor = MutableLiveData<Int>()
 
     private var seatPos = 0
     private var seatPart = 0
@@ -43,10 +53,6 @@ class ViewModel(private val model: Model) {
 
     private val deviceCallback = object : DeviceCallback {
         override fun onFound() {
-            getLightBrightness()
-            getLed1OnOff()
-            getLed2OnOff()
-            getStarSkyOnOff()
             startIsAliveChecking()
             _states.postValue(States.Connected)
         }
@@ -56,10 +62,85 @@ class ViewModel(private val model: Model) {
         }
     }
 
+    private val led1Updater = object : LightObjectUpdater {
+        override fun updateOnOff(value: Int) {
+            led1OnOff.postValue(value)
+        }
+
+        override fun updateEffect(value: Int) {
+            led1Effect.postValue(value)
+        }
+
+        override fun updateBrightness(value: Int) {
+            led1Brightness.postValue(value)
+        }
+
+        override fun updateColor(value: Int) {
+            led1Color.postValue(value)
+        }
+
+    }
+
+    private val led2Updater = object : LightObjectUpdater {
+        override fun updateOnOff(value: Int) {
+            led2OnOff.postValue(value)
+        }
+
+        override fun updateEffect(value: Int) {
+            led2Effect.postValue(value)
+        }
+
+        override fun updateBrightness(value: Int) {
+            led2Brightness.postValue(value)
+        }
+
+        override fun updateColor(value: Int) {
+            led2Color.postValue(value)
+        }
+
+    }
+
+    private val lightUpdater = object : LightObjectUpdater {
+        override fun updateOnOff(value: Int) {
+            lightOnOff.postValue(value)
+        }
+
+        override fun updateEffect(value: Int) {
+
+        }
+
+        override fun updateBrightness(value: Int) {
+            lightBrightness.postValue(value)
+        }
+
+        override fun updateColor(value: Int) {
+        }
+
+    }
+
+    private val starSkyUpdater = object : LightObjectUpdater {
+        override fun updateOnOff(value: Int) {
+            starSkyOnOff.postValue(value)
+        }
+
+        override fun updateEffect(value: Int) {
+
+        }
+
+        override fun updateBrightness(value: Int) {
+        }
+
+        override fun updateColor(value: Int) {
+            starSkyColor.postValue(value)
+        }
+
+    }
+
     fun init(activityContext: Context, isInitial: Boolean) {
         if (isInitial) {
             model.registerNetworkChanges(networkChangesCallback)
             model.setDeviceFinder(activityContext, deviceCallback)
+            model.registerUpdaters(led1Updater, led2Updater, lightUpdater, starSkyUpdater)
         }
     }
 
@@ -71,91 +152,23 @@ class ViewModel(private val model: Model) {
         model.searchDevice(deviceCallback)
     }
 
-    fun getLightBrightness() {
-        model.getState(
-            Command(Command.LIGHT_ID, 10, 0)
-        )
-        { value -> lightBrightness.postValue(value) }
+    fun sendColor(id: Int, value: Int) {
+        model.sendCommand(Command(id, 2, value))
     }
 
-    fun getLed1OnOff() {
-        model.getState(
-            Command(Command.RGB_UP_ID, 10, 0)
-        )
-        { value -> led1OnOff.postValue(value) }
+    fun sendBrightness(id: Int, value: Int) {
+        model.sendCommand(Command(id, 1, value))
     }
 
-    fun getLed2OnOff() {
-        model.getState(
-            Command(Command.RGB_DOWN_ID, 10, 0)
-        )
-        { value -> led2OnOff.postValue(value) }
+    fun sendEffect(id: Int, value: Int) {
+        model.sendCommand(Command(id, 3, value))
     }
 
-    fun getStarSkyOnOff() {
-        model.getState(
-            Command(Command.STAR_SKY_ID, 10, 0)
-        )
-        { value -> starSkyOnOff.postValue(value) }
+    fun sendOnOffLight(id: Int) {
+        model.sendCommand(Command(id, 0, 0))
     }
 
-    fun sendLightBrightness(value: Int) {
-        model.sendCommandWithCallback(
-            Command(
-                Command.LIGHT_ID,
-                1,
-                value
-            )
-        ) { _value -> lightBrightness.postValue(_value) }
-    }
-
-    fun sendLed1Brightness(value: Int) {
-        model.sendCommandWithCallback(
-            Command(
-                Command.RGB_UP_ID,
-                2,
-                value
-            )
-        ) { _value -> led1OnOff.postValue(_value) }
-    }
-
-    fun sendLed2Brightness(value: Int) {
-        model.sendCommandWithCallback(
-            Command(
-                Command.RGB_DOWN_ID,
-                2,
-                value
-            )
-        ) { _value -> led2OnOff.postValue(_value) }
-    }
-
-    fun sendColor(value: Int) {
-        model.sendCommand(Command(Command.COLOR_ID, 0, value))
-    }
-
-    fun onOffStarSky() {
-        model.sendCommandWithCallback(
-            Command(
-                Command.STAR_SKY_ID,
-                0,
-                0
-            )
-        ) { value -> starSkyOnOff.postValue(value) }
-    }
-
-    fun onOffLed1() {
-        model.sendCommandWithCallback(Command(Command.RGB_UP_ID, 0, 0)) { value ->
-            led1OnOff.postValue(value)
-        }
-    }
-
-    fun onOffLed2() {
-        model.sendCommandWithCallback(Command(Command.RGB_DOWN_ID, 0, 0)) { value ->
-            led2OnOff.postValue(value)
-        }
-    }
-
-    fun openCloseBar(value: Int) {
+    fun sendBarCommand(value: Int) {
         model.sendCommand(Command(Command.BAR_ID, 0, value))
     }
 
@@ -186,9 +199,5 @@ class ViewModel(private val model: Model) {
         } catch (_: Exception) {
         }
         return result
-    }
-
-    fun sendEffect(ledId: Int, op: Int) {
-        model.sendCommand(Command(ledId, op, 0))
     }
 }

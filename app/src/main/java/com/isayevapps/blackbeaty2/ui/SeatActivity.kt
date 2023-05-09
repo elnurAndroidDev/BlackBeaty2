@@ -24,12 +24,12 @@ class SeatActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModel = (application as App).viewModel
-        /*viewModel.states.observe(this) {
+        viewModel.states.observe(this) {
             showOrHideStatus(it)
             if (it is States.Connection) {
                 viewModel.searchDevice()
             }
-        }*/
+        }
         selectPos(viewModel.getSeatPos())
         selectPart(viewModel.getSeatPart())
 

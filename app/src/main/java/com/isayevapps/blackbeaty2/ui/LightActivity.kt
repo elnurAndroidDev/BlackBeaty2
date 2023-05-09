@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -40,7 +41,9 @@ class LightActivity : AppCompatActivity() {
     private var colorCircleToChange: ImageView? = null
     private var newColor = ""
     private var colorKey = ""
-    private var led_id = 0
+    private var lightObjectID = 0
+    private var mojnoOtpravlyatCvet = false
+    private var firstInitEffect = false
 
     private lateinit var circle1: ImageView
     private lateinit var circle2: ImageView
@@ -60,13 +63,12 @@ class LightActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModel = (application as App).viewModel
-        /*viewModel.init(this, savedInstanceState == null)
         viewModel.states.observe(this) {
             showOrHideStatus(it)
             if (it is States.Connection) {
                 viewModel.searchDevice()
             }
-        }*/
+        }
 
         viewModel.led1OnOff.observe(this) {
             if (it == 0) {
@@ -74,7 +76,7 @@ class LightActivity : AppCompatActivity() {
                     ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
             } else {
                 binding.led1OffButton.imageTintList =
-                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.gold))
+                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.green))
             }
         }
 
@@ -84,7 +86,7 @@ class LightActivity : AppCompatActivity() {
                     ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
             } else {
                 binding.led2OffButton.imageTintList =
-                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.gold))
+                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.green))
             }
         }
 
@@ -94,61 +96,86 @@ class LightActivity : AppCompatActivity() {
                     ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
             } else {
                 binding.starSkyOffButton.imageTintList =
-                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.gold))
+                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.green))
             }
         }
 
-        viewModel.lightBrightness.observe(this) {
+        viewModel.lightOnOff.observe(this) {
             if (it == 0) {
                 binding.lightOffButton.imageTintList =
                     ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
             } else {
                 binding.lightOffButton.imageTintList =
-                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.gold))
+                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.green))
             }
         }
 
         binding.led1OffButton.setOnClickListener {
-            viewModel.onOffLed1()
+            val onOff = viewModel.led1OnOff.value ?: 0
+            val effect = viewModel.led1Effect.value ?: 0
+            if (onOff == 0) {
+                viewModel.sendEffect(Command.LED1_ID, effect)
+            } else {
+                viewModel.sendOnOffLight(Command.LED1_ID)
+            }
         }
 
         binding.led2OffButton.setOnClickListener {
-            viewModel.onOffLed2()
+            val onOff = viewModel.led2OnOff.value ?: 0
+            val effect = viewModel.led2Effect.value ?: 0
+            if (onOff == 0) {
+                viewModel.sendEffect(Command.LED2_ID, effect)
+            } else {
+                viewModel.sendOnOffLight(Command.LED2_ID)
+            }
         }
 
         binding.lightOffButton.setOnClickListener {
-            viewModel.onOffLight()
+            viewModel.sendOnOffLight(Command.LIGHT_ID)
         }
 
         binding.starSkyOffButton.setOnClickListener {
-            viewModel.onOffStarSky()
+            viewModel.sendOnOffLight(Command.STAR_SKY_ID)
         }
 
         binding.led1TextView.setOnClickListener {
-            led_id = Command.RGB_UP_ID
+            lightObjectID = Command.LED1_ID
+            val effect = viewModel.led1Effect.value ?: 0
+            val progress = viewModel.led1Brightness.value ?: 0
+            val color = viewModel.led1Color.value ?: 0
+            mojnoOtpravlyatCvet = false
+            firstInitEffect = true
+
             effectSpinner.visibility = View.VISIBLE
             rgbBrightness.visibility = View.VISIBLE
             brightnessIco.visibility = View.VISIBLE
             effectIco.visibility = View.VISIBLE
-            mainColorPicker.setEnabledBrightness(false)
 
-            val effect = getEffectFromMemory(led_id)
+            rgbBrightness.progress = progress
             effectSpinner.setSelection(effect)
             enableColors(effect == 0)
+            mainColorPicker.setInitialColor(color)
             rgbAlertDialog.setTitle("Верхняя подсветка")
             rgbAlertDialog.show()
         }
 
         binding.led2TextView.setOnClickListener {
-            led_id = Command.RGB_DOWN_ID
+            lightObjectID = Command.LED2_ID
+            val effect = viewModel.led2Effect.value ?: 0
+            val progress = viewModel.led2Brightness.value ?: 0
+            val color = viewModel.led2Color.value ?: 0
+            mojnoOtpravlyatCvet = false
+            firstInitEffect = true
+
             effectSpinner.visibility = View.VISIBLE
             rgbBrightness.visibility = View.VISIBLE
             brightnessIco.visibility = View.VISIBLE
             effectIco.visibility = View.VISIBLE
-            mainColorPicker.setEnabledBrightness(false)
-            val effect = getEffectFromMemory(led_id)
+
+            rgbBrightness.progress = progress
             effectSpinner.setSelection(effect)
             enableColors(effect == 0)
+            mainColorPicker.setInitialColor(color)
             rgbAlertDialog.setTitle("Нижняя подсветка")
             rgbAlertDialog.show()
         }
@@ -159,12 +186,16 @@ class LightActivity : AppCompatActivity() {
         }
 
         binding.starSkyTextView.setOnClickListener {
+            lightObjectID = Command.STAR_SKY_ID
             effectSpinner.visibility = View.GONE
             rgbBrightness.visibility = View.GONE
             brightnessIco.visibility = View.GONE
             effectIco.visibility = View.GONE
-            mainColorPicker.setEnabledBrightness(true)
+
+            val color = viewModel.starSkyColor.value ?: 0
+            mojnoOtpravlyatCvet = false
             enableColors(true)
+            mainColorPicker.setInitialColor(color)
             rgbAlertDialog.setTitle("Звёздное небо")
             rgbAlertDialog.show()
         }
@@ -191,9 +222,8 @@ class LightActivity : AppCompatActivity() {
             }
 
             override fun onStopTrackingTouch(p0: SeekBar?) {
-                viewModel.sendLightBrightness(p0?.progress ?: 50)
+                viewModel.sendBrightness(Command.LIGHT_ID, p0?.progress ?: 50)
             }
-
         })
     }
 
@@ -222,12 +252,16 @@ class LightActivity : AppCompatActivity() {
         brightnessIco = dialogLayout.findViewById(R.id.bright_ico)
         effectIco = dialogLayout.findViewById(R.id.effect_ico)
 
-        mainColorPicker = dialogLayout.findViewById<ColorPickerView>(R.id.colorPickerView)
+        mainColorPicker = dialogLayout.findViewById(R.id.colorPickerView)
         mainColorPicker.setInitialColor(Color.WHITE)
-        mainColorPicker.subscribe { color, _, _ ->
-            val hexColor = String.format("#%06X", 0xFFFFFF and color)
-            val intColor = viewModel.hexColorToInt(hexColor)
-            viewModel.sendColor(intColor)
+        mainColorPicker.subscribe { color, fromUser, _ ->
+            //Log.d("MyLog", "cvet")
+            if (mojnoOtpravlyatCvet || fromUser) {
+                val hexColor = String.format("#%06X", 0xFFFFFF and color)
+                val intColor = viewModel.hexColorToInt(hexColor)
+                //Log.d("MyLog", hexColor)
+                viewModel.sendColor(lightObjectID, intColor)
+            }
         }
 
         effectSpinner = dialogLayout.findViewById(R.id.effectsSpinner)
@@ -247,51 +281,37 @@ class LightActivity : AppCompatActivity() {
                 pos: Int,
                 id: Long
             ) {
-                val effect = parent?.getItemAtPosition(pos).toString()
-                if (effect == "Цвет") {
+                if (firstInitEffect){
+                    firstInitEffect = false
+                    return
+                }
+
+                //Log.d("MyLog", pos.toString())
+
+                if (pos == 0) {
                     enableColors(true)
-                    saveEffectToMemory(led_id, 0)
-                } else {
+                } else
                     enableColors(false)
-                }
-                if (effect == "Радуга") {
-                    viewModel.sendEffect(led_id, 1)
-                    saveEffectToMemory(led_id, 1)
-                }
-                if (effect == "Конфетти") {
-                    viewModel.sendEffect(led_id, 2)
-                    saveEffectToMemory(led_id, 2)
-                }
-                if (effect == "Бегущие огни") {
-                    viewModel.sendEffect(led_id, 3)
-                    saveEffectToMemory(led_id, 3)
-                }
-                if (effect == "Циклон") {
-                    viewModel.sendEffect(led_id, 4)
-                    saveEffectToMemory(led_id, 4)
-                }
-                if (effect == "Фокус") {
-                    viewModel.sendEffect(led_id, 5)
-                    saveEffectToMemory(led_id, 5)
-                }
-                if (effect == "Радуга с мерцанием") {
-                    viewModel.sendEffect(led_id, 6)
-                    saveEffectToMemory(led_id, 6)
-                }
-                if (effect == "Все эффекты") {
-                    viewModel.sendEffect(led_id, 7)
-                    saveEffectToMemory(led_id, 7)
-                }
-                if (effect == "Светомузыка") {
-                    viewModel.sendEffect(led_id, 8)
-                    saveEffectToMemory(led_id, 8)
-                }
+
+                viewModel.sendEffect(lightObjectID, pos)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
 
         }
+
+        rgbBrightness.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(sb: SeekBar?, progress: Int, fromUser: Boolean) {
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+                viewModel.sendBrightness(lightObjectID, p0?.progress ?: 50)
+            }
+        })
 
         setColorToCircle(circle1, "color1", "#FF0000")
         setColorToCircle(circle2, "color2", "#673AB7")
@@ -326,6 +346,7 @@ class LightActivity : AppCompatActivity() {
 
         for (circle in circles) {
             circle.setOnClickListener {
+                mojnoOtpravlyatCvet = true
                 val hexColor = it.getTag(COLOR_KEY).toString()
                 mainColorPicker.setInitialColor(Color.parseColor(hexColor))
             }
@@ -398,25 +419,6 @@ class LightActivity : AppCompatActivity() {
             )
         with(sharedPref.edit()) {
             putString(colorKey, hexColor)
-            apply()
-        }
-    }
-
-    private fun getEffectFromMemory(key: Int): Int {
-        val sharedPref =
-            this.getSharedPreferences("RGB_EFFECTS", Context.MODE_PRIVATE)
-        val c = sharedPref.getInt("Effect $key", 0)
-        return c ?: 0
-    }
-
-    private fun saveEffectToMemory(key: Int, effect: Int) {
-        val sharedPref =
-            this.getSharedPreferences(
-                "RGB_EFFECTS",
-                Context.MODE_PRIVATE
-            )
-        with(sharedPref.edit()) {
-            putInt("Effect $key", effect)
             apply()
         }
     }
