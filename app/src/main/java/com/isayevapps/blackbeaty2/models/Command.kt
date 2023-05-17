@@ -13,7 +13,7 @@ data class Command(
 
     companion object {
         const val BAR_ID = 8
-        const val COLOR_ID = 9
+        const val DOOR_ID = 9
         const val LIGHT_ID = 10
         const val LED1_ID = 12
         const val LED2_ID = 13

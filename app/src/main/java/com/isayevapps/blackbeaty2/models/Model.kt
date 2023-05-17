@@ -7,16 +7,13 @@ import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.util.Log
 import androidx.core.content.ContextCompat.getSystemService
 import com.google.gson.Gson
-import com.google.gson.JsonSyntaxException
 import com.isayevapps.blackbeaty2.callbacks.DeviceCallback
 import com.isayevapps.blackbeaty2.callbacks.LightObjectUpdater
 import com.isayevapps.blackbeaty2.callbacks.NetworkChangesCallback
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.Response
 import tej.wifitoolslib.DevicesFinder
 import tej.wifitoolslib.interfaces.OnDeviceFindListener
 import tej.wifitoolslib.models.DeviceItem
@@ -58,12 +55,10 @@ class Model(private val context: Context) {
         deviceFinder = DevicesFinder(activityContext, object : OnDeviceFindListener {
             override fun onStart() {
                 deviceAddress = ""
-                //Log.d("MyLog", "started searching")
             }
 
             override fun onDeviceFound(device: DeviceItem) {
                 thread {
-                    //Log.d("MyLog", "device: ${device.ipAddress}")
                     val (commandString, expectedResponse) = checkingRequest()
                     try {
                         val request = Request.Builder()
@@ -72,9 +67,7 @@ class Model(private val context: Context) {
                         client.newCall(request).execute().use { response ->
                             if (response.isSuccessful) {
                                 val res = response.body!!.string()
-                                //Log.d("MyLog", res)
                                 val obj = Gson().fromJson(res, ServerObject::class.java)
-                               // Log.d("MyLog", "parsed")
                                 if (hasWifi()) {
                                     deviceAddress = device.ipAddress
                                     saveIPToMemory(deviceAddress)
@@ -82,8 +75,7 @@ class Model(private val context: Context) {
                                 }
                             }
                         }
-                    } catch (e: Exception) {
-                        //Log.d("MyLog", e.toString())
+                    } catch (_: Exception) {
                     }
                 }
             }
@@ -134,7 +126,6 @@ class Model(private val context: Context) {
         thread {
             val (commandString, expectedResponse) = checkingRequest()
             val ipAddressFromMemory = getIPFromMemory()
-            //Log.d("MyLog", "ip from memory $ipAddressFromMemory")
             try {
                 if (!deviceFinder.isRunning) {
                     val request = Request.Builder()
@@ -143,7 +134,6 @@ class Model(private val context: Context) {
                     client.newCall(request).execute().use { response ->
                         if (response.isSuccessful) {
                             val res = response.body!!.string()
-                           // Log.d("MyLog", "From memory")
                             val obj = Gson().fromJson(res, ServerObject::class.java)
                             if (hasWifi()) {
                                 deviceAddress = ipAddressFromMemory
@@ -153,7 +143,6 @@ class Model(private val context: Context) {
                     }
                 }
             } catch (e: Exception) {
-               // Log.d("MyLog", e.toString())
                 if (!deviceFinder.isRunning) {
                     deviceFinder.setTimeout(5000).start()
                 }
@@ -174,7 +163,6 @@ class Model(private val context: Context) {
                             failCount = 0
                             val responseString = response.body!!.string()
                             handleResponse(responseString)
-                            //Log.d("MyLog", "isAlive")
                         }
                     }
                 } catch (_: Exception) {

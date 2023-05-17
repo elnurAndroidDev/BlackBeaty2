@@ -3,7 +3,12 @@ package com.isayevapps.blackbeaty2.ui
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.media.MediaPlayer
+import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -14,6 +19,8 @@ import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
+import androidx.preference.PreferenceManager
 import com.isayevapps.blackbeaty2.App
 import com.isayevapps.blackbeaty2.R
 import com.isayevapps.blackbeaty2.databinding.ActivityLightBinding
@@ -45,6 +52,10 @@ class LightActivity : AppCompatActivity() {
     private var mojnoOtpravlyatCvet = false
     private var firstInitEffect = false
 
+    private lateinit var mediaPlayer: MediaPlayer
+    private var soundOn = true
+    private var vibroOn = true
+
     private lateinit var circle1: ImageView
     private lateinit var circle2: ImageView
     private lateinit var circle3: ImageView
@@ -69,6 +80,8 @@ class LightActivity : AppCompatActivity() {
                 viewModel.searchDevice()
             }
         }
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.click)
 
         viewModel.led1OnOff.observe(this) {
             if (it == 0) {
@@ -111,6 +124,8 @@ class LightActivity : AppCompatActivity() {
         }
 
         binding.led1OffButton.setOnClickListener {
+            playClickSound()
+            vibrate()
             val onOff = viewModel.led1OnOff.value ?: 0
             val effect = viewModel.led1Effect.value ?: 0
             if (onOff == 0) {
@@ -121,6 +136,8 @@ class LightActivity : AppCompatActivity() {
         }
 
         binding.led2OffButton.setOnClickListener {
+            playClickSound()
+            vibrate()
             val onOff = viewModel.led2OnOff.value ?: 0
             val effect = viewModel.led2Effect.value ?: 0
             if (onOff == 0) {
@@ -131,10 +148,14 @@ class LightActivity : AppCompatActivity() {
         }
 
         binding.lightOffButton.setOnClickListener {
+            playClickSound()
+            vibrate()
             viewModel.sendOnOffLight(Command.LIGHT_ID)
         }
 
         binding.starSkyOffButton.setOnClickListener {
+            playClickSound()
+            vibrate()
             viewModel.sendOnOffLight(Command.STAR_SKY_ID)
         }
 
@@ -203,6 +224,47 @@ class LightActivity : AppCompatActivity() {
         prepareLightDialog()
         prepareRGBDialog()
         prepareSetNewColorDialog()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setFon()
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
+        soundOn = sharedPref.getBoolean("click_sound", true)
+        vibroOn = sharedPref.getBoolean("click_vibro", true)
+    }
+
+    private fun vibrate() {
+        val vib = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val vibratorManager =
+                this.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+            vibratorManager.defaultVibrator
+        } else {
+            @Suppress("DEPRECATION")
+            this.getSystemService(VIBRATOR_SERVICE) as Vibrator
+        }
+
+        if (vibroOn)
+            vib.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
+    }
+
+    private fun playClickSound() {
+        if (soundOn)
+            mediaPlayer.start()
+    }
+
+    private fun setFon() {
+        val sharedPref = this.getSharedPreferences("APP_SHARED_PREF", Context.MODE_PRIVATE)
+        val fon = sharedPref.getString("fon", "fon1") ?: "fon1"
+        when (fon) {
+            "fon1" -> binding.fonContainer.setImageResource(R.drawable.fon1)
+            "fon2" -> binding.fonContainer.setImageResource(R.drawable.fon2)
+            "fon3" -> binding.fonContainer.setImageResource(R.drawable.fon3)
+            "fon4" -> binding.fonContainer.setImageResource(R.drawable.fon4)
+            "fon5" -> binding.fonContainer.setImageResource(R.drawable.fon5)
+            "fon6" -> binding.fonContainer.setImageResource(R.drawable.fon6)
+            else -> binding.fonContainer.setImageURI(fon.toUri())
+        }
     }
 
     private fun prepareLightDialog() {

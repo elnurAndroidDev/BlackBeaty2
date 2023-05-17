@@ -1,7 +1,6 @@
 package com.isayevapps.blackbeaty2.viewmodels
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.isayevapps.blackbeaty2.callbacks.DeviceCallback
@@ -9,6 +8,7 @@ import com.isayevapps.blackbeaty2.callbacks.LightObjectUpdater
 import com.isayevapps.blackbeaty2.callbacks.NetworkChangesCallback
 import com.isayevapps.blackbeaty2.models.Command
 import com.isayevapps.blackbeaty2.models.Model
+import kotlin.concurrent.thread
 
 class ViewModel(private val model: Model) {
 
@@ -166,6 +166,14 @@ class ViewModel(private val model: Model) {
 
     fun sendOnOffLight(id: Int) {
         model.sendCommand(Command(id, 0, 0))
+    }
+
+    fun sendDoorCommand() {
+        thread {
+            model.sendCommand(Command(Command.DOOR_ID, 0, 1))
+            Thread.sleep(300)
+            model.sendCommand(Command(Command.DOOR_ID, 0, 0))
+        }
     }
 
     fun sendBarCommand(value: Int) {

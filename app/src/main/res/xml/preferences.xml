@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="click_sound"
+        android:summary="Звук при нажатии"
+        android:title="Звук" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="click_vibro"
+        android:summary="Вибрация при нажатии"
+        android:title="Вибрация" />
+
+    <Preference
+        android:key="fon"
+        android:title="Выбрать фон">
+        <intent
+            android:targetClass="com.isayevapps.blackbeaty2.ui.ChooseImageActivity"
+            android:targetPackage="com.isayevapps.blackbeaty2" />
+    </Preference>
+
+</androidx.preference.PreferenceScreen>

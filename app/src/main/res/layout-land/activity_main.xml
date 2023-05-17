@@ -8,6 +8,28 @@
     tools:context=".ui.MainActivity">
 
     <ImageView
+        android:id="@+id/fonContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="0dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/fon1" />
+
+    <ImageView
+        android:id="@+id/settingsBtn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:srcCompat="@drawable/settings_icon"
+        app:tint="@color/gold" />
+
+    <ImageView
         android:id="@+id/imageView"
         android:layout_width="56dp"
         android:layout_height="56dp"
@@ -19,7 +41,7 @@
         app:tint="@color/gold" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/ledSeatCard"
+        android:id="@+id/doorCard"
         android:layout_width="160dp"
         android:layout_height="130dp"
         android:backgroundTint="#99272727"
@@ -34,37 +56,36 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/seatButton"
+            <TextView
+                android:id="@+id/doorTextView"
                 android:layout_width="136dp"
-                android:layout_height="52dp"
-                android:background="@drawable/button_background"
+                android:layout_height="60dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/button_bg"
                 android:fontFamily="@font/main_font"
                 android:gravity="center"
-                android:text="Сиденья"
+                android:padding="16dp"
+                android:text="Дверь"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lightButton" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/lightButton"
-                android:layout_width="136dp"
-                android:layout_height="52dp"
-                android:background="@drawable/button_background"
-                android:fontFamily="@font/main_font"
-                android:gravity="center"
-                android:text="Освещение"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toTopOf="@+id/seatButton"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/doorButton"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/button_background"
+                android:padding="10dp"
+                android:src="@drawable/door_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/doorTextView"
+                app:layout_constraintStart_toStartOf="@+id/doorTextView"
+                app:tint="@color/white" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
@@ -78,7 +99,7 @@
         app:layout_constraintEnd_toStartOf="@+id/leftCurtain2Card"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ledSeatCard">
+        app:layout_constraintTop_toBottomOf="@+id/doorCard">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -136,7 +157,7 @@
         app:layout_constraintBottom_toTopOf="@+id/leftCurtain2Card"
         app:layout_constraintEnd_toStartOf="@+id/rightCurtain1Card"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/ledSeatCard"
+        app:layout_constraintStart_toEndOf="@+id/doorCard"
         app:layout_constraintTop_toBottomOf="@+id/imageView">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -252,9 +273,8 @@
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toTopOf="@+id/rightCurtain2Card"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/leftCurtain1Card"
+        app:layout_constraintEnd_toStartOf="@id/lightButton"
         app:layout_constraintTop_toBottomOf="@+id/imageView">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -311,8 +331,7 @@
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toStartOf="@id/seatButton"
         app:layout_constraintStart_toEndOf="@+id/leftCurtain2Card"
         app:layout_constraintTop_toBottomOf="@+id/rightCurtain1Card">
 
@@ -378,6 +397,38 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/lightButton"
+        android:layout_width="136dp"
+        android:layout_height="60dp"
+        android:background="@drawable/button_background"
+        android:fontFamily="@font/main_font"
+        android:gravity="center"
+        android:text="Освещение"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/doorCard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rightCurtain1Card"
+        app:layout_constraintTop_toTopOf="@+id/doorCard" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/seatButton"
+        android:layout_width="136dp"
+        android:layout_height="60dp"
+        android:background="@drawable/button_background"
+        android:fontFamily="@font/main_font"
+        android:gravity="center"
+        android:text="Сиденья"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/downDrawerCard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rightCurtain2Card"
+        app:layout_constraintTop_toTopOf="@+id/downDrawerCard" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

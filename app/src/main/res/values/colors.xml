@@ -11,4 +11,6 @@
     <color name="gold">#EABA0E</color>
     <color name="selectedColor">#201059</color>
     <color name="unselectedColor">#242939</color>
+    <color name="undoneColor">#8F8F8F</color>
+    <color name="doneColor">#EABA0E</color>
 </resources>
